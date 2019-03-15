@@ -3,3 +3,77 @@
 
 \input{f1_flops}
 \input{f2_efficiency}
+
+Minimum effective task granularity (METG) is defined intuitively as
+the smallest average task granularity such that the application
+achieves overall efficiency exceeding some threshold. For example, in
+a compute-bound application efficiency might be measure as the
+percentage of the available FLOPS achieved in a given application
+run. On a machine with a peak capability of 1.2 TFLOPS per node,
+METG(50\%) would correspond to smallest task granularity achieved
+while maintaing at least 0.6 TFLOPS. Absolute efficiency (i.e., FLOPS
+or bytes per second) is preferrable, but parallel efficiency (relative
+to a sufficiently large problem size) can also be used in applications
+which are not amenable to being characterized by peak resource
+utilization.
+
+Figure~\ref{fig:flops} shows the way in which METG is calculated. The
+application is run with a large enough problem size to ensure that it
+achieves peak utilization of the machine. This confirms that the
+application is properly configured and that the choice of efficiency
+metric is achievable. Once this is established, the problem size is
+shrunk (in a manner analogous to what happens on a node during a
+strong scaling run). The expectation is as problem size shrinks, the
+efficiency will begin to drop and eventually approach zero. As seen in
+Figure~\ref{fig:flops}, the systems with lower overheads will maintain
+higher efficiency at smaller problem sizes compared to systems with
+higher overheads.
+
+To calculate METG, this data is replotted along the axes of efficiency
+(i.e., as a percentage of the peak FLOPS achieved) and task
+granularity (i.e., $\text{wall time} \times \text{number of
+  cores}/\text{number of tasks}$). Figure~\ref{fig:efficiency} shows
+the replotted data from above. In this chart we can see that
+efficiency starts near 100\% for the vast majority of systems, and
+that initially task granularity drops quickly with minimal change in
+efficiency. However as task granularity shrinks, efficiency begins to
+drop as well, leading most systems to reach a plateau. Intuitively,
+this plateau represents the fundamental baseline overhead of the
+system, the point beyond which the system simply cannot execute tasks
+efficiently.
+
+METG is thus the result of drawing a vertical line through the chart
+in Figure~\ref{fig:efficiency} at the desired level of efficiency. For
+example, at 50\% efficiency, MPI achieves an average task granularity
+of 4.5 us while Charm++ achieves an average task granularity of 12
+us. Thus the METG(50\%) of MPI and Charm++ are 4.5 and 12 us,
+respectively, for this application. The number 50\% is chosen
+arbitrarily, but is a reasonable choice for this application because
+it represents a point at which most systems have plateaued, yet the
+overall efficiency is still reasonable. Lower values would likely not
+be reasonable, because in most cases operators of computing facilities
+prefer to maintain higher levels of utilization of the machines. And
+higher values would misrepresent the performance of more systems.
+
+METG is an appealing metric because it has a well-understood
+relationship with quantities of interest to application developers,
+namely weak and strong scaling. METG corresponds to the smallest
+problem size that can be weak scaled to a given node count with a
+given level of efficiency. Larger problem sizes would correspond with
+larger tasks, and therefore have lower overhead relative to useful
+computation. Similarly, METG corresponds to the point at which strong
+scaling can be expected to stop; as strong scaling runs start with a
+larger problem size and progressively shrink it until overheads begin
+to dwarf the gains due to continued scaling.
+
+The METG metric has one particularly useful property in comparison to
+weak and strong scaling. Because METG is measured ``in place'' (i.e.,
+without changing the number of nodes or cores available to the
+application), it is possible to use METG to isolate effects that are
+due to shrinking problem size from effects that are due to e.g.,
+increased communication latencies as progressively larger portions of
+the machine are being used. Section~\ref{sec:evaluation} contains a
+comprehensive evaluation of METG including how it changes with node
+count.
+
+% talk about TPS / MTG ?
