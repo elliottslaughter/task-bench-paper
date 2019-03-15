@@ -4,6 +4,7 @@ DOC=task_bench
 INCLUDED_TEX = 1_introduction.tex
 INCLUDED_FIGS = 
 
+.PHONY: all
 all: $(DOC).pdf 
 
 $(DOC).pdf: $(DOC).tex bibliography.bib $(INCLUDED_TEX) $(INCLUDED_FIGS)
@@ -30,11 +31,29 @@ $(DOC).pdf: $(DOC).tex bibliography.bib $(INCLUDED_TEX) $(INCLUDED_FIGS)
 %.ps : %.dvi
 	dvips $^
 
-spelling :
+.PHONY: figures
+figures:
+	(if [ ! -d figs/task-bench ]; then \
+		git clone https://github.com/StanfordLegion/task-bench.git figs/task-bench; \
+	else \
+		git -C figs/task-bench pull --ff-only; \
+	fi)
+	(if [ ! -d figs/task-bench-results ]; then \
+		git clone https://github.com/StanfordLegion/task-bench-results.git figs/task-bench-results; \
+	else \
+		git -C figs/task-bench-results pull --ff-only; \
+	fi)
+	(cd figs/task-bench-results/compute && ../../task-bench/scripts/render_all.sh)
+	(cd figs/task-bench-results/imbalance && ../../task-bench/scripts/render_all.sh)
+
+.PHONY: spelling
+spelling:
 	for f in *.tex; do aspell -p ./aspell.en.pws --repl=./aspell.en.prepl -c $$f; done
 
+.PHONY: clean
 clean:
 	rm -f *.bbl *.aux *.log *.out *.blg *.lot *.lof *.dvi $(DOC).pdf $(DOC)-ext.pdf
 
+.PHONY: zip
 zip:
 	zip -r task_bench.zip *.tex *.cls Makefile *.sty *.bib
