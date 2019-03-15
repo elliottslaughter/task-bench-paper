@@ -1,8 +1,13 @@
 DOC=task_bench
 
 # dependencies via include files
-INCLUDED_TEX = 0_abstract.tex 1_introduction.tex
-INCLUDED_FIGS = 
+INCLUDED_TEX = 0_abstract.tex \
+	1_introduction.tex \
+	2_metg.tex \
+	f1_flops.tex \
+	f2_efficiency.tex
+INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil.pdf \
+	figs/task-bench-results/compute/efficiency_stencil.pdf
 
 .PHONY: all
 all: $(DOC).pdf 
