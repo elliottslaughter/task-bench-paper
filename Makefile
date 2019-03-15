@@ -1,7 +1,7 @@
 DOC=task_bench
 
 # dependencies via include files
-INCLUDED_TEX = 1_introduction.tex
+INCLUDED_TEX = 0_abstract.tex 1_introduction.tex
 INCLUDED_FIGS = 
 
 .PHONY: all
