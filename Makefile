@@ -48,8 +48,9 @@ figures:
 	else \
 		git -C figs/task-bench-results pull --ff-only; \
 	fi)
-	(cd figs/task-bench-results/compute && ../../task-bench/scripts/render_all.sh)
-	(cd figs/task-bench-results/imbalance && ../../task-bench/scripts/render_all.sh)
+	(cd figs/task-bench-results/compute && ../../task-bench/scripts/render_all.sh crop)
+	(cd figs/task-bench-results/communication && ../../task-bench/scripts/render_all.sh crop)
+	(cd figs/task-bench-results/imbalance && ../../task-bench/scripts/render_all.sh crop)
 
 .PHONY: spelling
 spelling:
