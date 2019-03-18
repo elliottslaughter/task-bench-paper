@@ -5,6 +5,7 @@ INCLUDED_TEX = 0_abstract.tex \
 	1_introduction.tex \
 	2_metg.tex \
 	3_task_bench.tex \
+	4_implementation.tex \
 	f1_flops_mpi.tex \
 	f2_efficiency_mpi.tex \
 	f3_weak_scaling_mpi.tex \

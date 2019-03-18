@@ -1,0 +1,102 @@
+\section{Implementations}
+\label{sec:implementation}
+
+We have implemented Task Bench in 13 parallel and distributed
+programming languages and runtime systems. Below we describe the
+systems, and any salient details of their Task Bench implementations.
+
+In all cases, members of the respective programming systems' teams
+were consulted during the development and evaluation of the
+corresponding Task Bench implementations. Their insight was invaluable
+in ensuring that we provide the highest level of quality in the Task
+Bench implementations for each system.
+
+\subsection{Chapel}
+
+Chapel~\cite{Chapel07} is an explicitly parallel programming language
+that follows a \emph{multi-resolution} approach to parallel
+programming, with support for parallelism at a variety of
+levels. Chapel's core features are a partitioned global address space
+(PGAS) which permits remote access to objects from anywhere in the
+machine, a data model for the distribution of data structures over the
+global address space via \emph{domain maps}, tasks, and
+synchronization primitives. Chapel thus permits a great deal of
+flexibility in the choice of implementation strategy for applications.
+
+For Task Bench, we decided to target a relatively low-level
+implementation in Chapel, using explicit task instantiation (via
+\lstinline[language=Chapel]{coforall}), bulk access to distributed
+arrays for efficient data movement, and atomic integers for
+synchronization. The advantage of this approach is that it permits
+fine-tuning of the implementation for performance, and avoids relying
+on advanced optimizations in the Chapel compiler for performance.
+
+Chapel also supports a more high-level approach to parallel
+programming in which the granularities of tasks are determined
+automatically by the compiler (via
+\lstinline[language=Chapel]{forall}). This style was not evaluated in
+Task Bench as we were concerned that the dynamic, input-dependent
+nature of the task dependencies would defeat optimizations in the
+Chapel compiler that might turn out to be critical for performance.
+
+\subsection{Charm++}
+
+Charm++~\cite{Charmpp93} is an explicitly parallel programming system
+based on the actor model of distributed computation. Actors, or
+\emph{chares}, are objects that live in their own address space and
+can be migrated automatically between nodes for better load
+balance. Chares are permitted to send messages to other chares via a
+form of remote procedure call (RPC). Calling a method of another chare
+is the primary form of synchronization and data movement in
+Charm++. Additional support is provided for collective operations
+between chares.
+
+Our Task Bench implementation was straightforward: we create a chare
+array for the task graph, with one chare for each column. Methods are
+used to implement dependencies, and a task is executed as soon as its
+dependecies are all available. Collectives are used to synchronize the
+completion of the task graph execution.
+
+\subsection{MPI}
+
+MPI~\cite{MPI}
+
+\subsection{OmpSs}
+
+OmpSs~\cite{OmpSs11}
+
+\subsection{OpenMP}
+
+OpenMP~\cite{OpenMPSpec40}
+
+\subsection{PaRSEC}
+
+PaRSEC~\cite{PARSEC13}
+
+\subsection{Realm}
+
+Realm~\cite{Realm14}
+
+\subsection{Regent}
+
+Regent~\cite{Regent15}
+
+\subsection{Spark}
+
+Spark~\cite{Spark10}
+
+\subsection{StarPU}
+
+StarPU~\cite{StarPU11}
+
+\subsection{Swift/T}
+
+Swift/T~\cite{Wozniak13}
+
+\subsection{TensorFlow}
+
+TensorFlow~\cite{TensorFlow15}
+
+\subsection{X10}
+
+X10~\cite{X1005}
