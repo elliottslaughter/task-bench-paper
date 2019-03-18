@@ -4,10 +4,14 @@ DOC=task_bench
 INCLUDED_TEX = 0_abstract.tex \
 	1_introduction.tex \
 	2_metg.tex \
-	f1_flops.tex \
-	f2_efficiency.tex
-INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil.pdf \
-	figs/task-bench-results/compute/efficiency_stencil.pdf
+	f1_flops_mpi.tex \
+	f2_efficiency_mpi.tex \
+	f3_weak_scaling_mpi.tex \
+	f4_strong_scaling_mpi.tex
+INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
+	figs/task-bench-results/compute/efficiency_stencil_mpi.pdf \
+	figs/task-bench-results/compute/weak_mpi.pdf \
+	figs/task-bench-results/compute/strong_mpi.pdf
 
 .PHONY: all
 all: $(DOC).pdf 
