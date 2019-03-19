@@ -11,6 +11,7 @@ INCLUDED_TEX = 0_abstract.tex \
 	f2_efficiency_mpi.tex \
 	f3_weak_scaling_mpi.tex \
 	f4_strong_scaling_mpi.tex \
+	e0_flags.tex \
 	e1_metg_compute.tex
 INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
 	figs/task-bench-results/compute/efficiency_stencil_mpi.pdf \
