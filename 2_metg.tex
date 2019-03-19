@@ -10,11 +10,11 @@ achieves overall efficiency exceeding some threshold. For example, in
 a compute-bound application efficiency might be measured as the
 percentage of the available FLOPS achieved. On a machine with a peak
 capability of 1.2 TFLOPS per node, METG(50\%) would correspond to
-smallest task granularity achieved while maintaing at least 0.6
+smallest task granularity achieved while maintaining at least 0.6
 TFLOPS. Absolute efficiency (i.e., FLOPS or bytes per second) is
-preferrable, but parallel efficiency (relative to a sufficiently large
+preferable, but parallel efficiency (relative to a sufficiently large
 problem size) can also be used in applications which are not amenable
-to being characterized by peak resource utilization.
+to be characterized by peak resource utilization.
 
 Figure~\ref{fig:flops-mpi} shows the way in which METG is
 calculated. The application is run with a large enough problem size to
@@ -33,17 +33,17 @@ granularity (i.e., $\text{wall time} \times \text{number of
   cores}/\text{number of tasks}$). Note that a \emph{task} is defined
 broadly to be any continuously-executing unit of work in the
 application, thus it makes sense to discuss tasks even in systems
-without an explicit notion of tasking, such as in MPI codes written in
+without an explicit notion of tasking, such as in MPI codes are written in
 a bulk synchronous style.
 
 Figure~\ref{fig:efficiency-mpi}
-shows the replotted data from above. In this chart we can see that
+shows the replotted data from above. In this chart, we can see that
 efficiency starts near 100\%, and that initially task granularity
-drops quickly with minimal change in efficiency. However as task
+drops quickly with a minimal change in efficiency. However as task
 granularity shrinks, efficiency begins to drop as well, leading
 eventually to a plateau in task granularity. Intuitively, this plateau
 represents the fundamental baseline overhead of the system, the point
-beyond which the system simply cannot execute tasks efficiently.
+below which the system simply cannot execute tasks efficiently.
 
 METG is thus the result of drawing a vertical line through
 Figure~\ref{fig:efficiency-mpi} at the desired level of efficiency,
@@ -66,14 +66,14 @@ namely weak and strong scaling. Figures~\ref{fig:weak-scaling-mpi} and
 \ref{fig:strong-scaling-mpi} show the behavior of MPI weak and strong
 scaling, respectively, at a variety of problem sizes. Intuitively, at
 larger problem sizes MPI is perfectly efficient. This can be seen at
-the top of each figurs, with flat lines when weak scaling and
+the top of each figure, with flat lines when weak scaling and
 ideally-sloped downward lines when strong scaling. Inefficiency begins
 to show up at smaller problem sizes, towards the bottom of the graph,
 where lines become more compressed and begin to trend upward. At the
 very bottom, the lines compress together as it the fundamental
 overhead of MPI dwarfs any gains from running smaller
 problems. Critically, the shape of the curve at the bottom is the same
-for both weak and strong scaling; this is the precisely the shape of
+for both weak and strong scaling; this is precisely the shape of
 the METG curve.
 
 \input{f3_weak_scaling_mpi}
@@ -81,7 +81,8 @@ the METG curve.
 
 METG therefore has a direct relationship with the smallest problem
 size that can be weak scaled to a given node count with a given level
-of efficiency. Any smaller and the overhead begins to dominate useful
+of efficiency. With any smaller problem size, 
+the overhead begins to dominate useful
 computation. Similarly, METG corresponds to the point at which strong
 scaling can be expected to stop; as strong scaling runs start with a
 larger problem size and progressively shrink it until overheads begin
