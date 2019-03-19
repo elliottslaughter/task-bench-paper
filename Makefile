@@ -12,11 +12,19 @@ INCLUDED_TEX = 0_abstract.tex \
 	f3_weak_scaling_mpi.tex \
 	f4_strong_scaling_mpi.tex \
 	e0_flags.tex \
-	e1_metg_compute.tex
+	e1_flops.tex \
+	e2_efficiency.tex \
+	e3_metg_compute.tex
 INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
 	figs/task-bench-results/compute/efficiency_stencil_mpi.pdf \
 	figs/task-bench-results/compute/weak_mpi.pdf \
-	figs/task-bench-results/compute/strong_mpi.pdf
+	figs/task-bench-results/compute/strong_mpi.pdf \
+	figs/task-bench-results/compute/flops_stencil.pdf \
+	figs/task-bench-results/compute/efficiency_stencil.pdf \
+	figs/task-bench-results/compute/metg_stencil.pdf \
+	figs/task-bench-results/compute/metg_nearest.pdf \
+	figs/task-bench-results/compute/metg_spread.pdf \
+	figs/task-bench-results/compute/metg_ngraphs_4_nearest.pdf
 
 .PHONY: all
 all: $(DOC).pdf 

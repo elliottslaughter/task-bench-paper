@@ -2,4 +2,25 @@
 \label{sec:evaluation}
 
 \input{e0_flags}
-\input{e1_metg_compute}
+
+We now present a comprehensive evaluation of Task Bench on up to 256
+Haswell nodes of the Cori supercomputer~\cite{Cori}, a Cray XC40
+machine. Cori Haswell nodes have 2 sockets with Intel Xeon E5-2698 v3
+processors (total of 32 physical cores per node), 128 GB RAM, and a
+Cray Aries interconnect. We use GCC 7.3.0 for compiling all Task Bench
+implementations, and (where applicable) the system default MPI
+implementation, Cray MPICH 7.7.3. Additional versions and flags for the
+various systems are shown in Table~\ref{tab:flags}.
+
+\subsection{Peak Performance and Efficiency}
+
+\input{e1_flops}
+\input{e2_efficiency}
+
+\subsection{Overhead and Scalability}
+
+\input{e3_metg_compute}
+
+\subsection{Load Imbalance}
+
+\subsection{Communication Hiding}
