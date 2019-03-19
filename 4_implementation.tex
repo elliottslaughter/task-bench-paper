@@ -29,15 +29,22 @@ implementation in Chapel, using explicit task instantiation (via
 arrays for efficient data movement, and atomic integers for
 synchronization. The advantage of this approach is that it permits
 fine-tuning of the implementation for performance, and avoids relying
-on advanced optimizations in the Chapel compiler for performance.
+on advanced optimizations in the Chapel compiler, which might struggle
+with the dynamic, input-dependent nature of the task graphs in Task
+Bench.
 
 Chapel also supports a more high-level approach to parallel
 programming in which the granularities of tasks are determined
 automatically by the compiler (via
-\lstinline[language=Chapel]{forall}). This style was not evaluated in
-Task Bench as we were concerned that the dynamic, input-dependent
-nature of the task dependencies would defeat optimizations in the
-Chapel compiler that might turn out to be critical for performance.
+\lstinline[language=Chapel]{forall}). This is the level that users
+would typically target in their programs. The specific dependence
+patterns supported by Task Bench might also be implementable at this
+level, though a full Task Bench implementation would be challenging.
+
+% FIXME: Does the Chapel compiler handle: bulk data movement, point-to-point synchronization
+
+Internally, Chapel implements custom support for Cray networks, and
+uses the GASNet~\cite{GASNET07} compatibility layer on other networks.
 
 \subsection{Charm++}
 
@@ -51,35 +58,145 @@ is the primary form of synchronization and data movement in
 Charm++. Additional support is provided for collective operations
 between chares.
 
-Our Task Bench implementation was straightforward: we create a chare
+Our Task Bench implementation is straightforward: we create a chare
 array for the task graph, with one chare for each column. Methods are
 used to implement dependencies, and a task is executed as soon as its
 dependecies are all available. Collectives are used to synchronize the
 completion of the task graph execution.
 
+% FIXME: Discuss SMP vs non-SMP versions
+
+Internally, Charm++ implements support for a variety of networks
+directly on top of the low-level, vendor-provided APIs. For Cori, we
+use Charm++'s native support for uGNI.
+
 \subsection{MPI}
 
-MPI~\cite{MPI}
+MPI~\cite{MPI} is the industry standard message-passing API for
+programming supercomputers, and is the most widely used programming
+model in high-performance scientific computing today. The goal of our
+MPI implementation of Task Bench is to represent the common (if
+unexciting) case which continues to dominate high-performance
+computing: bulk synchronous programming with distinct computation and
+communication phases. We use \lstinline[language=C++]{MPI_Isend} and
+\lstinline[language=C++]{MPI_Irecv} to implement the communication
+phase, posting receives before sends. Each task dependency maps to one
+send/receive pair in MPI. Despite the relatively straightforward
+design, our MPI implementation is among the best performing.
+
+In our evaluation, we use the default MPI implementation installed on
+the machine, which is Cray MPI on the Cori supercomputer. This
+implementation is vetted by the machine operators and vendor and is
+the highest performing available implementation for the hardware.
+
+For completeness, we also explored the use of additional MPI calls:
+namely buffered sends (\lstinline[language=C++]{MPI_Bsend}),
+broadcasts (\lstinline[language=C++]{MPI_Bcast}), and all-to-all
+communication (\lstinline[language=C++]{MPI_Alltoallv}). For the
+configurations used in our evaluation, we found non-blocking sends and
+receives to be the best performing, often by a wide margin.
 
 \subsection{OmpSs}
 
-OmpSs~\cite{OmpSs11}
+OmpSs~\cite{OmpSs11} is a programming model for loop-based parallelism
+that is source-compatible with OpenMP. Our Task Bench implementation
+uses OpenMP 4.0-style tasks with task dependencies. Because tasks in
+OpenMP 4.0 have a fixed number of dependencies, we use a switch
+statement to implement the dynamic dependencies required for Task
+Bench. The implementation is otherwise straightforward.
+
+% FIXME: More to say about OmpSs? Is there anything different vs the OpenMP implementation?
 
 \subsection{OpenMP}
 
-OpenMP~\cite{OpenMPSpec40}
+OpenMP~\cite{OpenMPSpec40} is the industry standard API for loop-based
+parallelism on shared-memory systems. Our Task Bench implementation
+for OpenMP is very similar to OmpSs and uses OpenMP 4.0 tasks with
+task dependencies.
+
+In our evaluation, we test with both GNU GOMP and Intel KMP
+implementations of OpenMP. We found KMP to provide better performance
+and thus report KMP numbers in our evaluation.
 
 \subsection{PaRSEC}
 
-PaRSEC~\cite{PARSEC13}
+PaRSEC~\cite{PARSEC13} is a task-based programming system which
+supports two distinct programming models: \emph{parameterized task
+  graphs} (PTG) and \emph{sequential task flow} (STF). In the PTG
+model, the program consists of an analytical function which describes
+the expansion of the task graph. PTG is therefore a more limited
+programming model, but can potentially provide better performance
+because the graph description is amenable to static analysis and can
+be pruned efficiently for horizontally scalable execution.
+
+In the STF model, tasks are enumerated in program order (by
+dynamically executing the program), and dependencies between tasks are
+identified automatically based on the arguments to tasks. A task
+depends on another task if it reads data written by the other task,
+and the data is copied automatically if the two tasks are executed on
+different nodes. While the basic STF model is implicitly parallel
+because the system is responsible for the discovery of parallelism, in
+order to achieve horizontal scalability, the program is executed in a
+SPMD fashion on all nodes, and the user is responsible for eliding
+tasks that are not directly connected to those that are to be executed
+on the current node.
+
+Data in PaRSEC is stored in \emph{regions}, or dense arrays of
+contiguous memory. Regions may be passed to tasks on other nodes, but
+can only be written on the node where the data is originally
+allocated. In our Task Bench implementation, each task writes to a
+region as output, and these regions are passed as inputs to the
+subsequent set of tasks. As in the OmpSs and OpenMP implementations,
+the task launch code uses a switch statement as the PaRSEC API assumes
+tasks have a fixed number of dependencies.
+
+% FIXME: What does PaRSEC call regions?
+
+Internally, PaRSEC uses MPI for network communication.
 
 \subsection{Realm}
 
-Realm~\cite{Realm14}
+Realm~\cite{Realm14} is an explicitly-parallel task-based programming
+model that is used internally by Legion~\cite{Legion12} and
+Regent~\cite{Regent15}, which are implicitly parallel layers written
+on top of Realm. Thus the Realm implementation of Task Bench can be
+seen as a limit study of what is possible with Legion or Regent.
+
+Tasks in Realm are executed in a deferred manner, with dependencies
+between tasks explicitly defined by \emph{events} passed from one task
+to another. Realm's data model supports regions which live on a single
+node. Data must be explicitly copied, and the copies synchronized with
+tasks via events.
+
+Realm also supports a subgraph API where sets of tasks and copies are
+issued together. This mode permits additional optimizations to be
+performed. We have implemented Task Bench in both individual and
+subgraph styles, but report numbers for the subgraph version as it
+provides better performance.
+
+Internally, Realm uses GASNet~\cite{GASNET07} for communication.
 
 \subsection{Regent}
 
-Regent~\cite{Regent15}
+Regent~\cite{Regent15} is an implicitly-parallel task-based language
+which implements the Legion programming model~\cite{Legion12}. We use
+Regent rather than Legion directly because the Regent compiler
+provides a critical optimization, \emph{control replication}, that
+enables superior horizontal scalability of
+applications~\cite{ControlReplication17}.
+
+In Regent tasks are executed sequentially and parallelism is
+discovered automatically based on the data that is read or written by
+tasks. Regent programs are agnostic to the machine architecture and
+are separately \emph{mapped} for execution on a distributed memory
+system. Copies are inserted automatically by the compiler and runtime
+whenever data is read on a different node from where it is written.
+
+The Regent compiler performs control replication to slice the Regent
+program into \emph{shards} of execution which can scalably execute on
+large numbers of nodes. Our Regent implementation also makes use of a
+tracing optimization~\cite{LegionTracing18} which substantially
+reduces the cost of dynamic analysis of tasks in Regent.
 
 \subsection{Spark}
 
