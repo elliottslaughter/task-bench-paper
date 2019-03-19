@@ -17,9 +17,55 @@ various systems are shown in Table~\ref{tab:flags}.
 \input{e1_flops}
 \input{e2_efficiency}
 
+In theory, any system should be able to hit peak efficiency as long as
+the kernels are well-written and of sufficiently large granularity. In
+practice, achieving peak performance is tricky, subject to a number of
+pitfalls, and unfortunately, frequently skipped in evaluations of
+runtime system overhead. However, verifying that peak performance is
+achieved is important to ensuring that such evaluation of overhead and
+efficiency are well-grounded and avoid common mistakes in
+configuration.
+
+Figure~\ref{fig:flops} shows the FLOPS achieved with a compute-bound
+kernel with varying problem sizes. This is the full version of
+Figure~\ref{fig:flops-mpi}. In the best case, we measure peak FLOPS of
+$1.26 \times 10^{12}$, which compares favorably with the officially
+reported number of $1.2 \times 10^{12}$ \cite{Cori}. For the purposes
+of measuring efficiency we use our emperically determined number as
+the baseline for 100\% efficiency.
+
+The vast majority of systems achieve at or near peak FLOPS. A number
+of systems reserve a number of cores (usually 1 or 2) for internal
+runtime usage; these systems take a minor hit in peak FLOPS compared
+to systems which use all cores for application tasks. Some of the
+slower systems struggle to achieve peak FLOPs, though in most cases
+the curves suggest that performance would continue to improve if we
+were to run larger problem sizes. Unfortunately, the excessive
+computational cost of running such tests makes it prohibitively
+expensive to run larger problem sizes. For example, the Spark job in
+this configuration ran for over 5 hours.
+
+Figure~\ref{fig:efficiency} shows the efficiency (as a percentage of
+peak FLOPS achieved) plotted against task granularity. This plot is
+used to calculate METG, as described in Section~\ref{sec:metg}. The
+red, dashed line shows the point where 50\% efficiency is achieved.
+
+In most cases, task granularity has plateaued prior to this point,
+though a number of systems continue to improve as efficiency continues
+to drop. Accounting for this effect is one of the main arguments in
+favor of METG with a reasonable efficiency threshold compared to
+measuring task scheduling throughput in the presence of empty tasks
+(effectively the equivalent of METG(0\%)). Empty tasks permit runtime
+systems to make unrealistic tradeoffs which are not applicable to real
+application workloads where some degree of efficiency is necessarily a
+goal. Reporting numbers with empty tasks therefore gives unfair
+advantage to systems that make such unrealistic tradeoffs.
+
 \subsection{Overhead and Scalability}
 
 \input{e3_metg_compute}
+
+\subsection{Number of Dependencies}
 
 \subsection{Load Imbalance}
 
