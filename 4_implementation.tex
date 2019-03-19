@@ -272,13 +272,15 @@ the executing deep learning workloads, widely used in industrial data
 center applications. Although TensorFlow's high-level API exposes
 concepts specific to machine learning, internally TensorFlow is
 implemented as a task graph execution engine, making it a good fit for
-Task Bench and one of the shorter implementations at only 88 lines.
+Task Bench. TensorFlow programs are written by creating nodes in the
+task graph, and then connecting these nodes with edges to implement
+the desired dataflow. Task graphs are composed in a high-level
+language such as Python, but then serialized and run by an efficient
+execution engine written in C++.
 
 Our Task Bench implementation in TensorFlow works by defining a custom
-operator, which represents the execution of one task. We then use
-TensorFlow APIs to instantiate the custom operator for each point in
-the task graph and connect the task dependencies with the TensorFlow
-API.
+operator, which we instantiate for each point in the task graph. We
+then define dataflow edges to correspond to the task dependencies.
 
 \subsection{X10}
 
