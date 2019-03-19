@@ -17,6 +17,9 @@ various systems are shown in Table~\ref{tab:flags}.
 \input{e1_flops}
 \input{e2_efficiency}
 
+% Really want this to appear in the next section, but Latex forces it to be placed here to get the layout we want.
+\input{e3_metg_compute}
+
 In theory, any system should be able to hit peak efficiency as long as
 the kernels are well-written and of sufficiently large granularity. In
 practice, achieving peak performance is tricky, subject to a number of
@@ -63,10 +66,63 @@ advantage to systems that make such unrealistic tradeoffs.
 
 \subsection{Overhead and Scalability}
 
-\input{e3_metg_compute}
+METG is a useful metric in part because it summarizes the basic task
+scheduling overhead of a system in a single number. This makes it
+possible to evaluate METG at different node counts to see how it is
+impacted by changes in communication topology and latency.
+
+Figure~\ref{fig:metg-compute} shows how METG(50\%) varies with node
+count for a variety of dependence patterns supported by Task Bench:
+
+\begin{itemize}
+\item Figure~\ref{fig:metg-compute-stencil} is a 1D stencil where each
+  task depends on 3 other tasks (including the same point in the
+  previous timestep).
+\item Figure~\ref{fig:metg-compute-nearest} is a pattern where each
+  task depends on its 5 nearest neighbors.
+\item Figure~\ref{fig:metg-compute-spread} is a pattern where each
+  task depends on 5 distant neighbors, spread as widely as possible
+  throughout the machine.
+\item Figure~\ref{fig:metg-compute-4x-nearest} shows 4 simultaneous
+  copies of the nearest dependence pattern.
+\end{itemize}
+
+In general, the least complicated pattern (stencil) is most favorable
+to MPI, as it represents a truly bulk synchronous task graph with no
+opportunity for task parallelism. For the stencil pattern, the
+dominating factor is the basic overhead of executing a task, which is
+minimal for MPI as the Task Bench implementation is bulk synchronous
+and simply executes tasks one after another in alternation with
+communication phases. In contrast the asynchronous execution
+mechanisms of the other systems is pure overhead in this scenario.
+
+The gap between MPI and other systems shrinks as the complexity of the
+communication pattern grows, can even reverse as task parallelism is
+added in the form of multiple task graphs.
+
+% FIXME: update this when we have more data
+
+Most systems for high-performance computing are horizontally scalable,
+but this is not true of all the systems included in this
+evaluation. Lower is better in Figure~\ref{fig:metg-compute}, and a
+flat line is ideal. Systems with non-scalable implementations shows
+lines that go up with node count. Most notably, Spark is typically
+intended for use in industrial data center applications with task
+granularities measured in tens of seconds. Spark uses a centralized
+controller which limits throughput, and this is visible in the figure
+as line for Spark immediately rises with node count. Keep in mind also
+that Spark is being evaluated here with a non-trivial dependence
+pattern which is relatively unrepresentative of Spark's normal use
+cases. Spark is more efficient with trivial parallelism, as described
+in Section~\ref{subsec:number-of-dependencies}.
+
+% FIXME: talk about starpu and parsec?
 
 \subsection{Number of Dependencies}
+\label{subsec:number-of-dependencies}
 
 \subsection{Load Imbalance}
 
 \subsection{Communication Hiding}
+
+\subsection{Comparison with Published Results}
