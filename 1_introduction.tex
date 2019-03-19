@@ -4,12 +4,12 @@
 Challenges in heterogeneous and extreme-scale parallel and distributed
 computing have lead to the rise of a wide variety of new programming
 models and runtime systems. However, efforts to understand the
-performance behavior of these system have been limited. In many cases,
+performance behavior of these systems have been limited. In many cases,
 programming models are evaluated with weak and/or strong scaling of a
 bespoke set of carefully hand-written applications, which make it
 difficult to understand how the results generalize to other
 applications, and impossible to compare across systems. Furthermore,
-these are not limit studies, and thus do nothing to elucide the
+these are not limit studies, and thus do nothing to elucidate the
 boundaries of the performance envelops of the respective systems.
 
 We introduce \emph{minimum effective task granularity} (METG), a
@@ -33,7 +33,8 @@ concerns \emph{effective} task execution, where the overall
 computational efficiency meets some threshold (say, 50\%). If the
 METG(50\%) of an application is, say, 1~ms, then this indicates that
 the application can be executed with tasks as small as 1~ms while
-maintaining at least 50\% overall efficiency.
+maintaining at least 50\% overall efficiency. 
+\textcolor{red}{TODO:explain what does efficiency mean here?}
 
 We present Task Bench, a benchmark designed specifically to study the
 performance behavior of parallel and distributed runtime systems at
