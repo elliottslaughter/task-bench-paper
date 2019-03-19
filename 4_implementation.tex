@@ -200,20 +200,101 @@ reduces the cost of dynamic analysis of tasks in Regent.
 
 \subsection{Spark}
 
-Spark~\cite{Spark10}
+Spark~\cite{Spark10} is an implicitly-parallel programming model for
+data analytics, widely used in industrial data center applications. As
+one of the programming models in this study not originally intended
+for scientific computing, Spark makes very different tradeoffs from
+other systems under consideration, and therefore makes an interesting
+point of comparison.
+
+Spark's programming model is based of \emph{functional parallelism}, a
+generalization of the MapReduce programming
+model~\cite{MapReduce04}. The core computational abstraction in Spark
+are operators such as map, reduce, filter, join, etc. which by virtue
+of being pure functions are trivially known to be
+parallizable. Functions in Spark operate on \emph{resilient
+  distributed datasets} (RDDs), which are globally-visible,
+dynamically single-assignment data structures that cached in memory
+and written to disk for durability. One of Spark's primary
+optimizations therefore is the caching of RDDs to avoid unnecessary
+disk traffic, resulting in substantial speedups over MapReduce.
+
+Though Spark has tasks internally, these are not exposed to the user,
+so one of the challenges in developing a Task Bench implementation is
+mapping the task graph to a set of operators which will result in the
+desired performance behavior. We use a combination of
+\lstinline[language=Scala]{flatMap} and
+\lstinline[language=Scala]{groupByKey} operations to generate task
+dependencies, and then \lstinline[language=Scala]{map} to execute a
+series of tasks. We use an explicit hash partitioner to ensure that
+Spark does not attempt to group multiple Task Bench tasks into a
+single Spark task.
+
+We performed an extensive set of experiments to verify that no
+extraneous factors interfered with our Spark measurements. We
+completely disabled logging, ensured that no RDDs are actually written
+to disk, confirmed that there is no measurable overhead due to JNI
+calls from Java to C, and cross-checked our results with known cases
+that hit optimal task throughput in Spark, among other things. Our
+results are discussed in detail in Section~\ref{sec:evaluation}.
 
 \subsection{StarPU}
 
-StarPU~\cite{StarPU11}
+StarPU~\cite{StarPU11} is a task-based system that supports an STF
+programming model similar to PaRSEC. Our Task Bench implementation in
+StarPU is very similar to PaRSEC, including the use of a switch
+statement to handle dynamic numbers of task dependencies, and manual
+elision of tasks on unrelated nodes to provide horizontal scalability.
+
+Internally, StarPU uses MPI for communication.
 
 \subsection{Swift/T}
 
-Swift/T~\cite{Wozniak13}
+Swift/T~\cite{Wozniak13} is a parallel scripting language intended
+primarily for the composition of workflows in high-performance
+scientific computing. Tasks in Swift/T can be written in any
+programming language, and may even be themselves parallel. Swift/T
+programs follow dataflow semantics, where every statement may
+potentially execute in parallel as soon as its dependencies are
+satisfied; statements only execute sequentially when explicitly
+requested. The Swift/T compiler performs a number of optimizations to
+improve performance of highly parallel programs~\cite{Armstrong14}.
+
+Our Task Bench in Swift/T is straightforward, using Swift/T's dataflow
+semantics to capture dependencies on other tasks.
+
+Internally, Swift/T uses MPI for communication.
 
 \subsection{TensorFlow}
 
-TensorFlow~\cite{TensorFlow15}
+TensorFlow~\cite{TensorFlow15} is a programming system intended for
+the executing deep learning workloads, widely used in industrial data
+center applications. Although TensorFlow's high-level API exposes
+concepts specific to machine learning, internally TensorFlow is
+implemented as a task graph execution engine, making it a good fit for
+Task Bench. TensorFlow programs are written by creating nodes in the
+task graph, and then connecting these nodes with edges to implement
+the desired dataflow. Task graphs are composed in a high-level
+language such as Python, but then serialized and run by an efficient
+execution engine written in C++.
+
+Our Task Bench implementation in TensorFlow works by defining a custom
+operator, which we instantiate for each point in the task graph. We
+then define dataflow edges to correspond to the task dependencies.
 
 \subsection{X10}
 
-X10~\cite{X1005}
+X10~\cite{X1005} is an explicitly parallel programming language for
+place-based programming. The core features of X10 are \emph{places}
+which represent distributed memories, a PGAS model where references to
+remote objects can be held (but can only be deferenced on the local
+place), asynchronous tasks, and a place-changing construct to move the
+execution of a task to a remote place. X10 also supports a variety of
+synchronization primitives.
+
+Our Task Bench implementation uses
+\lstinline[language=X10]{Rail.asyncCopy} for efficient data movement
+between places, along with place-changing and atomic integers for
+synchronization. We use the C++ backend of X10, which uses MPI
+internally for portability to a variety of networks, and which
+conveniently integrates well with the Task Bench API.
