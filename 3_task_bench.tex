@@ -9,7 +9,7 @@ in an \emph{iteration space} and dependencies between tasks determined
 by a \emph{dependence relation}. Each task can execute any one of a
 number of kernels (compute-bound, memory-bound, etc.) and can generate
 a configurable amount of result data in order to the amount of
-communication that must be performed. Thus Task Bench can be used to
+communications that must be performed. Thus Task Bench can be used to
 rapidly explore a large space of possible application scenarios in
 order to understand the performance behaviors of parallel and
 distributed languages and runtime systems.
@@ -22,7 +22,7 @@ preceding time step. Many problems can be described by a task graph of
 constant width, in which case the iteration space is rectangular, but
 Task Bench is capable of handling non-rectangular iteration spaces,
 such as required by sweeps and tree-based dependence
-patterns. Figure~\ref{fig:task-graphs} show a number of sample task
+patterns. Figure~\ref{fig:task-graphs} shows a number of sample task
 graphs that can be implemented with Task Bench.
 
 % FIXME: Make figure showing example task graphs
@@ -43,7 +43,7 @@ tractable to develop a suite of high-quality implementations. Most
 Task Bench implementations are several hundred lines long, with the
 shortest being 88 lines and the longest being 1500 lines of executable
 code. Much of this is possible because the core aspects of generating
-the task graph and enumerating dependencies are encapsulated in a core
+task graphs and enumerating dependencies are encapsulated in a core
 library that is shared among all the Task Bench implementations. The
 core library also includes implementations of the kernels, ensuring
 that the kernels are identical in all cases, eliminating a potential
