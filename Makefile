@@ -16,7 +16,8 @@ INCLUDED_TEX = 0_abstract.tex \
 	e2_efficiency.tex \
 	e3_metg_compute.tex \
 	e4_radix.tex \
-	e5_imbalance.tex
+	e5_imbalance.tex \
+	e6_communication.tex
 INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
 	figs/task-bench-results/compute/efficiency_stencil_mpi.pdf \
 	figs/task-bench-results/compute/weak_mpi.pdf \
@@ -31,7 +32,11 @@ INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
 	figs/task-bench-results/imbalance/efficiency_imbalance_0.5.pdf \
 	figs/task-bench-results/imbalance/efficiency_imbalance_1.0.pdf \
 	figs/task-bench-results/imbalance/efficiency_imbalance_1.5.pdf \
-	figs/task-bench-results/imbalance/efficiency_imbalance_2.0.pdf
+	figs/task-bench-results/imbalance/efficiency_imbalance_2.0.pdf \
+	figs/task-bench-results/communication/efficiency_nodes_64_comm_16.pdf \
+	figs/task-bench-results/communication/efficiency_nodes_64_comm_256.pdf \
+	figs/task-bench-results/communication/efficiency_nodes_64_comm_4096.pdf \
+	figs/task-bench-results/communication/efficiency_nodes_64_comm_65536.pdf
 
 .PHONY: all
 all: $(DOC).pdf 
