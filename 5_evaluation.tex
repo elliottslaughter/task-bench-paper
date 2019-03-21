@@ -214,4 +214,19 @@ not relying on a shared global queue for tasks.
 
 \input{e6_communication}
 
-\subsection{Comparison with Published Results}
+Also of interest is the ability of asynchronous systems to be able to
+hide communication latencies in the presence of task
+parallelism. Figure~\ref{fig:efficiency-communication} plots task
+granularity vs efficiency curves for varying amounts of
+communication. The degree of communication is configured by the number
+of bytes produced by each task (and therefore communicated with each
+task dependency).
+
+Asynchronous systems such as Charm++ are able to show two benefits in
+these plots. First, by overlapping communication with computation,
+such systems are able to execute smaller task granularities at higher
+levels of efficiency compared to the bulk synchronous MPI
+implementation. Second, the asynchrony also makes the curves smoother,
+as spikes in latency due to interference from other jobs can be
+mitigated, leading to more predictable performance, especially at
+smaller message sizes.
