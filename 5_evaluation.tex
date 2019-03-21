@@ -153,6 +153,29 @@ in Section~\ref{subsec:number-of-dependencies}.
 
 \input{e4_radix}
 
+The number of dependencies per task has a strong influence on the
+overhead incurred by each system, as shown in
+Figure~\ref{fig:radix}. This plot shows METG(50\%) for the nearest
+dependence pattern, when varying the number of dependencies per task
+from 0 to 9.
+
+% FIXME: make sure these numbers are up to date for final paper
+
+The ratio in METG between 0 and 3 dependencies per task ranges from
+$1.3\times$ to $59\times$ (median $3.0\times$). From 1 to 3
+dependencies, the ratio varies from $1.2\times$ to $15\times$ (median
+$2.1\times$). The difference is most pronounced in systems which
+perform runtime work inline. For example, MPI achieves an METG of 390
+ns with 0 dependencies, but this rises to 4.6 us with 3 dependencies,
+a factor of $12\times$ increase. This is unsurprising as in the case
+of 0 dependencies, no \lstinline[language=C++]{MPI_Isend} calls are
+issued at all, so MPI has nothing to do aside from executing kernels
+as quickly as possible.
+
+For this reason, we feel especially strongly that it is important to
+measure the performance behaviors of programming systems under
+realistic workloads, rather than trivial dependencies.
+
 \subsection{Load Imbalance}
 
 \input{e5_imbalance}
