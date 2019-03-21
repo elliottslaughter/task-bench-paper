@@ -71,4 +71,18 @@ Charm++~\cite{NASCharm96}. However the benchmark consider mostly small
 kernels for dense array computations, and do not generalize to larger
 applications.
 
+System-specific benchmarks have been used to quantify specific aspects
+of system performance, such as MPI communication or collective
+latency~\cite{MPPTest99, MPIBench01}. These measurements typically do
+not generalize beyond the immediate system they attempt to quantify,
+nor in an obvious way to real-world applications.
 
+Limit studies of task scheduling throughput in various runtime systems
+often make additional assumptions. A popular assumption is the use of
+trivially parallel tasks~\cite{Canary16, Armstrong14}, which as shown
+in Section~\ref{subsec:number-of-dependencies} underestimates (often
+substantially) the cost of scheduling a task. Worse, trivial
+parallelism overstates the scalability of the runtime system; our
+results for Swift/T in Section~\ref{subsec:scalability} differ rather
+substantial from those published in~\cite{Armstrong14} for this
+reason.
