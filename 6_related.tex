@@ -1,0 +1,74 @@
+\section{Related Work}
+\label{sec:related-work}
+
+Programming systems for parallel and distributed computing are most
+commonly evaluated using proxy- or mini-apps, or
+microbenchmarks. Mini-apps are explicitly derived from larger
+applications and therefore have the advantage of bearing some
+relationship to the original. This advantage typically does not hold
+for microbenchmarks.
+
+A common failure mode for mini-apps is to bite off more complexity
+than can be reasonably implemented to a level of quality sufficient
+for publication. This can lead to publications for mini-apps omitting
+details or performance results for systems beyond the reference
+implementation. Follow-up papers, if any, often compare only against a
+reference implementation and omit any other implementations that might
+exist.
+
+\begin{itemize}
+
+\item
+The initial paper on PENNANT~\cite{PENNANT} includes an MPI+OpenMP
+implementation; follow-up papers present an implementation in
+Regent~\cite{Regent15, ControlReplication17, LegionTracing18}.
+
+\item
+The initial report on LULESH~\cite{LULESH12} includes no performance
+results at all; follow-up papers present performance results for
+CnC~\cite{LULESHCNC15} (a self-comparison) and X10~\cite{LULESHX1015}
+(comparison against reference only).
+
+\item
+The mini-app CoMD received a software release but no initial formal
+publication. One follow-up paper describes a Chapel
+implementation~\cite{CoMDChapel16} (comparison against reference
+only). Additional follow-up papers consider aspects of the reference
+implementation only~\cite{CoMDLoadImbalance17,
+  CoMDThreadedModels14}.
+
+\item
+A report on the Mantevo project~\cite{Mantevo09} describes a number of
+mini-apps, but only includes self-comparisons based on reference
+implementations.
+
+\item
+A report on MiniAero~\cite{SandiaReportManyTaskRuntimes15} describes
+four implementations of the mini-app, but only includes performance
+results for three, and of those three only two can be compared in an
+apples-to-apples manner as the last implementation uses a structured
+rather than an unstructured mesh. Follow-up papers describe an
+additional implementation in Regent~\cite{Regent15,
+  ControlReplication17, LegionTracing18} (comparison against reference
+only).
+
+\end{itemize}
+
+Microbenchmarks are often easier to implement, but may not be
+representative of real-world applications. From the PRK
+suite~\cite{PRK14}, the PRK Stencil code has been reasonably widely
+implemented, and a follow-up paper~\cite{PRKRuntimes16} compares MPI
+variants, SHMEM, UPC, Charm++, and Grappa. However, PRK Stencil is a
+simple code involving 2 kernels (which combined fit in under 50 lines
+of C++) and a halo exchange on a structured grid; it is unclear to
+what extent this is representative of real-world applications. Other
+codes in PRK are even less representative.
+
+The NAS benchmark suite~\cite{NAS91, NAS95} are widely studied with
+implementations in OpenMP~\cite{NASOpenMP99}, MPI and
+MPI+OpenMP~\cite{NASMPIOpenMP00}, and
+Charm++~\cite{NASCharm96}. However the benchmark consider mostly small
+kernels for dense array computations, and do not generalize to larger
+applications.
+
+

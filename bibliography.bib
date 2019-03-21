@@ -118,7 +118,7 @@ publisher = {John Wiley & Sons, Ltd.}
 }
 
 @inproceedings{LegionTracing18,
-  title={Dynamic {t}racing: memoization of task graphs for dynamic task-based runtimes},
+  title={Dynamic {T}racing: Memoization of Task Graphs for Dynamic Task-Based Runtimes},
   author={Lee, Wonchan and Slaughter, Elliott and Bauer, Michael and Treichler, Sean and Warszawski, Todd and Garland, Michael and Aiken, Alex},
   booktitle={Supercomputing (SC)},
   year={2018},
@@ -302,12 +302,6 @@ author = "Walid Taha and Tim Sheard",
   title = {Lonestar: {A} Suite of Parallel Irregular Programs},
   booktitle = {ISPASS '09: IEEE International Symposium on Performance Analysis of Systems and Software},
   year = {2009},
-}
-
-@misc{ NASPAR,
-  title = {{NAS} Parallel Benchmark Suite},
-  year = {2013},
-  howpublished = "\url{www.nas.nasa.gov/publications/npb.html}",
 }
 
 @article{Mantevo08,
@@ -935,7 +929,7 @@ YEAR           = 2001,
 
 @inproceedings{X1005,
  author = {Charles, Philippe and Grothoff, Christian and Saraswat, Vijay and Donawa, Christopher and Kielstra, Allan and Ebcioglu, Kemal and Von Praun, Christoph and Sarkar, Vivek},
- title = {X10: {A}n object-oriented approach to non-uniform cluster computing},
+ title = {X10: An Object-Oriented Approach to Non-uniform Cluster Computing},
  booktitle = {OOPSLA},
  year = {2005}
  }
@@ -1592,7 +1586,7 @@ address = {Livermore, CA},
 year = {1994},
 }
 
-@techreport{Mantevo,
+@techreport{Mantevo09,
 title={{Improving Performance via Mini-applications}},
 author={Heroux, Michael A. and Doerfler, Douglas W. and Crozier, Paul S. and Willenbring, James M. and Edwards, H. Carter and Williams, Alan and Rajan, Mahesh and Keiter, Eric R. and Thornquist, Heidi K. and Numrich, Robert W.},
 institution={Sandia National Laboratories},
@@ -1600,12 +1594,95 @@ number = {SAND2009-5574},
 year={2009}
 }
 
-@article{SandiaReportManyTaskRuntimes,
+@article{SandiaReportManyTaskRuntimes15,
   title={{ASC} {ATDM} {Level 2} Milestone \#5325: Asynchronous Many-Task Runtime System Analysis and Assessment for Next Generation Platforms},
   author={Bennett, Janine  and Clay, Robert and Baker, Gavin and Gamell, Marc and Hollman, David and Knight, Samuel and Kolla, Hemanth and Sjaardema, Gregory and Slattengren, Nicole and Teranishi, Keita and Wilke, Jeremiah and Bettencourt, Matt and Bova, Steve and Franko, Ken and Lin, Paul and Grant, Ryan and Hammond, Si and Olivier, Stephen and Kale, Laxmikant and Jain, Nikhil and Mikida, Eric and Aiken, Alex and Bauer, Mike and Lee, Wonchan and Slaughter, Elliott and Treichler, Sean and Berzins, Martin and Harman, Todd and Humphrey, Alan and Schmidt, John and Sunderland, Dan and McCormick, Pat and Gutierrez, Samuel and Schulz, Martin and Bhatele, Abhinav and Boehme, David and Bremer, Peer-Timo and Gamblin, Todd},
 institution={Sandia National Laboratories},
 number = {SAND2015-8312},
 year={2015}
+}
+
+@techreport{LULESH12,
+  title={Lulesh Programming Model and Performance Ports Overview},
+  author={Karlin, Ian and Bhatele, Abhinav and Chamberlain, Brad and Cohen, Jonathan and Devito, Zachary and Gokhale, Maya and Haque, Riyaz and Hornung, Rich and Keasler, Jeff and Laney, Dan and Luke, Edward and Lloyd, Scott and McGraw, Jim and Neely, Rob and Richards, David and Schulz, Martin and Still, Charels H. and Wang, Felix and Wong, Daniel},
+  year={2012},
+  institution={Lawrence Livermore National Laboratory}
+}
+
+@inproceedings{LULESHCNC15,
+  title={Optimizing the {LULESH} Stencil Code using Concurrent Collections},
+  author={Liu, Chenyang and Kulkarni, Milind},
+  booktitle={WOLFHPC},
+  pages={5},
+  year={2015},
+  organization={ACM}
+}
+
+@inproceedings{LULESHX1015,
+  title={Exploring the {APGAS} Programming Model Using the {LULESH} Proxy Application},
+  author={Milthorpe, Josh and Grove, David and Herta, Benjamin and Tardieu, Olivier},
+  booktitle={Runtime Systems for Extreme Scale Programming Models and Architectures Workshop},
+  year={2015}
+}
+
+@inproceedings{CoMDChapel16,
+  title={Optimizing PGAS Overhead in a Multi-Locale Chapel Implementation of CoMD},
+  author={Haque, Riyaz and Richards, David},
+  booktitle={PGAS Applications Workshop (PAW)},
+  pages={25--32},
+  year={2016},
+  organization={IEEE}
+}
+
+@article{CoMDLoadImbalance17,
+  title={Exploring Dynamic Load Imbalance Solutions with the CoMD Proxy Application},
+  author={Pearce, Olga and Ahmed, Hadia and Larsen, Rasmus W. and Pirkelbauer, Peter and Richards, David F.},
+  journal={Future Generation Computer Systems},
+  year={2017},
+  publisher={Elsevier}
+}
+
+@inproceedings{CoMDThreadedModels14,
+  title={An Evaluation of Threaded Models for a Classical MD Proxy Application},
+  author={Cicotti, Pietro and Mniszewski, Susan M and Carrington, Laura},
+  booktitle={Workshop on Hardware-Software Co-Design for High Performance Computing},
+  pages={41--48},
+  year={2014},
+  organization={IEEE Press}
+}
+
+@inproceedings{NAS91,
+  author = {Bailey, David H. and Barszcz, Eric and Barton, John T. and Browning, David S. and Carter, Robert L. and Dagum, Leonardo and Fatoohi, Rod A. and Frederickson, Paul O. and Lasinski, Thomas A. and Schreiber, Rob S. and Simon, H. D.},
+  title = {The {NAS} Parallel Benchmarks Summary and Preliminary Results},
+  booktitle = {Supercomputing ({SC})},
+  year = {1991},
+}
+
+@techreport{NAS95,
+ title={The {NAS} Parallel Benchmarks 2.0},
+ author={Bailey, David and Harris, Tim and Saphir, William and Van Der Wijngaart, Rob and Woo, Alex and Yarrow, Maurice},
+ year={1995},
+ institution={Technical Report NAS-95-020, NASA Ames Research Center}
+}
+
+@article{NASOpenMP99,
+ title={The {O}pen{MP} Implementation of {NAS} Parallel Benchmarks and its Performance},
+ author={Jin, Hao-Qiang and Frumkin, Michael and Yan, Jerry},
+ year={1999}
+}
+
+@inproceedings{NASMPIOpenMP00,
+  author    = {Franck Cappello and Daniel Etiemble},
+  title     = {{MPI} versus {MPI+O}pen{MP} on {IBM} {SP} for the {NAS} Benchmarks},
+  booktitle = {Supercomputing ({SC})},
+  pages     = {12},
+  year      = {2000},
+}
+
+@article{NASCharm96,
+ title={Object-Oriented Implementation of the {NAS} Parallel Benchmarks using {C}harm++},
+ author="Krishnan, Sanjeev and Bhandarkar, Milind and {Kal\'{e}}, Laxmikant V.",
+ year={1996}
 }
 
 @misc{StanfordHPCC,
@@ -1706,7 +1783,7 @@ pages={18-24},
 }
 
 @inproceedings{Charmpp93,
-  author        = "{Kal\'{e}}, L.V. and Krishnan, S.",
+  author        = "{Kal\'{e}}, Laxmikant V. and Krishnan, Sanjeev",
   title         = {{CHARM++}: A Portable Concurrent Object Oriented System Based on {C++}},
   pages         = "91--108",
   Year          = "1993",
