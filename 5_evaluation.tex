@@ -41,7 +41,7 @@ The vast majority of systems achieve at or near peak FLOPS. A number
 of systems reserve a number of cores (usually 1 or 2) for internal
 runtime usage; these systems take a minor hit in peak FLOPS compared
 to systems which use all cores for application tasks. Some of the
-slower systems struggle to achieve peak FLOPs, though in most cases
+slower systems struggle to achieve peak FLOPS, though in most cases
 the curves suggest that performance would continue to improve if we
 were to run larger problem sizes. Unfortunately, the excessive
 computational cost of running such tests makes it prohibitively
@@ -64,28 +64,56 @@ application workloads where some degree of efficiency is necessarily a
 goal. Reporting numbers with empty tasks therefore gives unfair
 advantage to systems that make such unrealistic tradeoffs.
 
-\subsection{Overhead and Scalability}
+\subsection{Baseline Overhead}
 
-METG is a useful metric in part because it summarizes the basic task
-scheduling overhead of a system in a single number. This makes it
-possible to evaluate METG at different node counts to see how it is
-impacted by changes in communication topology and latency.
+One of the basic questions when considering different programming
+systems is how much overhead the system introduces. This can be a
+tricky question to answer directly because some systems introduce
+overhead \emph{inline} (i.e., by running system internal processes on
+the same cores as application tasks), while other systems introduce
+overhead \emph{out-of-line} (i.e., by dedicating one or more cores
+solely to runtime use). Some systems, like Charm++, Realm, and Regent,
+even support both configurations.
 
-Figure~\ref{fig:metg-compute} shows how METG(50\%) varies with node
-count for a variety of dependence patterns supported by Task Bench:
+To answer this question, we use the METG metric to determine the
+smallest task granularity which can be executed at a given level of
+efficiency, as a proxy for overhead. Figure~\ref{fig:metg-compute}
+shows how METG(50\%) varies with node count for a variety of
+dependence patterns supported by Task Bench:
 
 \begin{itemize}
 \item Figure~\ref{fig:metg-compute-stencil} is a 1D stencil where each
   task depends on 3 other tasks (including the same point in the
   previous timestep).
 \item Figure~\ref{fig:metg-compute-nearest} is a pattern where each
-  task depends on its 5 nearest neighbors.
+  task depends 5 others, chosen to be as close as possible.
 \item Figure~\ref{fig:metg-compute-spread} is a pattern where each
-  task depends on 5 distant neighbors, spread as widely as possible
-  throughout the machine.
-\item Figure~\ref{fig:metg-compute-4x-nearest} shows 4 simultaneous
-  copies of the nearest dependence pattern.
+  task depends on 5 others, spread as widely as possible.
+\item Figure~\ref{fig:metg-compute-4x-nearest} shows 4 identical
+  copies of the nearest dependence pattern executing concurrently.
 \end{itemize}
+
+We observe in the results that the baseline overheads of different
+systems can vary by over 5 orders of magnitude. It is worth
+remembering when considering this metric that this is a \emph{minimum}
+effective task granularity. Therefore applications with an average
+task granularity of \emph{at least} this value can usually be expected
+to execute efficiently. Typical average task granularity will
+generally be determined by the application domain being
+considered. Most notably, for data analytics workloads being run in
+industrial data centers, the higher METG values observed for Spark and
+TensorFlow are sufficient. In contrast, for high-performance
+scientific simulations, task granularities in the millisecond range
+are useful, as such applications communicate (e.g., for halo
+exchanges) much more frequently.
+
+\subsection{Scalability}
+
+METG is a useful metric in part because it summarizes the basic task
+scheduling overhead of a system in a single number. This makes it
+possible to evaluate METG at different node counts (shown in
+Figure~\ref{fig:metg-compute}) to see how it is impacted by changes in
+communication topology and latency.
 
 In general, the least complicated pattern (stencil) is most favorable
 to MPI, as it represents a truly bulk synchronous task graph with no
