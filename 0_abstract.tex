@@ -1,21 +1,21 @@
 \begin{abstract}
-% 150 words
-We introduce \emph{minimum effective task granularity} (METG), a new
-metric for quantifying the fundamental performance behavior of
-parallel and distributed runtime systems. METG is either directly
-related to, or correlates with a variety of measures of direct
-interest to application developers: namely the smallest problem size
-that can be efficiently weak scaled, or the limit of strong
-scalability. METG can be used to study the baseline overhead, scaling
-behavior, and communication hiding ability of runtime systems, among
-other properties.
+% 153 words
+We present Task Bench, a \emph{parameterized} benchmark designed to
+explore the performance envelops of parallel and distributed
+programming systems under a variety of application scenarios. Task
+Bench consists of a configurable \emph{task graph} with one task per
+point in an iteration space, and dependencies between tasks determined
+by a dependence relation. Tasks can execute a variety of kernels,
+including compute- and memory-bound, and task dependencies carry
+payloads of configurable size, enabling communication-bound use
+cases. Multiple task graphs can be executed to enable task
+parallelism.
 
-We present Task Bench, a novel \emph{parameterized} benchmark for
-exploring the behavior of parallel and distributed runtime
-systems. Task Bench executes a configurable \emph{task graph} with
-tasks for each point in an iteration space and dependencies determined
-by a \emph{dependence relation}. We use Task Bench to conduct a
-comprehensive evaluation of 13 runtime systems, and show that the
-baseline overhead of these systems varies by up to 5 orders of
-magnitude.
+We conduct a comprehensive comparative study with implementations of
+Task Bench in 13 programming systems on up to 256 Haswell nodes of the
+Cori supercomputer. We use a novel metric, \emph{minimum effective
+  task granularity} to study the baseline runtime overhead of each
+system and the impact of varying dependence patterns and number of
+dependencies. We also study each system's scalability, and ability to
+hide communication and mitigate load imbalance.
 \end{abstract}
