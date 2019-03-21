@@ -8,6 +8,7 @@ INCLUDED_TEX = 0_abstract.tex \
 	4_implementation.tex \
 	5_evaluation.tex \
 	6_related.tex \
+	7_conclusion.tex \
 	f1_flops_mpi.tex \
 	f2_efficiency_mpi.tex \
 	f3_weak_scaling_mpi.tex \
