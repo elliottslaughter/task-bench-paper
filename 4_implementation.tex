@@ -3,15 +3,32 @@
 
 \input{t1_systems}
 
-We have implemented Task Bench in 13 parallel and distributed
-programming languages and runtime systems, listed in
-Table~\ref{tab:systems}. Below we describe the systems, and any
-salient details of their Task Bench implementations.
+We have implemented Task Bench in the 13 parallel and distributed
+programming systems listed in Table~\ref{tab:systems}. We describe the
+systems, and any salient details of their Task Bench implementations,
+below.
+
+One challenge in implementing Task Bench for such a wide variety of
+systems is that the capabilities of the systems vary considerably. For
+example, some systems are \emph{implicitly parallel}, and provide some
+form of parallelism discovery from sequential programs, whereas others
+are \emph{explicitly parallel} and require users to specify the
+parallelism in the program. As a rule of thumb we aim for the Task
+Bench implementations to be represenative of how actual applications
+would be written in the respective systems. Places where the Task
+Bench implementations may be unidiomatic are noted below.
+
+There are also aspects of some systems that we do not consider in our
+evaluation. For example, a number of systems provide some level of
+support for heterogeneous processors such as GPUs, but the support
+varies so widely (if it exists at all) that it is challenging to come
+up with a representative benchmark which allows these features to be
+compared in an apples-to-apples manner.
 
 In all cases, members of the respective programming systems' teams
 were consulted during the development and evaluation of the
 corresponding Task Bench implementations. Their insight was invaluable
-in ensuring that we provide the highest level of quality in the Task
+to ensuring that we provide the highest level of quality in the Task
 Bench implementations for each system.
 
 \subsection{Chapel}
