@@ -17,14 +17,14 @@ they embody the logic of a larger application, but in reduced form,
 mini-apps are popular because they can provide insight without
 incurring the costly expense of developing a full-blown application
 code. However, despite the name, mini-apps still requite significant
-investment to develop, especially to a level of quality need to reach
+investment to develop, especially to a level of quality needed to reach
 a publishable state. In many cases, the effort to tune for performance
 exceeds the effort to develop the mini-app in the first place. This
 can be exacerbated if the system in question is undergoing concurrent
 development. As a result, implementations of mini-apps, though
 well-intentioned, often do not reach a level of maturity required to
 perform a broad comparison between systems, and as a result there are
-very few comparative studies involving multiple programming systems
+few comparative studies involving multiple programming systems
 that reach publication.
 
 A compounding issue is one of methodology: how does one predict how
@@ -75,8 +75,9 @@ is important in a weak or strong scaling study: that is, the behavior
 at the limit of scalability. For weak scaling, METG corresponds
 directly to the smallest problem size that can be weak scaled with a
 given level of efficiency. For strong scaling, METG can be used to
-compute the point at which strong scaling can be expected to tail
-off. In either case, METG is a useful, intuitive measure as it
+compute the scale at which performance can be expected to dip below
+that level of efficiency. In either case, METG is a useful, intuitive
+measure as it
 encapsulates the task granularity at which systems can be relied on to
 execute efficiently. As a rule of thumb, as long as an application's
 average task granularity exceeds the METG, the application should
@@ -99,7 +100,7 @@ use, or implicitly by sharing a time slice on the same cores used for
 application tasks, and other resources such as memory bandwidth and
 processor cache capacity. The use of empty tasks makes the application
 share of these resources appear to be zero, which permits usage by the
-runtime system to be unconstrained. How then is anyone supposed to
+runtime system to be unconstrained. How then is one supposed to
 determine what resource usage to consider reasonable on the part of
 the runtime system? Only by requiring the application usage of
 resources to meet a certain minimum level, as in METG, can we ensure
