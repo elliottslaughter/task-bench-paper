@@ -3,77 +3,120 @@
 
 Challenges in heterogeneous and extreme-scale parallel and distributed
 computing have lead to the rise of a wide variety of new programming
-models and runtime systems. However, efforts to understand the
-performance behavior of these systems have been limited. In many cases,
-programming models are evaluated with weak and/or strong scaling of a
-bespoke set of carefully hand-written applications, which make it
-difficult to understand how the results generalize to other
-applications, and impossible to compare across systems. Furthermore,
-these are not limit studies, and thus do nothing to elucidate the
-boundaries of the performance envelops of the respective systems.
+models, languages and runtime systems. These systems often provide
+capabilities such as asynchronous execution of units of work, called
+\emph{tasks}, coordinated in some manner with data movement and
+synchronization. But while the features of these systems are widely
+written about in the literature, a large and often difficult to answer
+question is how different systems will perform for a given
+application.
 
-We introduce \emph{minimum effective task granularity} (METG), a
-metric of application performance specifically designed to explore the
-fundamental performance behavior of parallel and distributed runtime
-systems. METG can be used to identify the baseline overhead, limit of
-scalability, and ability to hide and overlap communication of such
-systems. A key insight of the METG metric is that large \emph{tasks},
-or units of work, can be used to hide almost any amount of
-overhead. Thus METG considers the \emph{minimum} task granularity that
-can be executed. This is a lower bound, so as long as the average task
-granularity of a given application exceeds this value, the runtime
-system should be able to execute it efficiently.
+One approach to answering this question has focused around the
+development of \emph{proxy-} or \emph{mini-apps}. So called because
+they embody the logic of a larger application, but in reduced form,
+mini-apps are popular because they can provide insight without
+incurring the costly expense of developing a full-blown application
+code. However, despite the name, mini-apps still requite significant
+investment to develop, especially to a level of quality need to reach
+a publishable state. In many cases, the effort to tune for performance
+exceeds the effort to develop the mini-app in the first place. This
+can be exacerbated if the system in question is undergoing concurrent
+development. As a result, implementations of mini-apps, though
+well-intentioned, often do not reach a level of maturity required to
+perform a broad comparison between systems, and as a result there are
+very few comparative studies involving multiple programming systems
+that reach publication.
 
-A variety of runtime systems are able to make use of parallelism
-internally for a variety of purposes, from analysis of tasks, to
-scheduling or the orchestration of data movement and
-synchronization. In order to mitigate unwanted influence due to
-unreasonable allocation of resources to such internal uses, METG
-concerns \emph{effective} task execution, where the overall
-computational efficiency meets some threshold (say, 50\%). If the
-METG(50\%) of an application is, say, 1~ms, then this indicates that
-the application can be executed with tasks as small as 1~ms while
-maintaining at least 50\% overall efficiency. 
-\textcolor{red}{TODO:explain what does efficiency mean here?}
+A compounding issue is one of methodology: how does one predict how
+the performance observed for a mini-app will generalize to a full
+application, even one closely related? Part of the problem here is
+that weak and strong scaling, which are by far the most commonly
+reported metrics for performance of both mini- and full applications,
+do nothing to elucidate the performance envelop of a particular
+system. Weak scaling is notorious for being able to hide arbitrary
+amounts of overhead, as long as the problem size is sufficiently
+large. And strong scaling runs the risk of entangling unrelated
+effects: namely, the baseline overhead of a given system, with the
+growth of communication latencies, and potentially the saturation of
+global resources such as communication and I/O bandwidth, when using
+progressively larger portions of the machine.
 
-We present Task Bench, a benchmark designed specifically to study the
-performance behavior of parallel and distributed runtime systems at
-the limits of runtime overhead. Task Bench is a \emph{parameterized}
-benchmark, characterized by an \emph{iteration space} of tasks (with
-one task per point in the iteration space) and a \emph{dependence
-  relation} which determines how tasks depend on other tasks. By
-formulating the benchmark in this way, we make it possible to rapidly
-simulate a wide variety of communication patterns relevant in
-scientific computing, such as trivial parallelism, halo exchanges (for
-structured and unstructured mesh-based computations), sweeps (such as
-for the discrete ordinates method), FFTs, trees (for divide and
-conquer algorithms), and so on. Task Bench can be configured to
-execute a variety of kernels, such as compute- and memory-bound
-kernels, and load imbalanced variants of the above. Task Bench can
-also be used to stress communication-bound cases, by configuring the
-amount of data that is produced by each task.
+To address the first of these issues, we present Task Bench, a
+\emph{parameterized} benchmark designed for exploring the performance
+behaviors of programming systems under a variety of conditions. A
+critical property of Task Bench is that, while powerful, it is simple
+enough to be implemented in a wide variety of systems with reasonable
+effort, to a level of quality necessary for comparative study.
 
-In order to explore the impact of task parallelism on runtime
-performance, Task Bench can also execute multiple task graphs
-simultaneously. Runtime systems which support asynchronous execution
-can use this additional scheduling flexibility to hide communication
-overheads or to mitigate load imbalance. METG makes it possible to
-quantify the degree to which various systems are successful at doing
-so, and to measure if (and when) such factors are more, or less,
-important than baseline runtime overhead.
+Task Bench consists of a configurable \emph{task graph} with tasks for
+each point in an iteration space. Tasks are connected by dependencies
+as determined by a \emph{dependence relation}. This design permits a
+very concise description of a wide variety of patterns relevant to
+scientific computing: trivial parallelism, halo exchanges (such as
+seen in structured and unstructured mesh codes), sweeps (such as used
+in the discrete ordinates method of radiation simulation), FFTs, trees
+(for divide and conquer algorithms), and so on. The tasks at each
+point in the task graph can be configured to execute kernels with a
+variety of computational properties, including compute- and
+memory-bound operations of varying durations. The dependencies between
+tasks can be configured to carry payloads of varying size, permitting
+the design of communication-bound cases. Finally, multiple
+(potentially heterogeneous) task graphs can be executed concurrently
+to introduce task parallelism into the workload. Together, these
+design elements permit the exploration of a broad space of application
+performance behaviors.
 
-We provide a comprehensive evaluation of Task Bench implementations in
-13 different runtime systems, including Chapel~\cite{Chapel07},
-Charm++~\cite{Charmpp93}, MPI~\cite{MPI}, OmpSs~\cite{OmpSs11},
-OpenMP~\cite{OpenMPSpec40}, PaRSEC~\cite{PARSEC13},
-Realm~\cite{Realm14}, Regent~\cite{Regent15}, Spark~\cite{Spark10},
-StarPU~\cite{StarPU11}, Swift/T~\cite{Wozniak13},
-TensorFlow~\cite{TensorFlow15}, and X10~\cite{X1005}. Using the METG
-metric, we determine the baseline runtime overhead of each system
-along with overheads associated with increasing number and/or
-variations in the pattern of dependencies. We also explore each
-system's ability to scale, hide communication overhead, and mitigate
-load imbalance.
+To resolve the methodological issue, we introduce a new metric called
+\emph{minimum effective task granularity} (METG). Intuitively, METG is
+the smallest task granularity which can be executed while maintaining
+a given level of computational efficiency (e.g., as measured by the
+percentage of peak FLOPS achieved). METG captures the essence of what
+is important in a weak or strong scaling study: that is, the behavior
+at the limit of scalability. For weak scaling, METG corresponds
+directly to the smallest problem size that can be weak scaled with a
+given level of efficiency. For strong scaling, METG can be used to
+compute the point at which strong scaling can be expected to tail
+off. In either case, METG is a useful, intuitive measure as it
+encapsulates the task granularity at which systems can be relied on to
+execute efficiently. As a rule of thumb, as long as an application's
+average task granularity exceeds the METG, the application should
+execute efficiently.
+
+Together, METG and Task Bench help to mitigate issues which are common
+in limit studies on the task scheduling throughput of runtime
+systems. Such studies typically employ a metric called \emph{tasks per
+  second} (TPS), which is almost universally measured with trivial
+dependencies and empty tasks. While TPS is certainly an upper bound on
+task scheduling throughput, it is not a tight bound, as the cost of
+non-trivial dependencies can be significant and sometimes adversely
+impact scalability. This issue is easily fixed by running non-trivial
+configurations of Task Bench.
+
+But there is a deeper issue with the use of empty tasks. In all
+realistic scenarios, runtime systems must share resources with the
+application, either explicitly by e.g., allocating cores for runtime
+use, or implicitly by sharing a time slice on the same cores used for
+application tasks, and other resources such as memory bandwidth and
+processor cache capacity. The use of empty tasks makes the application
+share of these resources appear to be zero, which permits usage by the
+runtime system to be unconstrained. How then is anyone supposed to
+determine what resource usage to consider reasonable on the part of
+the runtime system? Only by requiring the application usage of
+resources to meet a certain minimum level, as in METG, can we ensure
+that runtime system resource usage is constrained to realistic levels.
+
+We conduct a comprehensive comparative study of Task Bench
+implementations in 13 different programming systems, including
+Chapel~\cite{Chapel07}, Charm++~\cite{Charmpp93}, MPI~\cite{MPI},
+OmpSs~\cite{OmpSs11}, OpenMP~\cite{OpenMPSpec40},
+PaRSEC~\cite{PARSEC13}, Realm~\cite{Realm14}, Regent~\cite{Regent15},
+Spark~\cite{Spark10}, StarPU~\cite{StarPU11},
+Swift/T~\cite{Wozniak13}, TensorFlow~\cite{TensorFlow15}, and
+X10~\cite{X1005}. Using the METG metric, we determine the baseline
+runtime overhead of each system along with overheads associated with
+increasing number and/or variations in the pattern of dependencies. We
+also explore each system's ability to scale, hide communication
+overhead, and mitigate load imbalance.
 
 The following four sections each describe a contribution of this
 paper:
@@ -83,7 +126,7 @@ paper:
   relationship to quantities of interest to application developers.
 \item Section~\ref{sec:task-bench} describes the design of Task Bench.
 \item Section~\ref{sec:implementation} details the implementation of
-  Task Bench in 13 runtime systems.
+  Task Bench in 13 programming systems.
 \item Section~\ref{sec:evaluation} provides a comprehensive evaluation
   of Task Bench performance on up to 256 Haswell nodes of the Cori
   supercomputer.
