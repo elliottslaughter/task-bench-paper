@@ -11,6 +11,7 @@ INCLUDED_TEX = 0_abstract.tex \
 	f2_efficiency_mpi.tex \
 	f3_weak_scaling_mpi.tex \
 	f4_strong_scaling_mpi.tex \
+	t1_systems.tex \
 	e0_flags.tex \
 	e1_flops.tex \
 	e2_efficiency.tex \

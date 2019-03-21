@@ -1,0 +1,21 @@
+\begin{table}[t]
+\begin{tabular}{l | l | l | l | l}
+System & Paradigm & Parallelism & Distrib. & Network \\
+\hline
+Chapel & multi-resolution & explicit & yes & uGNI \\
+Charm++ & actor model & explicit & yes & uGNI \\
+MPI & message passing & explicit & yes & uGNI \\
+OmpSs & loop-, task-based & expl., impl. & no & \\
+OpenMP & loop-, task-based & expl., impl. & no & \\
+PaRSEC & task-based & imlicit & yes & MPI \\
+Realm & task-based & explicit & yes & GASNet \\
+Regent & task-based & implicit & yes & GASNet \\
+Spark & functional & implicit & yes & sockets \\
+StarPU & task-based & implicit & yes & MPI \\
+Swift/T & dataflow & implicit & yes & MPI \\
+TensorFlow & dataflow & explicit & yes\footnote{Our evaluation only considers TensorFlow on a single node.} & sockets \\
+X10 & place-based & explicit & yes & MPI
+\end{tabular}
+
+\caption{Systems used in Task Bench implementations.\label{tab:systems}}
+\end{table}

@@ -4,6 +4,10 @@
 \usepackage{subfig}
 \usepackage{grffile} % fixes graphicx to handle file names with dots
 
+% fix footnotes in tables
+\usepackage{footnote}
+\makesavenoteenv{table}
+
 \lstdefinelanguage{Chapel}
   {morekeywords={coforall,forall},
   sensitive=true,
