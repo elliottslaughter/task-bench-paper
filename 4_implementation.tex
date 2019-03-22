@@ -13,7 +13,7 @@ systems is that the capabilities of the systems vary considerably. For
 example, some systems are \emph{implicitly parallel}, and provide some
 form of parallelism discovery from sequential programs, whereas others
 are \emph{explicitly parallel} and require users to specify the
-parallelism in the program. As a rule of thumb, we aim for the Task
+parallelism in the program. As a rule of thumb we aim for the Task
 Bench implementations to be representative of how actual applications
 would be written in the respective systems. Places where the Task
 Bench implementations may be unidiomatic are noted below.
@@ -28,7 +28,7 @@ compared in an apples-to-apples manner.
 In all cases, members of the respective programming systems' teams
 were consulted during the development and evaluation of the
 corresponding Task Bench implementations. Their insight was invaluable
-to ensure that we provide the highest level of quality in the Task
+in helping to ensure that we provide the highest level of quality in the Task
 Bench implementations for each system.
 
 \subsection{Chapel}
@@ -130,17 +130,17 @@ and thus report KMP numbers in our evaluation.
 
 \subsection{PaRSEC}
 
-PaRSEC~\cite{PARSEC13} is a task-based programming system which
-supports two distinct programming models: \emph{parameterized task
-  graphs} (PTG) and \emph{dynamic task discovery} (DTD)~\cite{PARSEC_DTD}. 
-PTG is a data flow model, where programmers write applications 
-in a concise description of all data flows by describing tasks 
-and how data flows between tasks. This creates a compressed algebraic
-representation of the task graph, which is then transformed into C 
-code by PaRSEC source-to-source compiler. PTG is therefore a more limited
-programming model, but can potentially provide better performance
-because the graph description is amenable to static analysis and can
-be pruned efficiently for better horizontally scalable execution.
+PaRSEC is a task-based programming system which supports two distinct
+programming models: \emph{parameterized task graphs}
+(PTG)~\cite{PARSEC13} and \emph{dynamic task discovery}
+(DTD)~\cite{PARSEC_DTD}.  PTG is a dataflow model in which programmers
+write a concise, algebraic description of the tasks and dataflows in
+the program. This compressed representation is expanded into a full
+task graph by a source-to-source compiler. PTG is therefore a more
+limited programming model, but can potentially provide better
+performance because the graph description is amenable to static
+analysis and can be pruned efficiently for better horizontal
+scalability.
 
 In the DTD model, tasks are enumerated in program order (by
 dynamically executing the program), and dependencies between tasks are
@@ -154,20 +154,18 @@ SPMD fashion on all nodes, and the user is responsible for eliding
 tasks that are not directly connected to those that are to be executed
 on the current node.
 
-The PaRSEC build-in 2D block cyclic matrix is used to store data. 
-A matrix is divided into M by N tiles where N equals to the width of
-task graphs and M varies from 2 to the height of task graphs depends
-on the optimization level of alleviating write-after-read depdenencies. 
+Data in PaRSEC is stored in a built-in matrix data structure with a 2D block cyclic distribution. 
+The Task Bench implementation divides this matrix into $M$ by $N$ tiles where $N$ equals to the width of
+the task graph and $M$ varies from 2 to the height of the task graph depending
+on optimizations performed to alleviate write-after-read depdenencies. 
 Tiles are distributed across nodes in pre-defined patterns, 
 and can be passed to tasks on other nodes, but
 can only be written on the node where the data is originally
 allocated. In our Task Bench implementation, each task writes to a
 tile as output, and these tiles are passed as inputs to the
-subsequent set of tasks. As in the OmpSs and OpenMP implementations,
+subsequent sets of tasks. As in the OmpSs and OpenMP implementations,
 the task launch code uses a switch statement as the PaRSEC API assumes
 tasks have a fixed number of dependencies.
-
-% FIXME: What does PaRSEC call regions?
 
 \subsection{Realm}
 
@@ -178,7 +176,7 @@ seen as a limit study of what can be achieved with Legion or Regent.
 
 Tasks in Realm are executed in a deferred manner, with dependencies
 between tasks explicitly defined by \emph{events} passed from one task
-to another. Realm's data model supports regions which live on a single
+to another. Realm's data model supports \emph{regions} of memory which live on a single
 node. Data must be explicitly copied, and the copies synchronized with
 tasks via events.
 
@@ -253,8 +251,8 @@ programming model similar to PaRSEC. Our Task Bench implementation in
 StarPU is very similar to PaRSEC, including the use of a switch
 statement to handle dynamic numbers of task dependencies, and manual
 elision of tasks on unrelated nodes to provide horizontal scalability.
-A simplified version of 2D block cyclic matrix from the Chameleon 
-project~\cite{Chameleon} is used to describe data of tasks in 
+A simplified version of the 2D block cyclic matrix from the Chameleon 
+project~\cite{Chameleon} is used to describe the data produced by tasks in 
 our Task Bench implementation.
 
 \subsection{Swift/T}
