@@ -1,0 +1,80 @@
+\documentclass[tikz=true]{standalone}
+\begin{document}
+\begin{tikzpicture}
+  % FFT
+  \begin{scope}[scale=0.6, every node/.style={draw, shape=circle, fill=black, inner sep=1.5pt}]
+    \node (n00) at (0,0) {};
+    \node (n01) at (0,1) {};
+    \node (n02) at (0,2) {};
+    \node (n03) at (0,3) {};
+
+    \node (n10) at (1,0) {};
+    \node (n11) at (1,1) {};
+    \node (n12) at (1,2) {};
+    \node (n13) at (1,3) {};
+
+    \node (n20) at (2,0) {};
+    \node (n21) at (2,1) {};
+    \node (n22) at (2,2) {};
+    \node (n23) at (2,3) {};
+
+    \node (n30) at (3,0) {};
+    \node (n31) at (3,1) {};
+    \node (n32) at (3,2) {};
+    \node (n33) at (3,3) {};
+
+    \node (n40) at (4,0) {};
+    \node (n41) at (4,1) {};
+    \node (n42) at (4,2) {};
+    \node (n43) at (4,3) {};
+
+    % Straight
+    \draw[->] (n00) edge (n01);
+    \draw[->] (n01) edge (n02);
+    \draw[->] (n02) edge (n03);
+
+    \draw[->] (n10) edge (n11);
+    \draw[->] (n11) edge (n12);
+    \draw[->] (n12) edge (n13);
+
+    \draw[->] (n20) edge (n21);
+    \draw[->] (n21) edge (n22);
+    \draw[->] (n22) edge (n23);
+
+    \draw[->] (n30) edge (n31);
+    \draw[->] (n31) edge (n32);
+    \draw[->] (n32) edge (n33);
+
+    \draw[->] (n40) edge (n41);
+    \draw[->] (n41) edge (n42);
+    \draw[->] (n42) edge (n43);
+
+    % Crossing
+    % by 1
+    \draw[->] (n32) edge (n43);
+    \draw[->] (n22) edge (n33);
+    \draw[->] (n12) edge (n23);
+    \draw[->] (n02) edge (n13);
+
+    \draw[->] (n12) edge (n03);
+    \draw[->] (n22) edge (n13);
+    \draw[->] (n32) edge (n23);
+    \draw[->] (n42) edge (n33);
+
+    % by 2
+    \draw[->] (n21) edge (n42);
+    \draw[->] (n11) edge (n32);
+    \draw[->] (n01) edge (n22);
+
+    \draw[->] (n21) edge (n02);
+    \draw[->] (n31) edge (n12);
+    \draw[->] (n41) edge (n22);
+
+    % by 4
+    \draw[->] (n00) edge (n41);
+
+    \draw[->] (n40) edge (n01);
+
+  \end{scope}
+\end{tikzpicture}
+\end{document}

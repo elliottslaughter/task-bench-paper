@@ -1,0 +1,22 @@
+\begin{table}[t]
+\begin{tabular}{l | l}
+Pattern & Dependence Relation \\
+\hline
+
+% analytical style
+%% Trivial & $D(i_t, j_{t-1}) := \operatorname{false}$ \\
+%% Stencil & $D(i_t, j_{t-1}) := i_t - 1 \le j_{t-1} \le i_t + 1$ \\
+%% FFT & $D(i_t, j_{t-1}) := j_{t-1} = i_t \vee j_{t-1} = i_t - 2^t \vee j_{t-1} = i_t + 2^t$ \\
+%% Sweep & $D(i_t, j_{t-1}) := i_t - 1 \le j_{t-1} \le i_t$ \\
+%% Tree & $D(i_t, j_{t-1}) := i_t - 1 \le j_{t-1} \le i_t + 1$ \\
+
+% set style
+Trivial & $D(t, i) := \emptyset$ \\
+Stencil & $D(t, i) := \{ i, i - 1, i + 1 \}$ \\
+FFT & $D(t, i) := \{ i, i - 2^t, i + 2^t \}$ \\
+Sweep & $D(t, i) := \{ i, i - 1 \}$ \\
+Tree & $D(t, i) := \left\{ \begin{array}{l l} \{ i - 2^{-t}W(i \operatorname{mod} 2^{-t + 1}W) \} & \text{if } t \le \operatorname{log}_2 W \\ \{ i, i + 2^{t-1}W^{-1} \} & \text{otherwise} \end{array} \right.$ \\
+\end{tabular}
+
+\caption{Dependence relations for sample task graphs.\label{tab:equations}}
+\end{table}

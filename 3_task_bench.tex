@@ -1,6 +1,8 @@
 \section{Task Bench}
 \label{sec:task-bench}
 
+\input{f5_task_graphs}
+
 In order to measure properties such as METG for a wide variety of
 systems and application scenarios, we developed a novel
 \emph{parameterized} benchmark called Task Bench. Task Bench
@@ -35,8 +37,10 @@ of dependence patterns to be implemented that are relevant to real
 applications in high-performance scientific computing: stencils,
 sweeps, FFTs, trees, and so on. Dependence patterns may also be
 parameterized, such as picking the $K$ nearest neighbors, or $K$
-distant neighbors. These dependence patterns can be seen in
-Figure~\ref{fig:task-graphs}.
+distant neighbors. Table~\ref{tab:equations} show equations for the
+dependence relations of the patterns in Figure~\ref{fig:task-graphs}.
+
+\input{t0_equations}
 
 Despite its generality, Task Bench is easy to implement, making it
 tractable to develop a suite of high-quality implementations. Most

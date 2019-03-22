@@ -13,6 +13,8 @@ INCLUDED_TEX = 0_abstract.tex \
 	f2_efficiency_mpi.tex \
 	f3_weak_scaling_mpi.tex \
 	f4_strong_scaling_mpi.tex \
+	f5_task_graphs.tex \
+	t0_equations.tex \
 	t1_systems.tex \
 	e0_flags.tex \
 	e1_flops.tex \
@@ -40,13 +42,19 @@ INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
 	figs/task-bench-results/communication/efficiency_nodes_64_comm_256.pdf \
 	figs/task-bench-results/communication/efficiency_nodes_64_comm_4096.pdf \
 	figs/task-bench-results/communication/efficiency_nodes_64_comm_65536.pdf
+GENERATED_FIGS = figs/sample-task-graphs/trivial.pdf \
+	figs/sample-task-graphs/no_comm.pdf \
+	figs/sample-task-graphs/stencil.pdf \
+	figs/sample-task-graphs/fft.pdf \
+	figs/sample-task-graphs/dom.pdf \
+	figs/sample-task-graphs/tree.pdf
 
 .PHONY: all
 all: $(DOC).pdf 
 
-$(DOC).pdf: $(DOC).tex bibliography.bib $(INCLUDED_TEX) $(INCLUDED_FIGS)
+$(DOC).pdf: $(DOC).tex bibliography.bib $(INCLUDED_TEX) $(INCLUDED_FIGS) $(GENERATED_FIGS)
 
-%.pdf: %.tex bibliography.bib
+$(DOC).pdf: %.pdf: %.tex bibliography.bib
 	pdflatex -halt-on-error $*.tex
 	(if grep -q bibliography $*.tex; \
 	then \
@@ -55,18 +63,8 @@ $(DOC).pdf: $(DOC).tex bibliography.bib $(INCLUDED_TEX) $(INCLUDED_FIGS)
 	fi)
 	pdflatex -halt-on-error $*.tex
 
-%.pdf: %.tex
-	pdflatex -halt-on-error $*.tex
-	pdflatex -halt-on-error $*.tex
-
-%.dvi: %.tex bibliography.bib figs_as_eps
-	pdflatex -output-format dvi -halt-on-error $*.tex
-	bibtex $*
-	pdflatex -output-format dvi -halt-on-error $*.tex
-	pdflatex -output-format dvi -halt-on-error $*.tex
-
-%.ps : %.dvi
-	dvips $^
+$(GENERATED_FIGS): %.pdf: %.tex
+	cd $(dir $*) && pdflatex -halt-on-error $(notdir $*.tex)
 
 .PHONY: figures
 figures:
@@ -91,7 +89,8 @@ spelling:
 
 .PHONY: clean
 clean:
-	rm -f *.bbl *.aux *.log *.out *.blg *.lot *.lof *.dvi $(DOC).pdf $(DOC)-ext.pdf
+	rm -f *.bbl *.aux *.log *.out *.blg *.lot *.lof *.dvi $(DOC).pdf $(DOC)-ext.pdf $(GENERATED_FIGS)
+	cd figs/sample-task-graphs && rm *.bbl *.aux *.log *.out *.blg *.lot *.lof *.dvi
 
 .PHONY: zip
 zip:
