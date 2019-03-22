@@ -14,7 +14,7 @@ example, some systems are \emph{implicitly parallel}, and provide some
 form of parallelism discovery from sequential programs, whereas others
 are \emph{explicitly parallel} and require users to specify the
 parallelism in the program. As a rule of thumb we aim for the Task
-Bench implementations to be represenative of how actual applications
+Bench implementations to be representative of how actual applications
 would be written in the respective systems. Places where the Task
 Bench implementations may be unidiomatic are noted below.
 
@@ -81,7 +81,7 @@ between chares.
 Our Task Bench implementation is straightforward: we create a chare
 array for the task graph, with one chare for each column. Methods are
 used to implement dependencies, and a task is executed as soon as its
-dependecies are all available. Collectives are used to synchronize the
+dependencies are all available. Collectives are used to synchronize the
 completion of the task graph execution.
 
 % FIXME: Discuss SMP vs non-SMP versions
@@ -143,7 +143,7 @@ and thus report KMP numbers in our evaluation.
 PaRSEC~\cite{PARSEC13} is a task-based programming system which
 supports two distinct programming models: \emph{parameterized task
   graphs} (PTG) and \emph{sequential task flow} (STF). In the PTG
-model, the program consists of an analytical function which describes
+model, the program consists of an analytic function which describes
 the expansion of the task graph. PTG is therefore a more limited
 programming model, but can potentially provide better performance
 because the graph description is amenable to static analysis and can
@@ -232,7 +232,7 @@ generalization of the MapReduce programming
 model~\cite{MapReduce04}. The core computational abstraction in Spark
 are operators such as map, reduce, filter, join, etc. which by virtue
 of being pure functions are trivially known to be
-parallizable. Functions in Spark operate on \emph{resilient
+parallelizable. Functions in Spark operate on \emph{resilient
   distributed datasets} (RDDs), which are globally-visible,
 dynamically single-assignment data structures that cached in memory
 and written to disk for durability. One of Spark's primary
@@ -307,7 +307,7 @@ then define dataflow edges to correspond to the task dependencies.
 X10~\cite{X1005} is an explicitly parallel programming language for
 place-based programming. The core features of X10 are \emph{places}
 which represent distributed memories, a PGAS model where references to
-remote objects can be held (but can only be deferenced on the local
+remote objects can be held (but can only be dereferenced on the local
 place), asynchronous tasks, and a place-changing construct to move the
 execution of a task to a remote place. X10 also supports a variety of
 synchronization primitives.
