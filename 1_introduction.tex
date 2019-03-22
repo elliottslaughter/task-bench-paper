@@ -4,11 +4,11 @@
 Challenges in heterogeneous and extreme-scale parallel and distributed
 computing have lead to the rise of a wide variety of new programming
 models, languages and runtime systems. These systems often provide
-capabilities such as asynchronous execution of units of work, called
+capabilities such as the asynchronous execution of units of work, called
 \emph{tasks}, coordinated in some manner with data movement and
 synchronization. But while the features of these systems are widely
 written about in the literature, a large and often difficult to answer
-question is how different systems will perform for a given
+question is how different systems will perform for any given
 application.
 
 One approach to answering this question has focused around the
@@ -87,24 +87,26 @@ Together, METG and Task Bench help to mitigate issues which are common
 in limit studies on the task scheduling throughput of runtime
 systems. Such studies typically employ a metric called \emph{tasks per
   second} (TPS), which is almost universally measured with trivial
-dependencies and empty tasks. While TPS is certainly an upper bound on
+dependencies. While TPS is certainly an upper bound on
 task scheduling throughput, it is not a tight bound, as the cost of
 non-trivial dependencies can be significant and sometimes adversely
-impact scalability. This issue is easily fixed by running non-trivial
+impacts scalability. This issue is easily fixed by running non-trivial
 configurations of Task Bench.
 
-But there is a deeper issue with the use of empty tasks. In all
-realistic scenarios, runtime systems must share resources with the
-application, either explicitly by e.g., allocating cores for runtime
-use, or implicitly by sharing a time slice on the same cores used for
-application tasks, and other resources such as memory bandwidth and
-processor cache capacity. The use of empty tasks makes the application
-share of these resources appear to be zero, which permits usage by the
-runtime system to be unconstrained. How then is one supposed to
-determine what resource usage to consider reasonable on the part of
-the runtime system? Only by requiring the application usage of
-resources to meet a certain minimum level, as in METG, can we ensure
-that runtime system resource usage is constrained to realistic levels.
+But there is a deeper issue with the lack of an efficiency constraint
+in measurements of TPS. TPS may be measured with empty
+tasks~\cite{LegionTracing18}, or with tasks of some
+duration~\cite{Canary16, Armstrong14}. If empty tasks are used to
+measure TPS, this leads to an upper bound on the task scheduling
+throughput, but fails to represent any realistic application, as no
+useful work is being performed. If non-empty tasks are used, \emph{but
+  the efficiency of the overall application is not reported}, then TPS
+ceases to be a measurement of the limit of task scheduling
+throughput. Large tasks may be used to hide any amount of overhead,
+while tasks that are too small may result in a drop in total
+application throughput even as TPS increases. Only by constraining
+efficiency, as in METG, can we ensure a limit study that represents
+reasonable throughput on useful work by the application.
 
 We conduct a comprehensive comparative study of Task Bench
 implementations in 13 different programming systems, including

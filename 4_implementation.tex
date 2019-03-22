@@ -63,9 +63,6 @@ level, though a full Task Bench implementation would be challenging.
 
 % FIXME: Does the Chapel compiler handle: bulk data movement, point-to-point synchronization
 
-Internally, Chapel implements custom support for Cray networks, and
-uses the GASNet~\cite{GASNET07} compatibility layer on other networks.
-
 \subsection{Charm++}
 
 Charm++~\cite{Charmpp93} is an explicitly parallel programming system
@@ -86,10 +83,6 @@ completion of the task graph execution.
 
 % FIXME: Discuss SMP vs non-SMP versions
 
-Internally, Charm++ implements support for a variety of networks
-directly on top of the low-level, vendor-provided APIs. For Cori, we
-use Charm++'s native support for uGNI.
-
 \subsection{MPI}
 
 MPI~\cite{MPI} is the industry standard message-passing API for
@@ -104,11 +97,6 @@ phase, posting receives before sends. Each task dependency maps to one
 send/receive pair in MPI. Despite the relatively straightforward
 design, our MPI implementation is among the best performing.
 
-In our evaluation, we use the default MPI implementation installed on
-the machine, which is Cray MPI on the Cori supercomputer. This
-implementation is vetted by the machine operators and vendor and is
-the highest performing available implementation for the hardware.
-
 For completeness, we also explored the use of additional MPI calls:
 namely buffered sends (\lstinline[language=C++]{MPI_Bsend}),
 broadcasts (\lstinline[language=C++]{MPI_Bcast}), and all-to-all
@@ -118,7 +106,7 @@ receives to be the best performing, often by a wide margin.
 
 \subsection{OmpSs}
 
-OmpSs~\cite{OmpSs11} is a programming model for loop-based parallelism
+OmpSs~\cite{OmpSs11} is a programming model for loop- and task-based parallelism
 that is source-compatible with OpenMP. Our Task Bench implementation
 uses OpenMP 4.0-style tasks with task dependencies. Because tasks in
 OpenMP 4.0 have a fixed number of dependencies, we use a switch
@@ -130,13 +118,15 @@ Bench. The implementation is otherwise straightforward.
 \subsection{OpenMP}
 
 OpenMP~\cite{OpenMPSpec40} is the industry standard API for loop-based
-parallelism on shared-memory systems. Our Task Bench implementation
-for OpenMP is very similar to OmpSs and uses OpenMP 4.0 tasks with
+parallelism on shared-memory systems, and supports task dependencies as of version 4.0. Our Task Bench implementation
+for OpenMP is very similar to OmpSs and uses tasks with
 task dependencies.
 
 In our evaluation, we test with both GNU GOMP and Intel KMP
 implementations of OpenMP. We found KMP to provide better performance
 and thus report KMP numbers in our evaluation.
+
+% FIXME: keep this in sync with experiments
 
 \subsection{PaRSEC}
 
@@ -172,15 +162,12 @@ tasks have a fixed number of dependencies.
 
 % FIXME: What does PaRSEC call regions?
 
-Internally, PaRSEC uses MPI for network communication.
-
 \subsection{Realm}
 
 Realm~\cite{Realm14} is an explicitly-parallel task-based programming
-model that is used internally by Legion~\cite{Legion12} and
-Regent~\cite{Regent15}, which are implicitly parallel layers written
-on top of Realm. Thus the Realm implementation of Task Bench can be
-seen as a limit study of what is possible with Legion or Regent.
+model that used internally by Legion~\cite{Legion12} and
+Regent~\cite{Regent15}. Thus the Realm implementation of Task Bench can be
+seen as a limit study of what can be achieved with Legion or Regent.
 
 Tasks in Realm are executed in a deferred manner, with dependencies
 between tasks explicitly defined by \emph{events} passed from one task
@@ -194,16 +181,13 @@ performed. We have implemented Task Bench in both individual and
 subgraph styles, but report numbers for the subgraph version as it
 provides better performance.
 
-Internally, Realm uses GASNet~\cite{GASNET07} for communication.
-
 \subsection{Regent}
 
 Regent~\cite{Regent15} is an implicitly-parallel task-based language
 which implements the Legion programming model~\cite{Legion12}. We use
 Regent rather than Legion directly because the Regent compiler
 provides a critical optimization, \emph{control replication}, that
-enables superior horizontal scalability of
-applications~\cite{ControlReplication17}.
+enables superior horizontal scalability~\cite{ControlReplication17}.
 
 In Regent tasks are executed sequentially and parallelism is
 discovered automatically based on the data that is read or written by
@@ -214,9 +198,7 @@ whenever data is read on a different node from where it is written.
 
 The Regent compiler performs control replication to slice the Regent
 program into \emph{shards} of execution which can scalably execute on
-large numbers of nodes. Our Regent implementation also makes use of a
-tracing optimization~\cite{LegionTracing18} which substantially
-reduces the cost of dynamic analysis of tasks in Regent.
+large numbers of nodes.
 
 \subsection{Spark}
 
@@ -234,7 +216,7 @@ are operators such as map, reduce, filter, join, etc. which by virtue
 of being pure functions are trivially known to be
 parallelizable. Functions in Spark operate on \emph{resilient
   distributed datasets} (RDDs), which are globally-visible,
-dynamically single-assignment data structures that cached in memory
+dynamically single-assignment data structures that are cached in memory
 and written to disk for durability. One of Spark's primary
 optimizations therefore is the caching of RDDs to avoid unnecessary
 disk traffic, resulting in substantial speedups over MapReduce.
@@ -245,7 +227,7 @@ mapping the task graph to a set of operators which will result in the
 desired performance behavior. We use a combination of
 \lstinline[language=Scala]{flatMap} and
 \lstinline[language=Scala]{groupByKey} operations to generate task
-dependencies, and then \lstinline[language=Scala]{map} to execute a
+dependencies, and then \lstinline[language=Scala]{mapPartitions} to execute a
 series of tasks. We use an explicit hash partitioner to ensure that
 Spark does not attempt to group multiple Task Bench tasks into a
 single Spark task.
@@ -255,8 +237,7 @@ extraneous factors interfered with our Spark measurements. We
 completely disabled logging, ensured that no RDDs are actually written
 to disk, confirmed that there is no measurable overhead due to JNI
 calls from Java to C, and cross-checked our results with known cases
-that hit optimal task throughput in Spark, among other things. Our
-results are discussed in detail in Section~\ref{sec:evaluation}.
+that hit optimal task throughput in Spark, among other things.
 
 \subsection{StarPU}
 
@@ -265,8 +246,6 @@ programming model similar to PaRSEC. Our Task Bench implementation in
 StarPU is very similar to PaRSEC, including the use of a switch
 statement to handle dynamic numbers of task dependencies, and manual
 elision of tasks on unrelated nodes to provide horizontal scalability.
-
-Internally, StarPU uses MPI for communication.
 
 \subsection{Swift/T}
 
@@ -282,8 +261,6 @@ improve performance of highly parallel programs~\cite{Armstrong14}.
 
 Our Task Bench in Swift/T is straightforward, using Swift/T's dataflow
 semantics to capture dependencies on other tasks.
-
-Internally, Swift/T uses MPI for communication.
 
 \subsection{TensorFlow}
 
@@ -315,6 +292,5 @@ synchronization primitives.
 Our Task Bench implementation uses
 \lstinline[language=X10]{Rail.asyncCopy} for efficient data movement
 between places, along with place-changing and atomic integers for
-synchronization. We use the C++ backend of X10, which uses MPI
-internally for portability to a variety of networks, and which
-conveniently integrates well with the Task Bench API.
+synchronization. We use the native backend of X10, which compiles to
+C++.
