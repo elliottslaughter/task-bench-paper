@@ -11,7 +11,7 @@ for microbenchmarks.
 A common failure mode for mini-apps is to bite off more complexity
 than can be reasonably implemented to a level of quality sufficient
 for publication. This can lead to publications for mini-apps omitting
-details or performance results for systems beyond the reference
+implementations or performance results for systems beyond the reference
 implementation. Follow-up papers, if any, often compare only against a
 reference implementation and omit any other implementations that might
 exist.
@@ -19,7 +19,7 @@ exist.
 \begin{itemize}
 
 \item
-The initial paper on PENNANT~\cite{PENNANT} includes an MPI+OpenMP
+The initial paper on PENNANT~\cite{PENNANT} includes an MPI/OpenMP/MPI+OpenMP
 implementation; follow-up papers present an implementation in
 Regent~\cite{Regent15, ControlReplication17, LegionTracing18}.
 
@@ -67,7 +67,7 @@ codes in PRK are even less representative.
 The NAS benchmark suite~\cite{NAS91, NAS95} are widely studied with
 implementations in OpenMP~\cite{NASOpenMP99}, MPI and
 MPI+OpenMP~\cite{NASMPIOpenMP00}, and
-Charm++~\cite{NASCharm96}. However the benchmark consider mostly small
+Charm++~\cite{NASCharm96}. However the benchmarks consist mostly of small
 kernels for dense array computations, and do not generalize to larger
 applications.
 
@@ -81,8 +81,4 @@ Limit studies of task scheduling throughput in various runtime systems
 often make additional assumptions. A popular assumption is the use of
 trivially parallel tasks~\cite{Canary16, Armstrong14}, which as shown
 in Section~\ref{subsec:number-of-dependencies} underestimates (often
-substantially) the cost of scheduling a task. Worse, trivial
-parallelism overstates the scalability of the runtime system; our
-results for Swift/T in Section~\ref{subsec:scalability} differ rather
-substantial from those published in~\cite{Armstrong14} for this
-reason.
+substantially) the cost of scheduling a task, and can also impact scalability.

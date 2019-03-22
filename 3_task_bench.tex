@@ -16,7 +16,7 @@ distributed languages and runtime systems.
 
 For simplicity but without loss of generality, the iteration space in
 Task Bench is constrained to be 2-dimensional, with time flowing along
-the vertical axis and the width of the task graph along the
+the vertical axis and parallel tasks along the
 horizontal. Tasks can depend only on tasks from the immediately
 preceding time step. Many problems can be described by a task graph of
 constant width, in which case the iteration space is rectangular, but
@@ -47,7 +47,7 @@ task graphs and enumerating dependencies are encapsulated in a core
 library that is shared among all the Task Bench implementations. The
 core library also includes implementations of the kernels, ensuring
 that the kernels are identical in all cases, eliminating a potential
-source of performance disparity which is common in mini-apps
+source of performance disparity which can be a pitfall for mini-apps
 implementations. Finally, the Task Bench core library manages the
 parsing of input parameters and the display out output results,
 ensuring that all implementations behave in a uniform manner, and can
@@ -62,8 +62,8 @@ and all inputs are verified. An assertion is thrown if validation
 fails. This ensures that every execution of Task Bench, if it
 completes successfully, is correct. This validation provides high
 assurance that all Task Bench implementations are correct, and
-safeguards against corner cases that may not have been adequately
-tested during development. An evaluation of the performance impact of
+safeguards against corner cases that may only be exercised at
+scale. An evaluation of the performance impact of
 this validation showed it to be less than 3\% at the smallest task
 granularities in any Task Bench implementation, with a negligible
 effect on overall results.

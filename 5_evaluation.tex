@@ -25,8 +25,8 @@ the kernels are well-written and of sufficiently large granularity. In
 practice, achieving peak performance is tricky, subject to a number of
 pitfalls, and unfortunately, frequently skipped in evaluations of
 runtime system overhead. However, verifying that peak performance is
-achieved is important to ensuring that such evaluation of overhead and
-efficiency are well-grounded and avoid common mistakes in
+achieved is important to ensuring that such evaluations of overhead and
+efficiency are well-grounded and avoid common pitfalls in
 configuration.
 
 Figure~\ref{fig:flops} shows the FLOPS achieved with a compute-bound
@@ -34,26 +34,26 @@ kernel with varying problem sizes. This is the full version of
 Figure~\ref{fig:flops-mpi}. In the best case, we measure peak FLOPS of
 $1.26 \times 10^{12}$, which compares favorably with the officially
 reported number of $1.2 \times 10^{12}$ \cite{Cori}. For the purposes
-of measuring efficiency we use our emperically determined number as
+of measuring efficiency we use our empirically determined number as
 the baseline for 100\% efficiency.
 
-The vast majority of systems achieve at or near peak FLOPS. A number
-of systems reserve a number of cores (usually 1 or 2) for internal
+The vast majority of systems achieve at or near peak FLOPS. Some
+systems reserve a number of cores (usually 1 or 2) for internal
 runtime usage; these systems take a minor hit in peak FLOPS compared
-to systems which use all cores for application tasks. Some of the
+to systems which share all cores between the application and runtime. Some of the
 slower systems struggle to achieve peak FLOPS, though in most cases
 the curves suggest that performance would continue to improve if we
 were to run larger problem sizes. Unfortunately, the excessive
 computational cost of running such tests makes it prohibitively
 expensive to run larger problem sizes. For example, the Spark job in
-this configuration ran for over 5 hours.
+this configuration ran for over 6 hours.
 
-Figure~\ref{fig:efficiency} shows the efficiency (as a percentage of
+Figure~\ref{fig:efficiency} shows efficiency (as a percentage of
 peak FLOPS achieved) plotted against task granularity. This plot is
 used to calculate METG, as described in Section~\ref{sec:metg}. The
 red, dashed line shows the point where 50\% efficiency is achieved.
 
-In most cases, task granularity has plateaued prior to this point,
+In most cases, task granularity has plateaued prior to the 50\% efficiency point,
 though a number of systems continue to improve as efficiency continues
 to drop. Accounting for this effect is one of the main arguments in
 favor of METG with a reasonable efficiency threshold compared to
