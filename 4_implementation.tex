@@ -13,10 +13,10 @@ systems is that the capabilities of the systems vary considerably. For
 example, some systems are \emph{implicitly parallel}, and provide some
 form of parallelism discovery from sequential programs, whereas others
 are \emph{explicitly parallel} and require users to specify the
-parallelism in the program. As a rule of thumb we aim for the Task
-Bench implementations to be represenative of how actual applications
-would be written in the respective systems. Places where the Task
-Bench implementations may be unidiomatic are noted below.
+parallelism in the program. As a rule of thumb, we aim for the Task
+Bench implementations to be representative of how actual applications
+would be written in the respective systems. Places, where the Task
+Bench implementations may be unidiomatic, are noted below.
 
 There are also aspects of some systems that we do not consider in our
 evaluation. For example, a number of systems provide some level of
@@ -28,7 +28,7 @@ compared in an apples-to-apples manner.
 In all cases, members of the respective programming systems' teams
 were consulted during the development and evaluation of the
 corresponding Task Bench implementations. Their insight was invaluable
-to ensuring that we provide the highest level of quality in the Task
+to ensure that we provide the highest level of quality in the Task
 Bench implementations for each system.
 
 \subsection{Chapel}
@@ -81,7 +81,7 @@ between chares.
 Our Task Bench implementation is straightforward: we create a chare
 array for the task graph, with one chare for each column. Methods are
 used to implement dependencies, and a task is executed as soon as its
-dependecies are all available. Collectives are used to synchronize the
+dependencies are all available. Collectives are used to synchronize the
 completion of the task graph execution.
 
 % FIXME: Discuss SMP vs non-SMP versions
@@ -142,30 +142,37 @@ and thus report KMP numbers in our evaluation.
 
 PaRSEC~\cite{PARSEC13} is a task-based programming system which
 supports two distinct programming models: \emph{parameterized task
-  graphs} (PTG) and \emph{sequential task flow} (STF). In the PTG
-model, the program consists of an analytical function which describes
-the expansion of the task graph. PTG is therefore a more limited
+  graphs} (PTG) and \emph{dynamic task discovery} (DTD)~\cite{PARSEC_DTD}. 
+PTG is a data flow model, where programmers write applications 
+in a concise description of all data flows by describing tasks 
+and how data flows between tasks. This creates a compressed algebraic
+representation of the task graph, which is then transformed into C 
+code by PaRSEC source-to-source compiler. PTG is therefore a more limited
 programming model, but can potentially provide better performance
 because the graph description is amenable to static analysis and can
-be pruned efficiently for horizontally scalable execution.
+be pruned efficiently for better horizontally scalable execution.
 
-In the STF model, tasks are enumerated in program order (by
+In the DTD model, tasks are enumerated in program order (by
 dynamically executing the program), and dependencies between tasks are
-identified automatically based on the arguments to tasks. A task
-depends on another task if it reads data written by the other task,
+identified automatically based on the input and output data of tasks. 
+A task depends on another task if it reads data written by the other task,
 and the data is copied automatically if the two tasks are executed on
-different nodes. While the basic STF model is implicitly parallel
+different nodes. While the basic DTD model is implicitly parallel
 because the system is responsible for the discovery of parallelism, in
 order to achieve horizontal scalability, the program is executed in a
 SPMD fashion on all nodes, and the user is responsible for eliding
 tasks that are not directly connected to those that are to be executed
 on the current node.
 
-Data in PaRSEC is stored in \emph{regions}, or dense arrays of
-contiguous memory. Regions may be passed to tasks on other nodes, but
+The PaRSEC build-in 2D block cyclic matrix is used to store data. 
+A matrix is divided into M by N tiles where N equals to the width of
+task graphs and M varies from 2 to the height of task graphs depends
+on the optimization level of alleviating write-after-read depdenencies. 
+Tiles are distributed across nodes in pre-defined patterns, 
+and can be passed to tasks on other nodes, but
 can only be written on the node where the data is originally
 allocated. In our Task Bench implementation, each task writes to a
-region as output, and these regions are passed as inputs to the
+tile as output, and these tiles are passed as inputs to the
 subsequent set of tasks. As in the OmpSs and OpenMP implementations,
 the task launch code uses a switch statement as the PaRSEC API assumes
 tasks have a fixed number of dependencies.
@@ -227,12 +234,12 @@ for scientific computing, Spark makes very different tradeoffs from
 other systems under consideration, and therefore makes an interesting
 point of comparison.
 
-Spark's programming model is based of \emph{functional parallelism}, a
+Spark's programming model is based on \emph{functional parallelism}, a
 generalization of the MapReduce programming
 model~\cite{MapReduce04}. The core computational abstraction in Spark
 are operators such as map, reduce, filter, join, etc. which by virtue
 of being pure functions are trivially known to be
-parallizable. Functions in Spark operate on \emph{resilient
+parallelizable. Functions in Spark operate on \emph{resilient
   distributed datasets} (RDDs), which are globally-visible,
 dynamically single-assignment data structures that cached in memory
 and written to disk for durability. One of Spark's primary
@@ -260,11 +267,14 @@ results are discussed in detail in Section~\ref{sec:evaluation}.
 
 \subsection{StarPU}
 
-StarPU~\cite{StarPU11} is a task-based system that supports an STF
+StarPU~\cite{StarPU11} is a task-based system that supports an DTD
 programming model similar to PaRSEC. Our Task Bench implementation in
 StarPU is very similar to PaRSEC, including the use of a switch
 statement to handle dynamic numbers of task dependencies, and manual
 elision of tasks on unrelated nodes to provide horizontal scalability.
+A simplified version of 2D block cyclic matrix from the Chameleon 
+project~\cite{Chameleon} is used to describe data of tasks in 
+our Task Bench implementation.
 
 Internally, StarPU uses MPI for communication.
 
