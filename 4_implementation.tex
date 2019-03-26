@@ -13,8 +13,8 @@ systems is that the capabilities of the systems vary considerably. For
 example, some systems are \emph{implicitly parallel}, and provide some
 form of parallelism discovery from sequential programs, whereas others
 are \emph{explicitly parallel} and require users to specify the
-parallelism in the program. As a rule of thumb we aim for the Task
-Bench implementations to be representative of how actual applications
+parallelism in the program. The Task
+Bench implementations are intended to reflect how actual applications
 would be written in the respective systems. Places where the Task
 Bench implementations may be unidiomatic are noted below.
 
@@ -22,12 +22,12 @@ There are also aspects of some systems that we do not consider in our
 evaluation. For example, a number of systems provide some level of
 support for heterogeneous processors such as GPUs, but the support
 varies so widely (if it exists at all) that it is challenging to come
-up with a representative benchmark which allows these features to be
+up with a representative benchmark that allows these features to be
 compared in an apples-to-apples manner.
 
 In all cases, members of the respective programming systems' teams
 were consulted during the development and evaluation of the
-corresponding Task Bench implementations. Their insight was invaluable
+corresponding Task Bench implementations. Where assistance was provided, the insights were invaluable
 in helping to ensure that we provide the highest level of quality in the Task
 Bench implementations for each system.
 
@@ -37,46 +37,31 @@ Chapel~\cite{Chapel07} is an explicitly parallel programming language
 that follows a \emph{multi-resolution} approach to parallel
 programming, with support for parallelism at a variety of
 levels. Chapel's core features are a partitioned global address space
-(PGAS) which permits remote access to objects from anywhere in the
-machine, a data model for the distribution of data structures over the
-global address space via \emph{domain maps}, tasks, and
-synchronization primitives. Chapel thus permits a great deal of
+(PGAS), a data model for the distribution of data structures, tasks, and
+synchronization primitives. Certain operations can be lifted to entire arrays, enabling forms of data-parallelism. Chapel thus permits a great deal of
 flexibility in the choice of implementation strategy for applications.
 
-For Task Bench, we decided to target a relatively low-level
-implementation in Chapel, using explicit task instantiation (via
+For Task Bench, we decided to target a low-level implementation in
+Chapel, using explicit task instantiation (via
 \lstinline[language=Chapel]{coforall}), bulk access to distributed
 arrays for efficient data movement, and atomic integers for
-synchronization. The advantage of this approach is that it permits
-fine-tuning of the implementation for performance, and avoids relying
-on advanced optimizations in the Chapel compiler, which might struggle
-with the dynamic, input-dependent nature of the task graphs in Task
-Bench.
-
-Chapel also supports a more high-level approach to parallel
-programming in which the granularities of tasks are determined
-automatically by the compiler (via
-\lstinline[language=Chapel]{forall}). This is the level that users
-would typically target in their programs. The specific dependence
-patterns supported by Task Bench might also be implementable at this
-level, though a full Task Bench implementation would be challenging.
-
-% FIXME: Does the Chapel compiler handle: bulk data movement, point-to-point synchronization
+synchronization. This approach is a good match for Task Bench, as the
+Task Bench core provides implementations of the kernels.
 
 \subsection{Charm++}
 
 Charm++~\cite{Charmpp93} is an explicitly parallel programming system
-based on the actor model of distributed computation. Actors, or
+based on the actor model. Actors, or
 \emph{chares}, are objects that live in their own address space and
-can be migrated automatically between nodes for better load
-balance. Chares are permitted to send messages to other chares via a
+can be migrated automatically between nodes to
+balance load. Chares send messages to other chares via a
 form of remote procedure call (RPC). Calling a method of another chare
 is the primary form of synchronization and data movement in
 Charm++. Additional support is provided for collective operations
 between chares.
 
 Our Task Bench implementation is straightforward: we create a chare
-array for the task graph, with one chare for each column. Methods are
+array for the task graph, with one chare for each column of the task graph. Methods are
 used to implement dependencies, and a task is executed as soon as its
 dependencies are all available. Collectives are used to synchronize the
 completion of the task graph execution.
@@ -85,12 +70,10 @@ completion of the task graph execution.
 
 \subsection{MPI}
 
-MPI~\cite{MPI} is the industry standard message-passing API for
-programming supercomputers, and is the most widely used programming
-model in high-performance scientific computing today. The goal of our
-MPI implementation of Task Bench is to represent the common (if
-unexciting) case which continues to dominate high-performance
-computing: bulk synchronous programming with distinct computation and
+MPI~\cite{MPI} is the standard message-passing API for
+programming supercomputers and remains the most widely used programming
+model in high-performance scientific computing today. Our
+MPI implementation of Task Bench represents the common case of bulk synchronous programs with distinct computation and
 communication phases. We use \lstinline[language=C++]{MPI_Isend} and
 \lstinline[language=C++]{MPI_Irecv} to implement the communication
 phase, posting receives before sends. Each task dependency maps to one
@@ -130,7 +113,7 @@ and thus report KMP numbers in our evaluation.
 
 \subsection{PaRSEC}
 
-PaRSEC is a task-based programming system which supports two distinct
+PaRSEC is a task-based programming system supporting two distinct
 programming models: \emph{parameterized task graphs}
 (PTG)~\cite{PARSEC13} and \emph{dynamic task discovery}
 (DTD)~\cite{PARSEC_DTD}.  PTG is a dataflow model in which programmers
@@ -148,17 +131,18 @@ identified automatically based on the input and output data of tasks.
 A task depends on another task if it reads data written by the other task,
 and the data is copied automatically if the two tasks are executed on
 different nodes. While the basic DTD model is implicitly parallel
-because the system is responsible for the discovery of parallelism, in
-order to achieve horizontal scalability, the program is executed in a
+because the system is responsible for the discovery of parallelism, to
+achieve horizontal scalability, the program is executed in a
 SPMD fashion on all nodes, and the user is responsible for eliding
 tasks that are not directly connected to those that are to be executed
 on the current node.
 
-Data in PaRSEC is stored in a built-in matrix data structure with a 2D block cyclic distribution. 
-The Task Bench implementation divides this matrix into $M$ by $N$ tiles where $N$ equals to the width of
-the task graph and $M$ varies from 2 to the height of the task graph depending
-on optimizations performed to alleviate write-after-read depdenencies. 
-Tiles are distributed across nodes in pre-defined patterns, 
+Data in PaRSEC is stored in a built-in matrix data structure with a 2D
+block cyclic distribution.  The Task Bench implementation divides this
+matrix into $M$ by $N$ tiles where $N$ equals to the width of the task
+graph and $M$ varies from 2 to the height of the task graph depending
+on optimizations performed to alleviate write-after-read dependencies.
+Tiles are distributed across nodes in pre-defined patterns,
 and can be passed to tasks on other nodes, but
 can only be written on the node where the data is originally
 allocated. In our Task Bench implementation, each task writes to a
@@ -170,15 +154,15 @@ tasks have a fixed number of dependencies.
 \subsection{Realm}
 
 Realm~\cite{Realm14} is an explicitly-parallel task-based programming
-model that used internally by Legion~\cite{Legion12} and
+model used internally by Legion~\cite{Legion12} and
 Regent~\cite{Regent15}. Thus the Realm implementation of Task Bench can be
 seen as a limit study of what can be achieved with Legion or Regent.
 
 Tasks in Realm are executed in a deferred manner, with dependencies
 between tasks explicitly defined by \emph{events} passed from one task
-to another. Realm's data model supports \emph{regions} of memory which live on a single
-node. Data must be explicitly copied, and the copies synchronized with
-tasks via events.
+to another. Realm's data model supports collections that live in a
+specific memory. Data must be explicitly copied, and the copies
+synchronized with tasks via events.
 
 Realm also supports a subgraph API where sets of tasks and copies are
 issued together. This mode permits additional optimizations to be
@@ -246,8 +230,8 @@ that hit optimal task throughput in Spark, among other things.
 
 \subsection{StarPU}
 
-StarPU~\cite{StarPU11} is a task-based system that supports an DTD
-programming model similar to PaRSEC. Our Task Bench implementation in
+StarPU~\cite{StarPU11} is a task-based system that supports a \emph{sequential task flow} (STF)
+programming model similar to PaRSEC's DTD. Our Task Bench implementation in
 StarPU is very similar to PaRSEC, including the use of a switch
 statement to handle dynamic numbers of task dependencies, and manual
 elision of tasks on unrelated nodes to provide horizontal scalability.

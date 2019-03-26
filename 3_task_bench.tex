@@ -29,7 +29,9 @@ such as required by sweeps and tree-based dependence
 patterns. Figure~\ref{fig:task-graphs} shows a number of sample task
 graphs that can be implemented with Task Bench. Note that layout is
 significant---in particular, each column $i$ corresponds to all tasks
-with index $i$ in the iteration space over all the time steps.
+with index $i$ in the iteration space over all the time
+steps. Generally speaking each column of the task graph will be
+assigned to execute on a different processor core.
 
 Dependencies between tasks are controlled by a configurable dependence
 relation. Dependencies point backwards in time. The
