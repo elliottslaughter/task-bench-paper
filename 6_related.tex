@@ -10,11 +10,13 @@ for microbenchmarks.
 
 A common failure mode for mini-apps is to bite off more complexity
 than can be reasonably implemented to a level of quality sufficient
-for publication. This can lead to publications for mini-apps omitting
-implementations or performance results for systems beyond the reference
-implementation. Follow-up papers, if any, often compare only against a
-reference implementation and omit any other implementations that might
-exist.
+for meaningful measurement. New mini-apps often provide only a
+reference implementation, or omit performance evaluations of different
+implementations, if those are presented. Follow-up experiments, if
+any, normally present a single system, and compare against the
+reference implementation (or not at all) and not with any other
+implementations that might be available. As a result, comparative
+studies across many implementations are rare.
 
 \begin{itemize}
 
@@ -30,8 +32,7 @@ CnC~\cite{LULESHCNC15} (a self-comparison) and X10~\cite{LULESHX1015}
 (comparison against reference only).
 
 \item
-The mini-app CoMD received a software release but no initial formal
-publication. One follow-up paper describes a Chapel
+One follow-up paper for the mini-app CoMD describes a Chapel
 implementation~\cite{CoMDChapel16} (comparison against reference
 only). Additional follow-up papers consider aspects of the reference
 implementation only~\cite{CoMDLoadImbalance17,
@@ -59,23 +60,24 @@ representative of real-world applications. From the PRK
 suite~\cite{PRK14}, the PRK Stencil code has been reasonably widely
 implemented, and a follow-up paper~\cite{PRKRuntimes16} compares MPI
 variants, SHMEM, UPC, Charm++, and Grappa. However, PRK Stencil is a
-simple code involving 2 kernels (which combined fit in under 50 lines
-of C++) and a halo exchange on a structured grid; it is unclear to
-what extent this is representative of real-world applications. Other
-codes in PRK are even less representative.
-
-The NAS benchmark suite~\cite{NAS91, NAS95} are widely studied with
+single, simple code involving 2 kernels (which combined fit in under 50 lines
+of C++) and a halo exchange on a structured grid. The NAS benchmark suite~\cite{NAS91, NAS95} are also relatively widely studied with
 implementations in OpenMP~\cite{NASOpenMP99}, MPI and
 MPI+OpenMP~\cite{NASMPIOpenMP00}, and
-Charm++~\cite{NASCharm96}. However the benchmarks consist mostly of small
-kernels for dense array computations, and do not generalize to larger
-applications.
+Charm++~\cite{NASCharm96}. The benchmarks consist mostly of small
+kernels for dense array computations. Neither the PRK nor the NAS
+benchmark suite achieve the breadth of coverage, flexibility, or ease
+of implementation of Task Bench. We believe the evidence for ease of
+implementation is clear; Task Bench is implemented for more systems
+than all previous mini-apps and microbenchmarks. Task Bench is also
+not a fixed set of benchmarks, and it is even easier to use Task Bench
+to generate a new benchmark to measure some aspect of system
+performance.
 
 System-specific benchmarks have been used to quantify specific aspects
 of system performance, such as MPI communication or collective
 latency~\cite{MPPTest99, MPIBench01}. These measurements typically do
-not generalize beyond the immediate system they attempt to quantify,
-nor in an obvious way to real-world applications.
+not generalize beyond the immediate system they measure.
 
 Limit studies of task scheduling throughput in various runtime systems
 often make additional assumptions. A popular assumption is the use of
