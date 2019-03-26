@@ -1,43 +1,47 @@
-\section{METG}
+\section{METG (50\%)}
 \label{sec:metg}
 
 \input{f1_flops_mpi}
 \input{f2_efficiency_mpi}
 
-Minimum effective task granularity (METG) is defined intuitively as
-the smallest average task granularity such that the application
-achieves overall efficiency exceeding some threshold. For example, in
+The \emph{minimum effective task granularity}, METG(50\%), for an application $A$ is
+the smallest average task granularity such that $A$
+achieves overall efficiency exceeding 50\%. For example, in
 a compute-bound application efficiency might be measured as the
 percentage of the available FLOPS achieved. On a machine with a peak
-capability of 1.2 TFLOPS per node, METG(50\%) would correspond to
-smallest task granularity achieved while maintaining at least 0.6
-TFLOPS. Absolute efficiency (i.e., FLOPS or bytes per second) is
-preferable, but parallel efficiency (relative to a sufficiently large
-problem size) can also be used in applications which are not amenable
-to be characterized by peak resource utilization.
+capability of 1.26 TFLOPS per node, METG(50\%) would correspond to
+smallest task granularity achieved while maintaining at least 0.63
+TFLOPS. Absolute efficiency (i.e., FLOPS or B/s) as well
+as parallel efficiency (relative to a sufficiently large problem size)
+can be used.
 
 Figure~\ref{fig:flops-mpi} shows the way in which METG is
-calculated. The application is run with a large enough problem size to
+calculated. The application, in this case an MPI implementation of the
+Task Bench stencil pattern in Figure~\ref{fig:task-graphs-stencil}, is
+run on a single Haswell node of Cori with a large enough problem size to
 ensure that it achieves peak utilization of the machine. This confirms
 that the application is properly configured and that the choice of
 efficiency metric is achievable. Once this is established, the problem
-size is shrunk (in a manner analogous to what happens on a node during
-a strong scaling run). The expectation is as problem size shrinks, the
+size is repeatedly reduced while maintaining exactly the same hardware
+configuration (in particular, the same number of nodes). The
+expectation is that as problem size shrinks, the
 efficiency will begin to drop and eventually approach zero. Systems
-with lower overheads will maintain higher efficiency at smaller
+with lower runtime overheads maintain higher efficiency at smaller
 problem sizes compared to systems with higher overheads.
 
 To calculate METG, this data is replotted along axes of efficiency
 (i.e., as a percentage of the peak FLOPS achieved) and task
 granularity (i.e., $\text{wall time} \times \text{number of
   cores}/\text{number of tasks}$). Note that a \emph{task} is defined
-broadly to be any continuously-executing unit of work in the
-application, thus it makes sense to discuss tasks even in systems
-without an explicit notion of tasking, such as in MPI codes that are written in
-a bulk synchronous style.
+broadly to be any continuously-executing unit of application code,
+and thus it makes sense to discuss tasks even in systems
+without an explicit notion of tasking, such as in MPI programs that
+are written in a bulk synchronous style. In this case, the tasks run a
+compute-bound kernel included in the Task Bench implementation,
+described in more detail in Section~\ref{sec:task-bench}.
 
-Figure~\ref{fig:efficiency-mpi}
-shows the replotted data from above. In this chart, we can see that
+Figure~\ref{fig:efficiency-mpi} replots the data in
+Figure~\ref{fig:flops-mpi}. In Figure~\ref{fig:efficiency-mpi}, we see that
 efficiency starts near 100\%, and that initially task granularity
 drops quickly with minimal change in efficiency. However as task
 granularity shrinks, efficiency begins to drop as well, leading
@@ -45,34 +49,30 @@ eventually to a plateau in task granularity. Intuitively, this plateau
 represents the fundamental baseline overhead of the system, the point
 below which the system simply cannot execute tasks efficiently.
 
-METG is thus the result of drawing a vertical line through
-Figure~\ref{fig:efficiency-mpi} at the desired level of efficiency,
-and taking the intersection of this line with the task granularity
-curve. In the figures, the red, dashed line shows the 50\% efficiency
+METG(50\%) is the intersection of this curve with a vertical line through
+Figure~\ref{fig:efficiency-mpi} at 50\% efficiency. In the figures, the red, dashed line shows the 50\% efficiency
 level. At 50\% efficiency, MPI achieves an average task granularity of
 4.6 us, thus the METG(50\%) of MPI is 4.6 us for this configuration of
-the application. The number 50\% is chosen arbitrarily, but is a
-reasonable choice for this application because it represents a point
-at which many systems will have plateaued, yet the overall efficiency
-is still reasonable. Lower values would likely not be reasonable,
-because in most cases operators of computing facilities prefer to
-maintain higher levels of utilization of the machines. And higher
-values risks misrepresenting the performance of some systems (not
-shown in the figures above).
+the application. We use 50\% because it is a reasonable level of
+efficiency in practice. Lower values would likely not be reasonable,
+because operators of computing facilities prefer higher levels of
+utilization. Values above 90\% can misrepresent the performance of
+some systems (see
+Section~\ref{subsec:peak-performance-and-efficiency}).
 
 METG is an appealing metric in part because it has a well-defined
 relationship with quantities of interest to application developers,
 namely weak and strong scaling. Figures~\ref{fig:weak-scaling-mpi} and
-\ref{fig:strong-scaling-mpi} show the behavior of MPI weak and strong
+\ref{fig:strong-scaling-mpi} show the behavior of the MPI Task Bench stencil's weak and strong
 scaling, respectively, at a variety of problem sizes. Intuitively, at
 larger problem sizes MPI is perfectly efficient. This can be seen at
 the top of each figure, with flat lines when weak scaling and
 ideally-sloped downward lines when strong scaling. Inefficiency begins
 to show up at smaller problem sizes, towards the bottom of the graph,
 where lines become more compressed and begin to trend upward. At the
-very bottom, the lines compress together as it the fundamental
-overhead of MPI dwarfs any gains from running smaller
-problems. Critically, the shape of the curve at the bottom is the same
+very bottom, the lines compress together as the fundamental
+overhead of the MPI implementation dwarfs any gains from running smaller
+problems. The shape of the curve at the bottom is the same
 for both weak and strong scaling; this is precisely the shape of
 the METG curve.
 
@@ -82,7 +82,7 @@ the METG curve.
 METG therefore has a direct relationship with the smallest problem
 size that can be weak scaled to a given node count with a given level
 of efficiency. With any smaller problem size, 
-the overhead begins to dominate useful
+the runtime overhead begins to dominate useful
 computation. Similarly, METG corresponds to the point at which strong
 scaling can be expected to stop; as strong scaling runs start with a
 larger problem size and progressively shrink it until overheads begin
@@ -95,16 +95,10 @@ The METG metric has one particularly useful property in comparison to
 weak and strong scaling. Because METG is measured ``in place'' (i.e.,
 without changing the number of nodes or cores available to the
 application), it is possible to use METG to isolate effects that are
-due to shrinking problem size from effects that are due to e.g.,
-increased communication latencies as progressively larger portions of
-the machine are being used. In comparison, with only a single strong
-or weak scaling run, it is impossible to determine if the shape of the
-curve is due to the overhead of the runtime system, or communication
-effects as progressively larger portions of the machine are being
-used.
+due to shrinking problem size from effects that are due to
+increased communication latencies and other resource issues as
+progressively larger portions of the machine are used.
 
 Section~\ref{sec:evaluation} contains a comprehensive evaluation of
 METG including how it changes with node count for a wide variety of
 programming systems.
-
-% talk about TPS / MTG ?
