@@ -3,21 +3,23 @@
 
 \input{f5_task_graphs}
 
-In order to measure properties such as METG for a wide variety of
+To measure properties such as METG for a wide variety of
 systems and application scenarios, we developed a novel
 \emph{parameterized} benchmark called Task Bench. Task Bench
 implementations execute a \emph{task graph}, with tasks for each point
 in an \emph{iteration space} and dependencies between tasks determined
-by a \emph{dependence relation}. Each task can execute any one of a
+by a \emph{dependence relation}. A task that depends on another task
+must execute after that task, and receives the output data from that
+task as input. Each task can execute any one of a
 number of kernels (compute-bound, memory-bound, etc.) and can generate
-a configurable amount of result data in order to control the amount of
-communication that must be performed with each task dependency. Thus Task Bench can be used to
-rapidly explore a large space of possible application scenarios in
-order to understand the performance behaviors of parallel and
+a configurable amount of output to control the amount of communication
+performed with each task dependency. Thus Task Bench can be used to
+rapidly explore a large space of possible application scenarios to
+understand the performance of parallel and
 distributed languages and runtime systems.
 
 For simplicity but without loss of generality, the iteration space in
-Task Bench is constrained to be 2-dimensional, with time flowing along
+Task Bench is constrained to be 2-dimensional, with time along
 the vertical axis and parallel tasks along the
 horizontal. Tasks can depend only on tasks from the immediately
 preceding time step. Many problems can be described by a task graph of
@@ -25,16 +27,16 @@ constant width, in which case the iteration space is rectangular, but
 Task Bench is capable of handling non-rectangular iteration spaces,
 such as required by sweeps and tree-based dependence
 patterns. Figure~\ref{fig:task-graphs} shows a number of sample task
-graphs that can be implemented with Task Bench.
-
-% FIXME: Make figure showing example task graphs
+graphs that can be implemented with Task Bench. Note that layout is
+significant---in particular, each column $i$ corresponds to all tasks
+with index $i$ in the iteration space over all the time steps.
 
 Dependencies between tasks are controlled by a configurable dependence
-relation. Dependencies are conceived as flowing backwards in time. The
-dependence relation enumerates for each task, the set of tasks in the
+relation. Dependencies point backwards in time. The
+dependence relation enumerates, for each task, the set of tasks in the
 previous time step that task depends on. This permits a wide variety
 of dependence patterns to be implemented that are relevant to real
-applications in high-performance scientific computing: stencils,
+applications in high-performance scientific computing and data analysis: stencils,
 sweeps, FFTs, trees, and so on. Dependence patterns may also be
 parameterized, such as picking the $K$ nearest neighbors, or $K$
 distant neighbors. Table~\ref{tab:equations} show equations for the
@@ -43,27 +45,27 @@ dependence relations of the patterns in Figure~\ref{fig:task-graphs}.
 \input{t0_equations}
 
 Despite its generality, Task Bench is easy to implement, making it
-tractable to develop a suite of high-quality implementations. Most
-Task Bench implementations are several hundred lines long, with the
-shortest being 88 lines and the longest being 1500 lines of executable
-code. Much of this is possible because the core aspects of generating
-task graphs and enumerating dependencies are encapsulated in a core
+tractable to develop a suite of high-quality implementations. The core aspects of Task Bench, such as generating
+task graphs and enumerating dependencies, are encapsulated in a core
 library that is shared among all the Task Bench implementations. The
 core library also includes implementations of the kernels, ensuring
 that the kernels are identical in all cases, eliminating a potential
-source of performance disparity which can be a pitfall for mini-apps
-implementations. Finally, the Task Bench core library manages the
+source of performance disparity that can be a pitfall for
+implementations of mini-apps. Finally, the Task Bench core library manages the
 parsing of input parameters and the display out output results,
 ensuring that all implementations behave in a uniform manner, and can
-be scripted consistently.
+be scripted consistently. Because much of the functionality needed for
+a Task Bench implementation is in the core library, implementations of
+Task Bench are small: Our 13 Task Bench implementations range from 88
+to 1500 lines, with several hundred lines being typical.
 
-The task implementation in the Task Bench core library is fully
+The Task Bench core library is fully
 validating. Because the task graph configuration is explicitly
 represented (though unmaterialized) in Task Bench, this representation
 can be queried to determine exactly what dependencies a task should
-expect. The output of every task in Task Bench is uniquely generated,
+expect. The output of every task in Task Bench is unique,
 and all inputs are verified. An assertion is thrown if validation
-fails. This ensures that every execution of Task Bench, if it
+fails. This level of self-checking ensures that every execution of Task Bench, if it
 completes successfully, is correct. This validation provides high
 assurance that all Task Bench implementations are correct, and
 safeguards against corner cases that may only be exercised at
@@ -71,3 +73,15 @@ scale. An evaluation of the performance impact of
 this validation showed it to be less than 3\% at the smallest task
 granularities in any Task Bench implementation, with a negligible
 effect on overall results.
+
+Task Bench provides two main kernels which can be called from tasks,
+which are compute- and memory-bound, respectively. The compute-bound
+kernel executes a tight loop and is hand-written using AVX2 FMA
+intrinsics. The memory-bound kernel performs sequential reads and
+writes over an array, and is again hand-optimized with AVX2
+intrinsics. The duration of both kernels can be configured by setting
+the number of iterations to execute; we use this ability to simulate
+the effects of varying application problem sizes. The memory-bound
+kernel is carefully written to keep the working set size constant as
+the number of iterations decrease, to avoid unwanted speedups due to
+cache effects.
