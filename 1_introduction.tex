@@ -1,58 +1,59 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Challenges in heterogeneous and extreme-scale parallel and distributed
-computing have lead to the rise of a wide variety of new programming
-models, languages and runtime systems. These systems often provide
-capabilities such as the asynchronous execution of units of work, called
-\emph{tasks}, coordinated in some manner with data movement and
-synchronization. But while the features of these systems are widely
-written about in the literature, a large and often difficult to answer
-question is how different systems will perform for any given
-application.
+The challenge of parallel and distributed computation has lead to a
+wide variety of proposals for programming models, languages, and
+runtime systems. Some, like MPI~\cite{MPI}, have achieved widespread
+usage while many more are in the research and development stage. Our
+goal in this paper is to develop a meaningful and useful framework for
+comparing the performance of parallel and distributed programming
+systems.
 
-One approach to answering this question has focused around the
-development of \emph{proxy-} or \emph{mini-apps}. So called because
-they embody the logic of a larger application, but in reduced form,
-mini-apps are popular because they can provide insight without
-incurring the costly expense of developing a full-blown application
-code. However, despite the name, mini-apps still requite significant
-investment to develop, especially to a level of quality needed to reach
-a publishable state. In many cases, the effort to tune for performance
-exceeds the effort to develop the mini-app in the first place. This
-can be exacerbated if the system in question is undergoing concurrent
-development. As a result, implementations of mini-apps, though
-well-intentioned, often do not reach a level of maturity required to
-perform a broad comparison between systems, and as a result there are
-few comparative studies involving multiple programming systems
-that reach publication.
+% note: removed definition of task
 
-A compounding issue is one of methodology: how does one predict how
-the performance observed for a mini-app will generalize to a full
+One approach to comparing the performance of different systems has
+focused on the development of \emph{proxy-} or
+\emph{mini-apps}. Because they embody the logic of a larger
+application, but in reduced form, mini-apps can provide insight
+without incurring the costly expense of developing a full-blown
+application code. However, despite the name, our experience is that
+mini-apps still requite significant investment to develop, especially
+to a level of quality needed for useful benchmarking. In many cases,
+the effort to tune for performance exceeds the effort to develop the
+mini-app in the first place. As a result, implementations of mini-apps
+often do not reach a level of maturity required to compare
+systems. Indeed, there are few such published studies, and none to our
+knowledge that involve more than a handful of systems.
+
+There is another important issue: How does one predict how
+the performance of a mini-app generalizes to a full
 application, even one closely related? Part of the problem here is
 that weak and strong scaling, which are by far the most commonly
 reported metrics for performance of both mini- and full applications,
-do nothing to elucidate the performance envelop of a particular
-system. Weak scaling is notorious for being able to hide arbitrary
-amounts of overhead, as long as the problem size is sufficiently
-large. And strong scaling runs the risk of entangling unrelated
-effects: namely, the baseline overhead of a given system, with the
-growth of communication latencies, and potentially the saturation of
-global resources such as communication and I/O bandwidth, when using
-progressively larger portions of the machine.
+do not directly characterize the performance of the underlying
+programming system. Weak scaling can hide arbitrary amounts of runtime
+system overhead with sufficiently large problem sizes. And strong
+scaling does not separate the overhead of the underlying runtime
+system from the growth in communication latencies, and potential
+saturation of resources such as communication and I/O bandwidth, when
+using progressively larger portions of the machine.
 
 To address the first of these issues, we present Task Bench, a
 \emph{parameterized} benchmark designed for exploring the performance
-behaviors of programming systems under a variety of conditions. A
-critical property of Task Bench is that, while powerful, it is simple
-enough to be implemented in a wide variety of systems with reasonable
-effort, to a level of quality necessary for comparative study.
+behaviors of parallel and distributed programming systems under a
+variety of conditions. A critical property of Task Bench is that,
+while able to express a wide variety of typical parallel programming
+patterns, it is simple enough to be implemented with reasonable effort
+to a level of quality sufficient for comparative studies.
 
-Task Bench consists of a configurable \emph{task graph} with tasks for
+A key insight of Task Bench is that many applications can be modeled
+as a set of \emph{tasks}, or coarse-grain units of work, with
+dependencies between tasks representing the communication required for
+distributed execution. Task Bench consists of a configurable \emph{task graph} with tasks for
 each point in an iteration space. Tasks are connected by dependencies
 as determined by a \emph{dependence relation}. This design permits a
 very concise description of a wide variety of patterns relevant to
-scientific computing: trivial parallelism, halo exchanges (such as
+scientific computing and large scale data analysis: trivial parallelism, halo exchanges (such as
 seen in structured and unstructured mesh codes), sweeps (such as used
 in the discrete ordinates method of radiation simulation), FFTs, trees
 (for divide and conquer algorithms), and so on. The tasks at each
@@ -63,50 +64,49 @@ tasks can be configured to carry payloads of varying size, permitting
 the design of communication-bound cases. Finally, multiple
 (potentially heterogeneous) task graphs can be executed concurrently
 to introduce task parallelism into the workload. Together, these
-design elements permit the exploration of a broad space of application
-performance behaviors.
+design elements permit the exploration of a large space of application
+behaviors.
 
-To resolve the methodological issue, we introduce a new metric called
-\emph{minimum effective task granularity} (METG). Intuitively, METG is
-the smallest task granularity which can be executed while maintaining
-a given level of computational efficiency (e.g., as measured by the
-percentage of peak FLOPS achieved). METG captures the essence of what
-is important in a weak or strong scaling study: that is, the behavior
-at the limit of scalability. For weak scaling, METG corresponds
-directly to the smallest problem size that can be weak scaled with a
-given level of efficiency. For strong scaling, METG can be used to
-compute the scale at which performance can be expected to dip below
-that level of efficiency. In either case, METG is a useful, intuitive
-measure as it
-encapsulates the task granularity at which systems can be relied on to
-execute efficiently. As a rule of thumb, as long as an application's
-average task granularity exceeds the METG, the application should
-execute efficiently.
+To isolate the contribution of the programming model's runtime system
+to application performance, we introduce a new metric called
+\emph{minimum effective task granularity} (METG). Intuitively,
+METG(50\%) is the smallest application task granularity which can be
+executed while maintaining at least 50\% computational efficiency,
+meaning that the application achieves at least 50\% of peak
+performance. METG captures the essence of what is important in a weak
+or strong scaling study, the behavior at the limit of scalability. For
+weak scaling, METG(50\%) corresponds directly to the smallest problem
+size that can be weak scaled with 50\% efficiency. For strong scaling,
+METG(50\%) can be used to compute the scale at which performance can
+be expected to dip below 50\% efficiency. A good rule of thumb is that
+as long as an application's \emph{average} task granularity exceeds
+METG(50\%), the application should achieve at least 50\% efficiently.
 
-Together, METG and Task Bench help to mitigate issues which are common
-in limit studies on the task scheduling throughput of runtime
-systems. Such studies typically employ a metric called \emph{tasks per
-  second} (TPS), which is almost universally measured with trivial
-dependencies. While TPS is certainly an upper bound on
-task scheduling throughput, it is not a tight bound, as the cost of
-non-trivial dependencies can be significant and sometimes adversely
-impacts scalability. This issue is easily fixed by running non-trivial
+Task Bench and METG mitigate issues common in limit studies of runtime
+systems for parallel and distributed programming. Such studies often
+employ the metric \emph{tasks per second} (TPS), which is almost
+universally measured with trivial (i.e., no) dependencies. While
+phrased in terms of tasks, TPS can be measured for any system as long
+as the application in question has identifiable units of work that run
+to completion without interruption. TPS is an upper bound on
+runtime-limited application throughput, but not a tight bound, as the
+cost of non-trivial dependencies can be significant and may impact
+scalability. This issue is easily fixed by running non-trivial
 configurations of Task Bench.
 
-But there is a deeper issue with the lack of an efficiency constraint
-in measurements of TPS. TPS may be measured with empty
-tasks~\cite{LegionTracing18}, or with tasks of some
-duration~\cite{Canary16, Armstrong14}. If empty tasks are used to
-measure TPS, this leads to an upper bound on the task scheduling
-throughput, but fails to represent any realistic application, as no
+There is another, deeper issue with TPS. TPS may be measured with
+empty tasks~\cite{LegionTracing18} or with tasks of some
+duration~\cite{Canary16, Armstrong14}. If empty tasks are used, the
+resulting upper bound on task scheduling throughput fails to represent
+any realistic application, as no
 useful work is being performed. If non-empty tasks are used, \emph{but
   the efficiency of the overall application is not reported}, then TPS
-ceases to be a measurement of the limit of task scheduling
-throughput. Large tasks may be used to hide any amount of overhead,
+is not a measurement of runtime-limited performance. Large tasks may
+be used to hide any amount of runtime overhead,
 while tasks that are too small may result in a drop in total
 application throughput even as TPS increases. Only by constraining
-efficiency, as in METG, can we ensure a limit study that represents
-reasonable throughput on useful work by the application.
+efficiency, as in METG, can we measure runtime-limited application
+throughput while performing useful application work.
 
 We conduct a comprehensive comparative study of Task Bench
 implementations in 13 different programming systems, including
@@ -115,9 +115,9 @@ OmpSs~\cite{OmpSs11}, OpenMP~\cite{OpenMPSpec40},
 PaRSEC~\cite{PARSEC13}, Realm~\cite{Realm14}, Regent~\cite{Regent15},
 Spark~\cite{Spark10}, StarPU~\cite{StarPU11},
 Swift/T~\cite{Wozniak13}, TensorFlow~\cite{TensorFlow15}, and
-X10~\cite{X1005}. Using the METG metric, we determine the baseline
+X10~\cite{X1005}. Using METG(50\%), we determine the baseline
 runtime overhead of each system along with overheads associated with
-increasing number and/or variations in the pattern of dependencies. We
+increasing numbers of and/or variations in the pattern of dependencies. We
 also explore each system's ability to scale, hide communication
 overhead, and mitigate load imbalance.
 
@@ -125,7 +125,7 @@ The following four sections each describe a contribution of this
 paper:
 
 \begin{itemize}
-\item Section~\ref{sec:metg} defines the METG metric and its
+\item Section~\ref{sec:metg} defines the METG(50\%) metric and its
   relationship to quantities of interest to application developers.
 \item Section~\ref{sec:task-bench} describes the design of Task Bench.
 \item Section~\ref{sec:implementation} details the implementation of

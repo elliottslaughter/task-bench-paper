@@ -1,20 +1,18 @@
 \begin{abstract}
-% 149 words
+% 129 words
 We present Task Bench, a \emph{parameterized} benchmark designed to
-explore the performance envelops of parallel and distributed
+explore the performance envelopes of parallel and distributed
 programming systems under a variety of application scenarios. Task
-Bench consists of a configurable \emph{task graph} with one task per
-point in an iteration space, and dependencies between tasks determined
-by a \emph{dependence relation}. Tasks execute a variety of kernels,
-including compute- and memory-bound, and dependencies carry payloads
-of configurable size, enabling communication-bound scenarios. Multiple
-task graphs can be executed to enable task parallelism.
+Bench seeks to provide the ease of implementation and portability of
+microbenchmarks, which makes comparisons between many systems
+possible, with the ability to easily model a wide range of application
+scenarios, giving it coverage approximating large benchmarks.
 
 We conduct a comprehensive study with implementations of Task Bench in
 13 programming systems on up to 256 Haswell nodes of the Cori
 supercomputer. We use a novel metric, \emph{minimum effective task
   granularity} to study the baseline runtime overhead of each system
-and the impact of varying dependence patterns and numbers of
-dependencies. We also study each system's scalability, and ability to
-hide communication and mitigate load imbalance.
+and the impact of scenarious with varying dependence patterns. We also
+study each system's scalability, and ability to hide communication and
+mitigate load imbalance.
 \end{abstract}
