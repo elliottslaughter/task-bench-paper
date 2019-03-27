@@ -26,7 +26,7 @@ the kernels are well-written and of sufficiently large granularity. In
 practice, achieving peak performance is tricky, subject to a number of
 pitfalls, and unfortunately, frequently skipped in evaluations of
 runtime system overhead. However, verifying that peak performance is
-achieved is important to ensuring that such evaluations of overhead and
+achieved is important to ensure that such evaluations of overhead and
 efficiency are well-grounded and avoid common pitfalls in
 configuration.
 
@@ -35,7 +35,7 @@ kernel with varying problem sizes. This is the full version of
 Figure~\ref{fig:flops-mpi}. In the best case, we measure peak FLOPS of
 $1.26 \times 10^{12}$, which compares favorably with the officially
 reported number of $1.2 \times 10^{12}$ \cite{Cori}. For the purposes
-of measuring efficiency we use our empirically determined number as
+of measuring efficiency, we use our empirically determined number as
 the baseline for 100\% efficiency.
 
 The vast majority of systems achieve or nearly achieve peak FLOPS. Some
@@ -80,7 +80,10 @@ To answer this question, we use the METG metric to determine the
 smallest task granularity which can be executed at a given level of
 efficiency, as a proxy for overhead. Figure~\ref{fig:metg-compute}
 shows how METG(50\%) varies with node count for a variety of
-dependence patterns supported by Task Bench:
+dependence patterns supported by Task Bench. The experiment is conducted
+in a weak scale fashion, in which we keep the number of tasks per node
+constant while increasing the number of nodes. The detailed explanations
+of each dependence pattern are as follows: 
 
 \begin{itemize}
 \item Figure~\ref{fig:metg-compute-stencil} is a 1D stencil where each
@@ -144,9 +147,22 @@ as line for Spark immediately rises with node count. Keep in mind also
 that Spark is being evaluated here with a non-trivial dependence
 pattern which is relatively unrepresentative of Spark's normal use
 cases. Spark is more efficient with trivial parallelism, as described
-in Section~\ref{subsec:number-of-dependencies}.
+in Section~\ref{subsec:number-of-dependencies}. Systems like PaRSEC
+and StarPU build the DAG on the fly, so they require to examine all tasks
+of the entire DAG on each process. Even though DAG trimming is 
+implemented on both systems to not launching tasks on a specific node
+if data is not local, the overhead of sweeping all the tasks to 
+check data localities goes up with the increasement of
+node counts in the weak scale experiment, resulting in poor scalability. 
+Even though the PTG implementation relieves the overhead of DAG expansion
+from runtime to compile stage, the overhead of determining local tasks
+based on data locality leads to un-horizontally scalable. 
+The ``PaRSEC DTD Shard'' is an modified implementation of ``PaRSEC DTD''
+by pre-partitioning the DAG when assuming data distribution is fixed 
+(1D block is used in Task Bench). It removes the cost of sweeping the
+entire DAG, and is therefore horizontally scalable.       
 
-% FIXME: talk about starpu and parsec?
+% FIXME: remove parsec dtd shard if no space. 
 
 % FIXME: talk about overhead spanning 5 orders of magnitude
 
@@ -200,13 +216,19 @@ their fundamental limits due to overhead.
 
 The difference between the remaining systems is due primarily to the
 scheduling behavior of the various systems. For example, OpenMP
-executes tasks via a thread pool, resulting in a form of work
+execute tasks via a thread pool, resulting in a form of work
 stealing. This on-node work stealing, in combination with the task
 parallelism due to the presence of 4 task graphs, is sufficient to
 completely mitigate load imbalance. Systems that exploit task
 parallelism but not work stealing on a node achieve lower peak
 efficiency, but may achieve smaller task granularities as a result of
 not relying on a shared global queue for tasks.
+
+% FIXME: I am not sure if OpenMP has only 1 thread pool or multiple pools. 
+% Systems like StarPU and PaRSEC have multiple pools, but still allows on-node
+% work stealing. So I also think the last sentence " may achieve smaller 
+% task granularities as a result of not relying on a 
+% shared global queue for tasks." is not accurate. 
 
 \subsection{Communication Hiding}
 
@@ -228,3 +250,6 @@ implementation. Second, the asynchrony also makes the curves smoother,
 as spikes in latency due to interference from other jobs can be
 mitigated, leading to more predictable performance, especially at
 smaller message sizes.
+
+% FIXME why MPI can be affected by other jobs but asynchronous systems can not?
+
