@@ -37,31 +37,21 @@ Chapel~\cite{Chapel07} is an explicitly parallel programming language
 that follows a \emph{multi-resolution} approach to parallel
 programming, with support for parallelism at a variety of
 levels. Chapel's core features are a partitioned global address space
-(PGAS), a data model for the distribution of data structures, tasks, and
-synchronization primitives. Certain operations can be lifted to entire arrays, enabling forms of data-parallelism. Chapel thus permits a great deal of
-flexibility in the choice of implementation strategy for applications.
-
-For Task Bench, we decided to target a low-level implementation in
+(PGAS), data distributions, tasks, and
+synchronization primitives, and array promotion. For Task Bench, we decided to target a low-level implementation in
 Chapel, using explicit task instantiation (via
 \lstinline[language=Chapel]{coforall}), bulk access to distributed
 arrays for efficient data movement, and atomic integers for
-synchronization. This approach is a good match for Task Bench, as the
-Task Bench core provides implementations of the kernels.
+synchronization.
 
 \subsection{Charm++}
 
 Charm++~\cite{Charmpp93} is an explicitly parallel programming system
 based on the actor model. Actors, or
-\emph{chares}, are objects that live in their own address space and
-can be migrated automatically between nodes to
-balance load. Chares send messages to other chares via a
-form of remote procedure call (RPC). Calling a method of another chare
-is the primary form of synchronization and data movement in
-Charm++. Additional support is provided for collective operations
-between chares.
-
-Our Task Bench implementation is straightforward: we create a chare
-array for the task graph, with one chare for each column of the task graph. Methods are
+\emph{chares}, are objects that live in their own address space;
+chares communicate data and synchronize via messages, and can be moved
+to balance load. Our Task Bench implementation uses a chare
+array for the task graph, with one chare for each column of the task graph. Messages are
 used to implement dependencies, and a task is executed as soon as its
 dependencies are all available. Collectives are used to synchronize the
 completion of the task graph execution.
@@ -70,22 +60,14 @@ completion of the task graph execution.
 
 \subsection{MPI}
 
-MPI~\cite{MPI} is the standard message-passing API for
-programming supercomputers and remains the most widely used programming
-model in high-performance scientific computing today. Our
-MPI implementation of Task Bench represents the common case of bulk synchronous programs with distinct computation and
-communication phases. We use \lstinline[language=C++]{MPI_Isend} and
+Our MPI~\cite{MPI} implementation of Task Bench represents the common
+case of bulk synchronous programs with distinct computation and
+communication phases. We experimented with a variety of implementation
+strategies and found the best performing to be using
+\lstinline[language=C++]{MPI_Isend} and
 \lstinline[language=C++]{MPI_Irecv} to implement the communication
 phase, posting receives before sends. Each task dependency maps to one
-send/receive pair in MPI. Despite the relatively straightforward
-design, our MPI implementation is among the best performing.
-
-For completeness, we also explored the use of additional MPI calls:
-namely buffered sends (\lstinline[language=C++]{MPI_Bsend}),
-broadcasts (\lstinline[language=C++]{MPI_Bcast}), and all-to-all
-communication (\lstinline[language=C++]{MPI_Alltoallv}). For the
-configurations used in our evaluation, we found non-blocking sends and
-receives to be the best performing, often by a wide margin.
+send/receive pair in MPI.
 
 \subsection{OmpSs}
 
@@ -119,14 +101,10 @@ programming models: \emph{parameterized task graphs}
 (DTD)~\cite{PARSEC_DTD}.  PTG is a dataflow model in which programmers
 write a concise, algebraic description of the tasks and dataflows in
 the program. This compressed representation is expanded into a full
-task graph by a source-to-source compiler. PTG is therefore a more
-limited programming model, but can potentially provide better
-performance because the graph description is amenable to static
-analysis and can be pruned efficiently for better horizontal
-scalability.
+task graph by a source-to-source compiler.
 
 In the DTD model, tasks are enumerated in program order (by
-dynamically executing the program), and dependencies between tasks are
+executing the program), and dependencies between tasks are
 identified automatically based on the input and output data of tasks. 
 A task depends on another task if it reads data written by the other task,
 and the data is copied automatically if the two tasks are executed on
@@ -178,17 +156,6 @@ Regent rather than Legion directly because the Regent compiler
 provides a critical optimization, \emph{control replication}, that
 enables superior horizontal scalability~\cite{ControlReplication17}.
 
-In Regent tasks are executed sequentially and parallelism is
-discovered automatically based on the data that is read or written by
-tasks. Regent programs are agnostic to the machine architecture and
-are separately \emph{mapped} for execution on a distributed memory
-system. Copies are inserted automatically by the compiler and runtime
-whenever data is read on a different node from where it is written.
-
-The Regent compiler performs control replication to slice the Regent
-program into \emph{shards} of execution which can scalably execute on
-large numbers of nodes.
-
 \subsection{Spark}
 
 Spark~\cite{Spark10} is an implicitly-parallel programming model for
@@ -198,17 +165,14 @@ for scientific computing, Spark makes very different tradeoffs from
 other systems under consideration, and therefore makes an interesting
 point of comparison.
 
-Spark's programming model is based on \emph{functional parallelism}, a
-generalization of the MapReduce programming
-model~\cite{MapReduce04}. The core computational abstraction in Spark
-are operators such as map, reduce, filter, join, etc. which by virtue
-of being pure functions are trivially known to be
-parallelizable. Functions in Spark operate on \emph{resilient
+The core abstractions in Spark are functional operators such as map,
+reduce, filter, join, etc. Functions in Spark operate on
+\emph{resilient
   distributed datasets} (RDDs), which are globally-visible,
 dynamically single-assignment data structures that are cached in memory
 and written to disk for durability. One of Spark's primary
 optimizations therefore is the caching of RDDs to avoid unnecessary
-disk traffic, resulting in substantial speedups over MapReduce.
+disk traffic.
 
 Though Spark has tasks internally, these are not exposed to the user,
 so one of the challenges in developing a Task Bench implementation is
