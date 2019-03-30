@@ -1,17 +1,33 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We presented Task Bench, a parameterized benchmark flexible enough to
-enable the exploration of a broad space of application scenarios, but
-also simple enough to permit implementation in a wide array of systems
-to a level of quality sufficient for comparative study. Our study of
-13 programming systems is novel in its breadth, as well as the depth
-of insight it delivers about different systems. We discover, among
-other things, that the baseline overhead of parallel and distributed
-programming systems varies by up to 5 orders of magnitude.
+Parameterized benchmarks are a promising new route for evaluating the
+performance of parallel and distribute programming systems. By
+composing a small number of orthogonal primitives, parameterized
+benchmarks make it possible to explore a space of application
+scenarios, while minimizing the marginal cost of developing each
+additional feature. In this case of Task Bench, this has enabled a
+comprehensive comparative study of programming system performance
+which is unique in both the breadth of systems considered and the
+depth of insight achieved about them.
 
-Helping us in this endeavor is a new metric, minimum effective task
-granularity (METG), which isolates the inherent overhead of the
-runtime system for a given application from factors such as changes in
-communication topology and latency when using progressively larger
-portions of a machine.
+Our study has both confirmed and challenged our intuitions. We have
+found, unsurprisingly, that systems intended primarily for scientific
+simulation are optimized for smaller task granularities than systems
+for large-scale data analysis. The baseline overhead of these systems
+spans over 5 orders of magnitude. Even among systems intended for HPC
+there is easily 2 orders of magnitude in variation. The gap shrinks
+with node count, as the most efficient systems are the most impacted
+by increasing communication latencies, and also with numbers of
+dependencies and with increasing task parallelism. In certain cases,
+such as when task parallelism is available and compute is balanced
+with communication, asynchronous systems show a substantial benefit.
+
+Not considered in our analysis is the impact of programming system
+features on programmer productivity and performance portability. Most
+applications do not operate at the absolute extreme of runtime-limited
+performance, and thus may choose to trade overhead for better
+usability. Our study helps to quantify exactly how much a tradeoff is
+being made, so that users can be better informed, and developers can
+see the impact of features of the performance of their programming
+systems.
