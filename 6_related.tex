@@ -8,17 +8,13 @@ applications and therefore have the advantage of bearing some
 relationship to the original. This advantage typically does not hold
 for microbenchmarks.
 
-A common failure mode for mini-apps is to bite off more complexity
-than can be reasonably implemented to a level of quality sufficient
-for meaningful measurement. New mini-apps often provide only a
-reference implementation, or omit performance evaluations of different
-implementations, if those are presented. Without formal evaluation is
-it difficult to know if these implementations are of a level of
-quality sufficient for meaningful comparison. Follow-up experiments, if
-any, normally present a single system, and compare against the
-reference implementation (or not at all) and not with any other
-implementations that might be available. As a result, comparative
-studies across many implementations are rare.
+Though smaller than full applications, mini-apps can be challenging to
+implement to a level of quality sufficient for conducting comparative
+studies between programming systems. The largest study we're aware of,
+for the mini-app LULESH~\cite{LULESH13}, compares 7 programming
+systems (Chapel, Charm++, CUDA, Lizst, Loci, OpenMP, and MPI). Other
+studies usually lack a comprehensive evaluation, even if multiple
+implementations are available.
 
 \begin{itemize}
 
@@ -26,12 +22,6 @@ studies across many implementations are rare.
 The initial paper on PENNANT~\cite{PENNANT} includes an MPI/OpenMP/MPI+OpenMP
 implementation; follow-up papers present an implementation in
 Regent~\cite{Regent15, ControlReplication17, LegionTracing18}.
-
-\item
-The initial report on LULESH~\cite{LULESH12} includes no performance
-results at all; follow-up papers present performance results for
-CnC~\cite{LULESHCNC15} (a self-comparison) and X10~\cite{LULESHX1015}
-(comparison against reference only).
 
 \item
 One follow-up paper for the mini-app CoMD describes a Chapel

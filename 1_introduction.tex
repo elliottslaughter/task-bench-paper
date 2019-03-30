@@ -24,8 +24,8 @@ to the level of quality needed for useful benchmarking. In many cases,
 the effort to tune for performance exceeds the effort to develop the
 mini-app in the first place. As a result, implementations of mini-apps
 often do not reach the level of maturity required to compare
-systems. Indeed, there are few such published studies, and none to our
-knowledge that involve more than a handful of systems.
+systems. Indeed, there are few such published studies that involve
+more than a handful of systems.
 
 There is another important issue: How does one predict how
 the performance of a mini-app generalizes to a full
@@ -92,7 +92,7 @@ given system is likely to perform well.
 Task Bench and METG address issues common in limit studies of runtime
 systems for parallel and distributed programming. Such studies often
 employ the metric \emph{tasks per second} (TPS), which is almost
-universally measured with trivial (i.e., no) dependencies. While
+universally measured with trivial (i.e., no) dependencies \cite{LegionTracing18, Canary16, Armstrong14}. While
 phrased in terms of tasks, TPS can be measured for any system as long
 as the application in question has identifiable units of work that run
 to completion without interruption. TPS is an upper bound on
@@ -117,7 +117,7 @@ throughput while performing useful application work.
 
 We conduct a comprehensive comparative study of Task Bench
 implementations in 13 different programming systems, including
-Chapel \cite{Chapel07}, Charm++ \cite{Charmpp93}, MPI \cite{MPI},
+Chapel \cite{Chapel15}, Charm++ \cite{Charmpp93}, MPI \cite{MPI},
 OmpSs \cite{OmpSs11}, OpenMP \cite{OpenMPSpec40},
 PaRSEC \cite{PARSEC13}, Realm \cite{Realm14}, Regent \cite{Regent15},
 Spark \cite{Spark10}, StarPU \cite{StarPU11},
@@ -137,8 +137,8 @@ The paper is organized as follows:
 \item Section~\ref{sec:implementation} details the implementation of
   Task Bench in 13 programming systems.
 \item Section~\ref{sec:evaluation} provides a comprehensive evaluation
-  of Task Bench performance on up to 256 Haswell nodes of the Cori
-  supercomputer.
+  of Task Bench on up to 256 Haswell nodes of the Cori
+  supercomputer~\cite{Cori}.
 \end{itemize}
 
 Section~\ref{sec:related-work} relates this work to previous efforts,
