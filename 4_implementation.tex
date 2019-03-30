@@ -33,11 +33,11 @@ Bench implementations for each system.
 
 \subsection{Chapel}
 
-Chapel~\cite{Chapel15} is an explicitly parallel programming language
-that follows a \emph{multi-resolution} approach to parallel
+Chapel~\cite{Chapel15} is a programming language
+that follows a \emph{multi-res\-o\-lu\-tion} approach to parallel
 programming, with support for parallelism at a variety of
 levels. Chapel's core features are a partitioned global address space
-(PGAS), data distributions, tasks, and
+(PGAS), data distributions, tasks,
 synchronization primitives, and array promotion. For Task Bench, we decided to target a low-level implementation in
 Chapel, using explicit task instantiation (via
 \lstinline[language=Chapel]{coforall}), bulk access to distributed
@@ -116,11 +116,7 @@ tasks that are not directly connected to those that are to be executed
 on the current node.
 
 Data in PaRSEC is stored in a built-in matrix data structure with a 2D
-block cyclic distribution.  The Task Bench implementation divides this
-matrix into $M$ by $N$ tiles where $N$ equals to the width of the task
-graph and $M$ varies from 2 to the height of the task graph depending
-on optimizations performed to alleviate write-after-read dependencies.
-Tiles are distributed across nodes in pre-defined patterns,
+block cyclic distribution. Tiles of the matrix are distributed across nodes in pre-defined patterns,
 and can be passed to tasks on other nodes, but
 can only be written on the node where the data is originally
 allocated. In our Task Bench implementation, each task writes to a

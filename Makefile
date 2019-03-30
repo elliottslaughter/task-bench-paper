@@ -90,7 +90,7 @@ spelling:
 .PHONY: clean
 clean:
 	rm -f *.bbl *.aux *.log *.out *.blg *.lot *.lof *.dvi $(DOC).pdf $(DOC)-ext.pdf $(GENERATED_FIGS)
-	cd figs/sample-task-graphs && rm *.bbl *.aux *.log *.out *.blg *.lot *.lof *.dvi
+	cd figs/sample-task-graphs && rm -f *.bbl *.aux *.log *.out *.blg *.lot *.lof *.dvi
 
 .PHONY: zip
 zip:
