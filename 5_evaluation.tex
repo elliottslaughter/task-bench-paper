@@ -158,7 +158,8 @@ partially by allowing the user to omit tasks that are not direct
 dependencies of those executed on the current node. However, this DAG
 trimming approach still requires some dynamic checks that scale with
 the number of nodes and thus limits scalability. Approaches based on compile-time analysis can
-partially or fully mitigate this overhead. PaRSEC PTG improves over DTD by performing DAG expansion at compile time, but
+partially or fully mitigate this overhead. PaRSEC PTG improves over DTD 
+by performing DAG expansion at compile time~\cite{PARSEC_DTD}, but
 still retains dynamic checks leading to limited scalability. Regent
 uses a compile-time optimization that enables full horizontal
 scalability~\cite{ControlReplication17}. A similar, manual
@@ -218,7 +219,7 @@ their fundamental limits due to overhead.
 
 The difference between the remaining systems is due primarily to the
 scheduling behavior of the various systems. The execution of 4
-simultaneous task graphs partially, but does not fully, mitigate the
+simultaneous task graphs partially, mitigate the
 load imbalance in the tasks. Therefore, systems which provide an
 additional on-node work stealing capability see additional gains in
 efficiency at large task granularities. However, the use of

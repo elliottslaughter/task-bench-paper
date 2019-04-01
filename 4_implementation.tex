@@ -115,8 +115,9 @@ SPMD fashion on all nodes, and the user is responsible for eliding
 tasks that are not directly connected to those that are to be executed
 on the current node.
 
-Data in PaRSEC is stored in a built-in matrix data structure with a 2D
-block cyclic distribution. Tiles of the matrix are distributed across nodes in pre-defined patterns,
+The 2D block cyclic is the data distribution used by TaskBench, 
+one out of many available in PaRSEC. Tiles of the matrix are 
+distributed across nodes in pre-defined patterns,
 and can be passed to tasks on other nodes, but
 can only be written on the node where the data is originally
 allocated. In our Task Bench implementation, each task writes to a
