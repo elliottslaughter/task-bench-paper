@@ -35,9 +35,6 @@ the baseline for 100\% efficiency.
 \input{e1_flops}
 \input{e2_efficiency}
 
-% Really want this to appear in the next section, but Latex forces it to be placed here to get the layout we want.
-\input{e3_metg_compute}
-
 The vast majority of systems achieve or nearly achieve peak FLOPS. Some
 systems reserve a number of cores (usually 1 or 2) for internal
 runtime usage; these systems take a minor hit in peak FLOPS compared
@@ -64,7 +61,38 @@ reward implementation strategies, such as devoting nearly 100\% of
 system resources to the runtime system, that make no sense for real
 applications.
 
+\subsection{Number of Dependencies}
+\label{subsec:number-of-dependencies}
+
+\input{e4_radix}
+
+The number of dependencies per task has a strong influence on the
+overhead incurred by each system, as shown in
+Figure~\ref{fig:radix}. This plot shows METG(50\%) for the nearest
+dependence pattern, when varying the number of dependencies per task
+from 0 to 9.
+
+% FIXME: make sure these numbers are up to date for final paper
+
+The ratio in METG between 0 and 3 dependencies per task ranges from
+$1.3\times$ to $59\times$ (median $3.0\times$). From 1 to 3
+dependencies, the ratio varies from $1.2\times$ to $15\times$ (median
+$2.1\times$). The difference is most pronounced in systems that
+perform runtime work inline. For example, MPI achieves an METG of 390
+ns with 0 dependencies, but this rises to 4.6 us with 3 dependencies,
+a factor of $12\times$ increase. This is unsurprising as in the case
+of 0 dependencies, no \lstinline[language=C++]{MPI_Isend} calls are
+issued at all, so MPI has nothing to do aside from executing kernels
+as quickly as possible.
+
+For this reason, we recommend evaluating the performance of
+programming systems under realistic workloads, rather than with
+trivial dependencies.
+
 \subsection{Baseline Overhead}
+
+% Really want this to appear in the next section, but Latex forces it to be placed here to get the layout we want.
+\input{e3_metg_compute}
 
 One of the basic questions when considering different programming
 systems is: How much overhead does the system add? This question is tricky to answer directly because some systems introduce
@@ -157,7 +185,7 @@ executing on all other nodes. PaRSEC DTD and StarPU mitigate this
 partially by allowing the user to omit tasks that are not direct
 dependencies of those executed on the current node. However, this DAG
 trimming approach still requires some dynamic checks that scale with
-the number of nodes and thus limits scalability. Approaches based on compile-time analysis can
+the number of nodes and thus limits scalability~\cite{PARSEC_DTD}. Approaches based on compile-time analysis can
 partially or fully mitigate this overhead. PaRSEC PTG improves over DTD 
 by performing DAG expansion at compile time~\cite{PARSEC_DTD}, but
 still retains dynamic checks leading to limited scalability. Regent
@@ -168,34 +196,6 @@ optimization is shown in the plots as PaRSEC shard.
 % FIXME: remove parsec dtd shard if no space. 
 
 % FIXME: talk about overhead spanning 5 orders of magnitude
-
-\subsection{Number of Dependencies}
-\label{subsec:number-of-dependencies}
-
-\input{e4_radix}
-
-The number of dependencies per task has a strong influence on the
-overhead incurred by each system, as shown in
-Figure~\ref{fig:radix}. This plot shows METG(50\%) for the nearest
-dependence pattern, when varying the number of dependencies per task
-from 0 to 9.
-
-% FIXME: make sure these numbers are up to date for final paper
-
-The ratio in METG between 0 and 3 dependencies per task ranges from
-$1.3\times$ to $59\times$ (median $3.0\times$). From 1 to 3
-dependencies, the ratio varies from $1.2\times$ to $15\times$ (median
-$2.1\times$). The difference is most pronounced in systems that
-perform runtime work inline. For example, MPI achieves an METG of 390
-ns with 0 dependencies, but this rises to 4.6 us with 3 dependencies,
-a factor of $12\times$ increase. This is unsurprising as in the case
-of 0 dependencies, no \lstinline[language=C++]{MPI_Isend} calls are
-issued at all, so MPI has nothing to do aside from executing kernels
-as quickly as possible.
-
-For this reason, we recommend evaluating the performance of
-programming systems under realistic workloads, rather than with
-trivial dependencies.
 
 \subsection{Load Imbalance}
 
