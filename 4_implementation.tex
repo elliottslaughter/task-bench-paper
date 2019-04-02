@@ -72,8 +72,7 @@ send/receive pair in MPI.
 
 OmpSs~\cite{OmpSs11} is a programming model for loop- and task-based parallelism
 that is source-compatible with OpenMP. Our Task Bench implementation
-uses OpenMP 4.0-style tasks with task dependencies. Because tasks in
-OpenMP 4.0 have a fixed number of dependencies, we use a switch
+uses OpenMP 4.0-style task dependencies. Because OpenMP tasks have a fixed number of dependencies, we use a switch
 statement to implement the dynamic dependencies required for Task
 Bench. The implementation is otherwise straightforward.
 
@@ -84,11 +83,8 @@ Bench. The implementation is otherwise straightforward.
 OpenMP~\cite{OpenMPSpec40} is the industry standard API for loop-based
 parallelism on shared-memory systems, and supports task dependencies as of version 4.0. Our Task Bench implementation
 for OpenMP is very similar to OmpSs and uses tasks with
-task dependencies.
-
-In our evaluation, we test with both GNU GOMP and Intel KMP
-implementations of OpenMP. We found KMP to provide better performance
-and report KMP numbers in our evaluation.
+task dependencies. We tested both GNU GOMP and Intel KMP
+implementations of OpenMP and found KMP to be better performing.
 
 % FIXME: keep this in sync with experiments
 

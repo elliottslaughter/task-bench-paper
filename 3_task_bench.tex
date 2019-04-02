@@ -23,16 +23,16 @@ preceding time step. Figure~\ref{fig:task-graphs} shows a number of sample task
 graphs that can be implemented with Task Bench. Note that layout is
 significant---in particular, column $i$ represents all tasks
 with index $i$ in the iteration space over all the time
-steps. Generally speaking each column of the task graph will be
+steps. Generally speaking each column will be
 assigned to execute on a different processor core.
 
 Dependencies between tasks are controlled by a configurable dependence
 relation. The
-dependence relation enumerates, for each task, the set of tasks in the
-previous time step that task depends on. This permits a wide variety
+dependence relation enumerates the set of tasks from the
+previous time step each task depends on. This permits a wide variety
 of dependence patterns to be implemented that are relevant to real
 applications in high-performance scientific computing and data analysis: stencils,
-sweeps, FFTs, trees, and so on. Dependence patterns may also be
+sweeps, FFTs, trees, etc. Dependence patterns may also be
 parameterized, such as picking the $K$ nearest neighbors, or $K$
 distant neighbors. Table~\ref{tab:equations} show equations for the
 dependence relations of the patterns in Figure~\ref{fig:task-graphs},
