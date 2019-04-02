@@ -22,7 +22,8 @@ INCLUDED_TEX = 0_abstract.tex \
 	e3_metg_compute.tex \
 	e4_radix.tex \
 	e5_imbalance.tex \
-	e6_communication.tex
+	e6_communication.tex \
+	e7_bytes.tex
 INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
 	figs/task-bench-results/compute/efficiency_stencil_mpi.pdf \
 	figs/task-bench-results/compute/weak_mpi.pdf \
@@ -41,7 +42,8 @@ INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
 	figs/task-bench-results/communication/efficiency_nodes_64_comm_16.pdf \
 	figs/task-bench-results/communication/efficiency_nodes_64_comm_256.pdf \
 	figs/task-bench-results/communication/efficiency_nodes_64_comm_4096.pdf \
-	figs/task-bench-results/communication/efficiency_nodes_64_comm_65536.pdf
+	figs/task-bench-results/communication/efficiency_nodes_64_comm_65536.pdf \
+	figs/task-bench-results/memory/bytes_stencil.pdf
 GENERATED_FIGS = figs/sample-task-graphs/trivial.pdf \
 	figs/sample-task-graphs/no_comm.pdf \
 	figs/sample-task-graphs/stencil.pdf \
@@ -82,6 +84,7 @@ figures:
 	(cd figs/task-bench-results/communication && ../../task-bench/scripts/render_all.sh crop)
 	(cd figs/task-bench-results/imbalance && ../../task-bench/scripts/render_all.sh crop)
 	(cd figs/task-bench-results/radix && ../../task-bench/scripts/render_all.sh crop)
+	(cd figs/task-bench-results/memory && ../../task-bench/scripts/render_all.sh crop)
 
 .PHONY: spelling
 spelling:
