@@ -71,6 +71,16 @@ of system performance, such as MPI communication or collective
 latency~\cite{MPPTest99, MPIBench01}. These measurements typically do
 not generalize beyond the immediate system they measure.
 
+\textsc{coNCePTuaL}~\cite{Conceptual07} is a domain-specific language
+for writing network performance tests. \textsc{coNCePTuaL} and Task
+Bench both enable the easy creation of new benchmarks though
+\textsc{coNCePTuaL} does so via scripting whereas Task Bench provides
+a set of configurable parameters. \textsc{coNCePTuaL} also targets a
+lower level of abstraction, optimized more for testing messaging
+layers, whereas Task Bench is closer to application level and
+therefore enables comparisons of a broader set of parallel and
+distributed programming systems.
+
 Limit studies of task scheduling throughput in various runtime systems
 often make additional assumptions. A popular assumption is the use of
 trivially parallel tasks~\cite{Canary16, Armstrong14}, which as shown
