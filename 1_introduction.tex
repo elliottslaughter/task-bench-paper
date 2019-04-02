@@ -3,7 +3,7 @@
 
 The challenge of parallel and distributed computation has led to a
 wide variety of proposals for programming models, languages, and
-runtime systems. But while these systems are well-represented in the literature, comprehensive and comparative performance evaluations
+runtime systems. While these systems are well-represented in the literature, comprehensive and comparative performance evaluations
 remain difficult to find. Our
 goal in this paper is to develop a meaningful and useful framework for
 comparing the performance of parallel and distributed programming
@@ -16,18 +16,17 @@ One approach to comparing the performance of different systems is through \emph{
 \emph{mini-apps}. Because they distill the structure of a larger
 application, mini-apps can provide insight
 without the expense of developing a production code. However, despite the name, our experience is that
-mini-apps still requite significant investment to develop
+mini-apps still require significant investment to develop
 to the level of quality needed for useful benchmarking. In many cases,
 the effort to tune for performance exceeds the effort to develop the
 mini-app in the first place. As a result, implementations of mini-apps
 often do not reach the level of maturity required to compare
-systems. Indeed, there are few published studies
-that involve more than a handful of systems~\cite{LULESH13}.
+systems. Few published studies involve more than a handful of systems~\cite{LULESH13}.
 
 There is a second important issue: How does one predict how
 the performance of a mini-app generalizes to a full
 application, even one closely related? Part of the problem is
-that \emph{weak} and \emph{strong} scaling, which are by far the most commonly
+that \emph{weak} and \emph{strong} scaling, by far the most commonly
 reported performance metrics,
 do not directly characterize the performance of the underlying
 programming system. Weak scaling can hide arbitrary amounts of runtime
@@ -65,21 +64,12 @@ to introduce task parallelism into the workload. Together, these
 design elements permit the exploration of a large space of application
 behaviors.
 
-To address the second issue and isolate the contribution of the programming model's runtime system
-to application performance, we introduce a new metric called
-\emph{minimum effective task granularity} (METG). Intuitively,
-METG(50\%) is the smallest application task granularity which can be
-executed while maintaining at least 50\% efficiency,
-meaning that the application achieves at least 50\% of peak
-performance (e.g., FLOPS or memory bandwidth) 
-on a given machine. METG captures the essence of what is important in a weak
+To address the second issue and isolate the contribution of the programming model's runtime system to application performance, we introduce a new metric called \emph{minimum effective task granularity} (METG). Intuitively, METG(50\%) is the smallest executable task granularity that maintains at least 50\% efficiency, meaning that the application achieves at least 50\% of peak
+performance (e.g., FLOPS or memory bandwidth) on a given machine. METG captures the essence of what is important in a weak
 or strong scaling study, the behavior at the limit of scalability. For
-weak scaling, METG(50\%) corresponds directly to the smallest problem
-size that can be weak scaled with 50\% efficiency. For strong scaling,
-METG(50\%) can be used to compute the scale at which performance can
-be expected to dip below 50\% efficiency.
+weak scaling, METG(50\%) corresponds directly to the smallest problem size that can be weak-scaled with 50\% efficiency. For strong scaling, METG(50\%) can be used to compute the scale at which performance can be expected to dip below 50\% efficiency.
 
-A lower METG does not necessarily mean that performance for a particular workload will be
+A lower METG does not necessarily mean that performance for a particular workload is
 better. For example, two systems with METG(50\%) of 100~us and 1~ms,
 respectively, running an application with an average task granularity
 of 10~ms, are both very likely to perform well. Only when the task
@@ -96,7 +86,7 @@ as the application in question has identifiable units of work that run
 to completion without interruption. TPS is an upper bound on
 runtime-limited application throughput, but not a tight bound, as the
 cost of non-trivial dependencies can be significant and may impact
-scalability. This issue is easily fixed by running non-trivial
+scalability. This issue can be easily fixed by running non-trivial
 configurations of Task Bench.
 
 There is another, deeper issue with TPS. TPS may be measured with
