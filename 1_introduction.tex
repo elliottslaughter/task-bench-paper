@@ -91,17 +91,16 @@ configurations of Task Bench.
 
 There is another, deeper issue with TPS. TPS may be measured with
 empty tasks~\cite{LegionTracing18} or with tasks of some
-duration~\cite{Canary16, Armstrong14}. If empty tasks are used, the
+duration~\cite{Canary16, Armstrong14}. When using empty tasks, the
 resulting upper bound on task scheduling throughput fails to represent
-any realistic application, as no
-useful work is being performed. If non-empty tasks are used, \emph{but
-  the efficiency of the overall application is not reported}, then TPS
-is not a measurement of runtime-limited performance. Large tasks may
-be used to hide any amount of runtime overhead,
-while tasks that are too small may result in a drop in total
+useful work within a realistic application. With non-empty tasks,
+\emph{where the efficiency of the overall application is not
+ reported}, TPS is not a measurement of runtime-limited
+performance. Large tasks may be used to hide any amount of runtime
+overhead, while tasks that are too small may result in a drop in total
 application throughput even as TPS increases. Only by constraining
 efficiency, as in METG, can we meaningfully measure how runtime
-overhead impacts the ability perform useful application work.
+overhead impacts the ability to perform useful application work.
 
 We conduct a comprehensive comparative study of Task Bench
 implementations in 13 different programming systems, including
