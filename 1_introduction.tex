@@ -1,11 +1,10 @@
 \section{Introduction}
 \label{sec:introduction}
 
-The challenge of parallel and distributed computation has lead to a
+The challenge of parallel and distributed computation has led to a
 wide variety of proposals for programming models, languages, and
-runtime systems. But while the features of these systems are widely
-written about in the literature, comprehensive performance evaluations
-of these systems remain difficult to find. Our
+runtime systems. But while these systems are well-represented in the literature, comprehensive and comparative performance evaluations
+remain difficult to find. Our
 goal in this paper is to develop a meaningful and useful framework for
 comparing the performance of parallel and distributed programming
 systems.
@@ -13,30 +12,28 @@ systems.
 
 % note: removed definition of task
 
-One approach to comparing the performance of different systems has
-focused on the development of \emph{proxy-} or
+One approach to comparing the performance of different systems is through \emph{proxy-} or
 \emph{mini-apps}. Because they distill the structure of a larger
 application, mini-apps can provide insight
-without the expense of developing a full-blown
-application. However, despite the name, our experience is that
-mini-apps still requite significant investment to develop, especially
+without the expense of developing a production code. However, despite the name, our experience is that
+mini-apps still requite significant investment to develop
 to the level of quality needed for useful benchmarking. In many cases,
 the effort to tune for performance exceeds the effort to develop the
 mini-app in the first place. As a result, implementations of mini-apps
 often do not reach the level of maturity required to compare
-systems. Indeed, there are few such published studies
+systems. Indeed, there are few published studies
 that involve more than a handful of systems~\cite{LULESH13}.
 
-There is another important issue: How does one predict how
+There is a second important issue: How does one predict how
 the performance of a mini-app generalizes to a full
-application, even one closely related? Part of the problem here is
-that weak and strong scaling, which are by far the most commonly
-reported metrics for performance of both mini- and full applications,
+application, even one closely related? Part of the problem is
+that \emph{weak} and \emph{strong} scaling, which are by far the most commonly
+reported performance metrics,
 do not directly characterize the performance of the underlying
 programming system. Weak scaling can hide arbitrary amounts of runtime
 system overhead with sufficiently large problem sizes, and strong
 scaling does not separate runtime system overhead from other costs
-(such as increased communication, among other things) when
+(such as increased communication, among many other things) when
 using progressively larger portions of a machine.
 
 To address the first issue, we present Task Bench, a
@@ -61,7 +58,7 @@ in the discrete ordinates method of radiation simulation), FFTs, trees
 point in the task graph can be configured to execute kernels with a
 variety of computational properties, including compute- and
 memory-bound operations of varying durations. The dependencies between
-tasks can be configured to carry payloads of varying size, permitting
+tasks can be configured to carry communication payloads of varying size, permitting
 the design of communication-bound cases. Finally, multiple
 (potentially heterogeneous) task graphs can be executed concurrently
 to introduce task parallelism into the workload. Together, these
@@ -74,7 +71,7 @@ to application performance, we introduce a new metric called
 METG(50\%) is the smallest application task granularity which can be
 executed while maintaining at least 50\% efficiency,
 meaning that the application achieves at least 50\% of peak
-performance (e.g., FLOPS) 
+performance (e.g., FLOPS or memory bandwidth) 
 on a given machine. METG captures the essence of what is important in a weak
 or strong scaling study, the behavior at the limit of scalability. For
 weak scaling, METG(50\%) corresponds directly to the smallest problem
@@ -82,13 +79,13 @@ size that can be weak scaled with 50\% efficiency. For strong scaling,
 METG(50\%) can be used to compute the scale at which performance can
 be expected to dip below 50\% efficiency.
 
-A lower METG does not necessarily mean that performance will be
+A lower METG does not necessarily mean that performance for a particular workload will be
 better. For example, two systems with METG(50\%) of 100~us and 1~ms,
 respectively, running an application with an average task granularity
-of 10~ms, are both likely to perform well. Only when the task
-granularity approaches (or drops below) METG(50\%) is performance
-likely to diverge. Thus METG helps to identify the regime in which a
-given system is likely to perform well.
+of 10~ms, are both very likely to perform well. Only when the task
+granularity approaches (or drops below) METG(50\%) will performance
+likely diverge. Thus METG helps to identify the regime in which a
+given system can deliver good performance.
 
 Task Bench and METG address issues common in limit studies of runtime
 systems for parallel and distributed programming. Such studies often
@@ -113,8 +110,8 @@ is not a measurement of runtime-limited performance. Large tasks may
 be used to hide any amount of runtime overhead,
 while tasks that are too small may result in a drop in total
 application throughput even as TPS increases. Only by constraining
-efficiency, as in METG, can we measure runtime-limited application
-throughput while performing useful application work.
+efficiency, as in METG, can we meaningfully measure how runtime
+overhead impacts the ability perform useful application work.
 
 We conduct a comprehensive comparative study of Task Bench
 implementations in 13 different programming systems, including

@@ -21,9 +21,9 @@ Bench implementations may be unidiomatic are noted below.
 There are also aspects of some systems that we do not consider in our
 evaluation. For example, a number of systems provide some level of
 support for heterogeneous processors such as GPUs, but the support
-varies so widely (if it exists at all) that it is challenging to come
-up with a representative benchmark that allows these features to be
-compared in an apples-to-apples manner.
+varies so widely (if it exists at all) that it seems difficult to
+compare systems with direct GPU support to those wihtout in an
+apples-to-apples manner.
 
 In all cases, members of the respective programming systems' teams
 were consulted during the development and evaluation of the
@@ -33,12 +33,11 @@ Bench implementations for each system.
 
 \subsection{Chapel}
 
-Chapel~\cite{Chapel15} is a programming language
-that follows a \emph{multi-res\-o\-lu\-tion} approach to parallel
-programming, with support for parallelism at a variety of
+Chapel~\cite{Chapel15} is a parallel programming language
+with a \emph{multi-res\-o\-lu\-tion} approach, supporting parallelism at a variety of
 levels. Chapel's core features are a partitioned global address space
 (PGAS), data distributions, tasks,
-synchronization primitives, and array promotion. For Task Bench, we decided to target a low-level implementation in
+synchronization primitives, and array promotion. For Task Bench, we target a low level of
 Chapel, using explicit task instantiation (via
 \lstinline[language=Chapel]{coforall}), bulk access to distributed
 arrays for efficient data movement, and atomic integers for
@@ -46,22 +45,22 @@ synchronization.
 
 \subsection{Charm++}
 
-Charm++~\cite{Charmpp93} is an explicitly parallel programming system
-based on the actor model. Actors, or
-\emph{chares}, are objects that live in their own address space;
-chares communicate data and synchronize via messages, and can be moved
+Charm++~\cite{Charmpp93} is an explicitly parallel actor-based programming system. Actors, or
+\emph{chares}, are objects in their own address space.
+Chares communicate data and synchronize via messages and can be moved
 to balance load. Our Task Bench implementation uses a chare
-array for the task graph, with one chare for each column of the task graph. Messages are
-used to implement dependencies, and a task is executed as soon as its
-dependencies are all available. Collectives are used to synchronize the
+array for the task graph, with one chare for each column. Messages implement dependencies; a task executes as soon as its
+dependencies are all available. Collectives synchronize the
 completion of the task graph execution.
 
 % FIXME: Discuss SMP vs non-SMP versions
 
 \subsection{MPI}
 
+% FIXME: bulk synchronous or point-to-point
+
 Our MPI~\cite{MPI} implementation of Task Bench represents the common
-case of bulk synchronous programs with distinct computation and
+case of point-to-point communication with distinct computation and
 communication phases. We experimented with a variety of implementation
 strategies and found the best performing to be using
 \lstinline[language=C++]{MPI_Isend} and
@@ -89,7 +88,7 @@ task dependencies.
 
 In our evaluation, we test with both GNU GOMP and Intel KMP
 implementations of OpenMP. We found KMP to provide better performance
-and thus report KMP numbers in our evaluation.
+and report KMP numbers in our evaluation.
 
 % FIXME: keep this in sync with experiments
 
@@ -108,9 +107,8 @@ executing the program), and dependencies between tasks are
 identified automatically based on the input and output data of tasks. 
 A task depends on another task if it reads data written by the other task,
 and the data is copied automatically if the two tasks are executed on
-different nodes. While the basic DTD model is implicitly parallel
-because the system is responsible for the discovery of parallelism, to
-achieve horizontal scalability, the program is executed in a
+different nodes. To
+improve horizontal scalability, the program is executed in
 SPMD fashion on all nodes, and the user is responsible for eliding
 tasks that are not directly connected to those that are to be executed
 on the current node.
@@ -129,8 +127,7 @@ tasks have a fixed number of dependencies.
 
 Realm~\cite{Realm14} is an explicitly-parallel task-based programming
 model used internally by Legion~\cite{Legion12} and
-Regent~\cite{Regent15}. Thus the Realm implementation of Task Bench can be
-seen as a limit study of what can be achieved with Legion or Regent.
+Regent~\cite{Regent15}. A Realm implementation of Task Bench is a limit study of what can be achieved with Legion or Regent.
 
 Tasks in Realm are executed in a deferred manner, with dependencies
 between tasks explicitly defined by \emph{events} passed from one task
@@ -138,11 +135,9 @@ to another. Realm's data model supports collections that live in a
 specific memory. Data must be explicitly copied, and the copies
 synchronized with tasks via events.
 
-Realm also supports a subgraph API where sets of tasks and copies are
-issued together. This mode permits additional optimizations to be
-performed. We have implemented Task Bench in both individual and
-subgraph styles, but report numbers for the subgraph version as it
-provides better performance.
+Realm also supports a \emph{subgraph} API that enables additional
+optimizations. We report numbers for the subgraph version of Task
+Bench as it provides better performance.
 
 \subsection{Regent}
 
@@ -165,27 +160,26 @@ The core abstractions in Spark are functional operators such as map,
 reduce, filter, join, etc. Functions in Spark operate on
 \emph{resilient
   distributed datasets} (RDDs), which are globally-visible,
-dynamically single-assignment data structures that are cached in memory
-and written to disk for durability. One of Spark's primary
-optimizations therefore is the caching of RDDs to avoid unnecessary
+dynamically single-assignment data structures. One of Spark's primary
+optimizations is the caching of RDDs to avoid unnecessary
 disk traffic.
 
 Though Spark has tasks internally, these are not exposed to the user,
 so one of the challenges in developing a Task Bench implementation is
-mapping the task graph to a set of operators which will result in the
+mapping the task graph to a set of operators that result in the
 desired performance behavior. We use a combination of
 \lstinline[language=Scala]{flatMap} and
 \lstinline[language=Scala]{groupByKey} operations to generate task
 dependencies, and then \lstinline[language=Scala]{mapPartitions} to execute a
 series of tasks. We use an explicit hash partitioner to ensure that
 Spark does not attempt to group multiple Task Bench tasks into a
-single Spark task.
+single Spark task, as the tasks in Task Bench already represent coarse-grained units of work.
 
-We performed an extensive set of experiments to verify that no
+We performed extensive experiments to verify that no
 extraneous factors interfered with our Spark measurements. We
-completely disabled logging, ensured that no RDDs are actually written
-to disk, confirmed that there is no measurable overhead due to JNI
-calls from Java to C, and cross-checked our results with known cases
+completely disabled logging, ensured no RDDs are written
+to disk, confirmed there is no measurable overhead due to JNI
+calls from Java to C, and cross-checked results with known cases
 that hit optimal task throughput in Spark, among other things.
 
 \subsection{StarPU}
@@ -201,8 +195,7 @@ project~\cite{Chameleon}.
 \subsection{Swift/T}
 
 Swift/T~\cite{Wozniak13} is a parallel scripting language intended
-primarily for the composition of workflows in high-performance
-scientific computing. Tasks in Swift/T can be written in any
+primarily for the composition of HPC workflows. Tasks in Swift/T can be written in any
 programming language, and may even be themselves parallel. Swift/T
 programs follow dataflow semantics, where every statement may
 potentially execute in parallel as soon as its dependencies are
@@ -215,11 +208,9 @@ semantics to capture dependencies on other tasks.
 
 \subsection{TensorFlow}
 
-TensorFlow~\cite{TensorFlow15} is a programming system intended for
-the executing deep learning workloads, widely used in industrial data
-center applications. Although TensorFlow's high-level API exposes
-concepts specific to machine learning, internally TensorFlow is
-implemented as a task graph execution engine, making it a good fit for
+TensorFlow~\cite{TensorFlow15} is a programming system designed for
+deep learning workloads. Although TensorFlow's API exposes
+machine learning concepts, internally TensorFlow is a task graph execution engine, making it a good fit for
 Task Bench. TensorFlow programs are written by creating nodes in the
 task graph, and then connecting these nodes with edges to implement
 the desired dataflow. Task graphs are composed in a high-level

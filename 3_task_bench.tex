@@ -21,7 +21,7 @@ the vertical axis and parallel tasks along the
 horizontal. Tasks can depend only on tasks from the immediately
 preceding time step. Figure~\ref{fig:task-graphs} shows a number of sample task
 graphs that can be implemented with Task Bench. Note that layout is
-significant---in particular, each column $i$ corresponds to all tasks
+significant---in particular, column $i$ represents all tasks
 with index $i$ in the iteration space over all the time
 steps. Generally speaking each column of the task graph will be
 assigned to execute on a different processor core.
@@ -43,7 +43,7 @@ graph.
 \input{t0_equations}
 
 Despite its generality, Task Bench is easy to implement, making it
-tractable to develop a suite of high-quality implementations. The core aspects of Task Bench, such as generating
+tractable to develop a suite of high-quality implementations. The central aspects of Task Bench, such as generating
 task graphs and enumerating dependencies, are encapsulated in a core
 library that is shared among all the Task Bench implementations. The
 core library also includes implementations of the kernels, ensuring
@@ -51,7 +51,7 @@ that the kernels are identical in all systems, eliminating a potential
 source of performance disparity that can be a pitfall for
 implementations of mini-apps. Finally, the Task Bench core library manages the
 parsing of input parameters and the display of output results,
-ensuring that all implementations behave in a uniform manner, and can
+ensuring that all implementations behave in a uniform manner and can
 be scripted consistently. Because much of the functionality needed for
 a Task Bench implementation is in the core library, implementations of
 Task Bench are small: Our 13 Task Bench implementations range from 88
@@ -64,7 +64,7 @@ can be queried to determine exactly what dependencies a task should
 expect. The output of every task in Task Bench is unique,
 and all inputs are verified. An assertion is thrown if validation
 fails. This level of self-checking ensures that every execution of Task Bench, if it
-completes successfully, is correct. An evaluation of the impact of
+completes successfully, is correct. An evaluation of the performance impact of
 validation showed it to be less than 3\% at the smallest task
 granularities in any Task Bench implementation, with a negligible
 effect on overall results.
