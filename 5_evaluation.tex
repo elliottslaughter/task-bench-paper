@@ -219,8 +219,8 @@ their fundamental limits due to overhead.
 
 The difference between the remaining systems is due primarily to the
 scheduling behavior of the various systems. The execution of 4
-simultaneous task graphs partially, mitigate the
-load imbalance in the tasks. Therefore, systems which provide an
+simultaneous task graphs only partially mitigates the
+load imbalance between tasks. Therefore, systems which provide an
 additional on-node work stealing capability see additional gains in
 efficiency at large task granularities. However, the use of
 work-stealing queues can also impact throughput at very small task

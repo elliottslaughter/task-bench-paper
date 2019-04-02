@@ -115,8 +115,7 @@ SPMD fashion on all nodes, and the user is responsible for eliding
 tasks that are not directly connected to those that are to be executed
 on the current node.
 
-The 2D block cyclic is the data distribution used by TaskBench, 
-one out of many available in PaRSEC. Tiles of the matrix are 
+Task Bench uses a 2D block cyclic data distribution provided by PaRSEC. Tiles of data are 
 distributed across nodes in pre-defined patterns,
 and can be passed to tasks on other nodes, but
 can only be written on the node where the data is originally
@@ -196,9 +195,8 @@ programming model similar to PaRSEC's DTD. Our Task Bench implementation in
 StarPU is very similar to PaRSEC, including the use of a switch
 statement to handle dynamic numbers of task dependencies, and manual
 elision of tasks on unrelated nodes to provide horizontal scalability.
-A simplified version of the 2D block cyclic matrix from the Chameleon 
-project~\cite{Chameleon} is used to describe the data produced by tasks in 
-our Task Bench implementation.
+We use a simplified version of the 2D block cyclic data distribution from the Chameleon 
+project~\cite{Chameleon}.
 
 \subsection{Swift/T}
 
