@@ -6,10 +6,9 @@
 
 The \emph{minimum effective task granularity}, METG(50\%), for an application $A$ is
 the smallest average task granularity (i.e., task duration) such that $A$
-achieves overall efficiency exceeding 50\%. For example, in
-a compute-bound application efficiency might be measured as the
-percentage of the available FLOPS achieved. On a machine with a peak
-capability of 1.26 TFLOPS per node, METG(50\%) would correspond to
+achieves overall efficiency of at least 50\%. For example, in
+compute-bound applications efficiency can be measured as the
+percentage of the available FLOPS achieved. On Cori with 1.26 TFLOPS available per Haswell node, METG(50\%) corresponds to
 the smallest task granularity achieved while maintaining at least 0.63
 TFLOPS. Absolute (rather than relative) efficiency is preferred
 because it makes it easier to conduct fair comparisons with
@@ -18,7 +17,7 @@ programming systems that reserve one or more cores for internal use.
 Figures~\ref{fig:flops-mpi} and \ref{fig:efficiency-mpi} show how METG is
 calculated. The application, in this case an MPI implementation of the
 Task Bench stencil pattern in Figure~\ref{fig:task-graphs-stencil}, is
-run on a single Haswell node of Cori~\cite{Cori} with a problem size large enough to
+run on a single Haswell node of Cori with a problem size large enough to
 ensure that it achieves peak FLOPS. This confirms
 that the application is properly configured and that the
 efficiency metric is achievable. The problem
@@ -40,12 +39,11 @@ compute-bound kernel included in the Task Bench implementation,
 described in more detail in Section~\ref{sec:task-bench}.
 
 In Figure~\ref{fig:efficiency-mpi}, we see that
-efficiency starts near 100\%, and that initially task granularity
-drops quickly with minimal change in efficiency. However as task
+efficiency starts at 100\%. Initially task granularity
+shrinks with minimal change in efficiency. However as task
 granularity shrinks further, efficiency begins to drop more rapidly, leading
 eventually to asymptote. Intuitively, this asymptote
-represents the fundamental baseline overhead of the system, the point
-below which the system simply cannot execute tasks efficiently.
+represents the fundamental baseline overhead of the system.
 
 % FIXME: keep this up-to-date with the graphs
 
@@ -58,6 +56,9 @@ Task Bench. We use 50\% because that is generally an acceptable level
 of efficiency in practice, and values above 90\% can misrepresent the
 performance of some systems (see
 Section~\ref{subsec:peak-performance-and-efficiency}).
+
+\input{f3_weak_scaling_mpi}
+\input{f4_strong_scaling_mpi}
 
 METG has a well-defined
 relationship with quantities of interest to application developers,
@@ -76,9 +77,6 @@ where lines become more compressed. At the
 very bottom, the lines compress together as running time becomes dominated by overhead. The shape of the curve at the bottom is the same
 for both weak and strong scaling; this is
 the METG curve.
-
-\input{f3_weak_scaling_mpi}
-\input{f4_strong_scaling_mpi}
 
 METG therefore has a direct relationship with the smallest problem
 size that can be weak scaled to a given node count with a given level

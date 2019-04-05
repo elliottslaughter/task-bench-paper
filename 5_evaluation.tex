@@ -7,9 +7,9 @@ We present a comprehensive evaluation of our Task Bench implementations on up to
 Haswell nodes of the Cori supercomputer~\cite{Cori}, a Cray XC40
 machine. Cori Haswell nodes have 2 sockets with Intel Xeon E5-2698 v3
 processors (a total of 32 physical cores per node), 128 GB RAM, and a
-Cray Aries interconnect. We use GCC 7.3.0 for compiling all Task Bench
+Cray Aries interconnect. We use GCC 7.3.0 for all Task Bench
 implementations, and (where applicable) the system default MPI
-implementation, Cray MPICH 7.7.3. Additional versions and flags for the
+implementation, Cray MPICH 7.7.3. Versions and flags for the
 various systems are shown in Table~\ref{tab:flags}.
 
 \subsection{Compute-Bound Performance}
@@ -124,36 +124,32 @@ shows how METG(50\%) varies with node count for a variety of
 dependence patterns supported by Task Bench. METG(50\%) is calculated
 separately at each node count, to isolate runtime system behavior from
 changes in communication latencies and topology when using
-progressively larger portions of the machine. We consider the
-following configurations of Task Bench:
+progressively larger portions of the machine.
 
-\begin{itemize}
-\item Figure~\ref{fig:metg-compute-stencil} is a 1D stencil where each
-  task depends on 3 other tasks (including the same point in the
-  previous timestep).
-\item Figure~\ref{fig:metg-compute-nearest} is a pattern where each
-  task depends on 5 others, chosen to be as close as possible.
-\item Figure~\ref{fig:metg-compute-spread} is a pattern where each
-  task depends on 5 others, spread as widely as possible.
-\item Figure~\ref{fig:metg-compute-4x-nearest} shows 4 identical
-  copies of the nearest dependence pattern executing concurrently.
-\end{itemize}
+We consider the following configurations of Task Bench:
+Figure~\ref{fig:metg-compute-stencil} is a 1D stencil where each task
+depends on 3 other tasks (including the same point in the previous
+timestep). Figure~\ref{fig:metg-compute-nearest} is a pattern where
+each task depends on 5 others, chosen to be as close as
+possible. Figure~\ref{fig:metg-compute-spread} is a pattern where each
+task depends on 5 others, spread as widely as possible. And
+Figure~\ref{fig:metg-compute-4x-nearest} shows 4 identical copies of
+the nearest dependence pattern executing concurrently.
 
 We observe in the results that the baseline overheads of different
 systems vary by over 5 orders of magnitude. It is worth
 remembering when considering this metric that this is a \emph{minimum}
 effective task granularity. Therefore applications with an average
 task granularity of \emph{at least} this value can usually be expected
-to execute efficiently. Typical average task granularity will
+to execute efficiently. Typical task granularities will
 generally be determined by the application domain being
-considered. Most notably, for data analytics workloads being run in
-industrial data centers, the higher METG values observed for Spark and
+considered. Most notably, for large-scale data analytics workloads, the higher METG values observed for Spark and
 TensorFlow are sufficient. In contrast, for high-performance
 scientific simulations, task granularities in the millisecond range
 are useful, as such applications communicate (e.g., for halo
 exchanges) much more frequently.
 
-In general, the least complicated pattern (stencil) is most favorable
+The least complicated pattern (stencil) is most favorable
 to MPI, as it represents a truly bulk synchronous task graph with no
 opportunity for task parallelism. For the stencil pattern, the
 dominating factor is the basic overhead of executing a task, which is
@@ -166,7 +162,7 @@ The gap between MPI and other systems shrinks as the complexity of the
 communication pattern grows, and even reverses as task parallelism is
 added in the form of multiple task graphs. Some of the slower systems
 are omitted from comparisons with more complicated dependence
-patterns, as they failed to complete in a reasonable time.
+patterns, as they did not complete in reasonable time.
 
 \subsection{Scalability}
 \label{subsec:scalability}
@@ -239,9 +235,8 @@ load imbalance between tasks. Therefore, systems that provide an
 additional on-node work stealing capability see additional gains in
 efficiency at large task granularities. However, the use of
 work-stealing queues can also impact throughput at very small task
-granularities. This can be seen in the difference between Chapel
-distrib (which uses a work stealing scheduler) vs Chapel with its
-default (non-work-stealing) scheduler.
+granularities. This can be seen in the difference between the Chapel
+distrib (work stealing) vs default (non-work-stealing) schedulers.
 
 \subsection{Communication Hiding}
 
@@ -249,9 +244,9 @@ default (non-work-stealing) scheduler.
 
 Also of interest is the ability of asynchronous systems to
 hide communication latency in the presence of task
-parallelism. Figure~\ref{fig:efficiency-communication} plots task
-granularity vs efficiency curves for varying amounts of
-communication. The degree of communication is configured by the number
+parallelism. Figure~\ref{fig:efficiency-communication} plots efficiency vs task
+granularity curves for varying amounts of
+communication, determined by the number
 of bytes produced by each task (and therefore communicated with each
 task dependency).
 

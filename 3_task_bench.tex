@@ -39,9 +39,6 @@ dependence relations of the patterns in Figure~\ref{fig:task-graphs},
 where $t$ is timestep, $i$ is column, and $W$ is the width of the task
 graph.
 
-\input{f5_task_graphs}
-\input{t0_equations}
-
 Despite its generality, Task Bench is easy to implement, making it
 tractable to develop a suite of high-quality implementations. The central aspects of Task Bench, such as generating
 task graphs and enumerating dependencies, are encapsulated in a core
@@ -56,6 +53,9 @@ be scripted consistently. Because much of the functionality needed for
 a Task Bench implementation is in the core library, implementations of
 Task Bench are small: Our 13 Task Bench implementations range from 88
 to 1500 lines, with several hundred lines being typical.
+
+\input{f5_task_graphs}
+\input{t0_equations}
 
 The Task Bench core library is fully
 validating. Because the task graph configuration is explicitly
