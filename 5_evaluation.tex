@@ -12,7 +12,7 @@ implementations, and (where applicable) the system default MPI
 implementation, Cray MPICH 7.7.3. Additional versions and flags for the
 various systems are shown in Table~\ref{tab:flags}.
 
-\subsection{Peak Performance and Efficiency}
+\subsection{Compute-Bound Performance}
 \label{subsec:peak-performance-and-efficiency}
 
 In theory, any system should be able to hit peak efficiency as long as
@@ -61,11 +61,23 @@ reward implementation strategies, such as devoting nearly 100\% of
 system resources to the runtime system, that make no sense for real
 applications.
 
-% FIXME: maybe consider adding this section
+\subsection{Memory-Bound Performance}
 
-%% \subsection{Memory-Bound Performance}
+\input{e7_bytes}
 
-%% \input{e7_bytes}
+Figure~\ref{fig:bytes} shows the performance of Task Bench
+implementations with a memory-bound kernel. We measure peak memory
+bandwidth of 108 GB/s, which compares favorably with the
+OpenMP-enabled STREAM benchmarks~\cite{STREAM} which report betweeen
+79 and 90 GB/s.
+
+Not all cores are required to saturate memory bandwidth. As a result,
+systems that reserve one or more cores are able to hit 100\% of peak
+performance, unlike with compute-bound kernels. Otherwise the
+performance curves are similar. We are currently investigating the
+performance of Charm++.
+
+The remaining experiments use compute-bound kernels.
 
 \subsection{Number of Dependencies}
 \label{subsec:number-of-dependencies}
@@ -89,9 +101,7 @@ ns with 0 dependencies, but this rises to 4.6 us with 3 dependencies,
 a factor of $12\times$ increase. This is unsurprising as in the case
 of 0 dependencies, no \lstinline[language=C++]{MPI_Isend} calls are
 issued at all, so MPI has nothing to do aside from executing kernels
-as quickly as possible.
-
-For this reason, we recommend evaluating the performance of
+as quickly as possible. For this reason, we recommend evaluating the performance of
 programming systems under realistic workloads, rather than with
 trivial dependencies.
 
