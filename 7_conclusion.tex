@@ -1,32 +1,23 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-Parameterized benchmarks are a promising new route for evaluating the
-performance of parallel and distributed programming systems. By
-composing a small number of orthogonal primitives, parameterized
-benchmarks make it possible to explore a space of application
-scenarios, while minimizing the marginal cost of developing each
-additional feature. In the case of Task Bench, this has enabled a
-comprehensive comparative study of programming system performance
-which is unique in both the breadth of systems considered and the
-depth of insight achieved about them.
-
-Our study has both confirmed and challenged our intuitions. We have
-found, unsurprisingly, that systems intended primarily for scientific
-simulation are optimized for smaller task granularities than systems
-for large-scale data analysis. The baseline overhead of these systems
-spans over 5 orders of magnitude. Even among systems intended for HPC
-there is easily 2 orders of magnitude in variation. The gap shrinks
-with node count, as the most efficient systems are the most impacted
-by increasing communication latencies, and also with numbers of
-dependencies and with increasing task parallelism. In certain cases,
-such as when task parallelism is available and compute is balanced
-with communication, asynchronous systems show a substantial benefit.
+Task Bench is a promising new approach for evaluating the performance
+of parallel and distributed programming systems. We have seen that
+systems with support for asynchronous (and/or task-based) programming
+appear to show benefits with more complicated dependency patterns,
+higher node counts (because of higher communication latencies) and
+more communication (because of ability to overlap it with
+computation). However, all these benefits can be eclipsed if baseline
+runtime overheads are too high. The current generation of task-based
+systems (PaRSEC, Realm, Regent, and StarPU) show higher overheads
+than traditional HPC systems, indicating that there continues to be
+work to be done in this area.
 
 Not considered in our analysis is the impact of programming system
 features on programmer productivity and performance portability. Most
 applications do not operate at the absolute extreme of runtime-limited
 performance, and thus may choose to trade overhead for better
-usability. Our study helps to quantify the performance side of that tradeoff so that users can be better informed and developers can
-see the impact of features on the performance of their programming
+usability. Our study helps to quantify the performance side of that
+tradeoff so that users can be better informed and developers can see
+the impact of features on the performance of their programming
 systems.
