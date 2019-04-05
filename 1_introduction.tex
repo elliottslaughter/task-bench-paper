@@ -18,8 +18,7 @@ application, mini-apps can provide insight
 without the expense of developing a production code. However, despite the name, our experience is that
 mini-apps still require significant investment to develop
 to the level of quality needed for useful benchmarking. In many cases,
-the effort to tune for performance exceeds the effort to develop the
-mini-app in the first place. As a result, implementations of mini-apps
+the effort to tune for performance exceeds the effort to develop a correct implementation. As a result, implementations of mini-apps
 often do not reach the level of maturity required to compare
 systems. Few published studies involve more than a handful of systems~\cite{LULESH13}.
 
@@ -70,7 +69,7 @@ or strong scaling study, the behavior at the limit of scalability. For
 weak scaling, METG(50\%) corresponds directly to the smallest problem size that can be weak-scaled with 50\% efficiency. For strong scaling, METG(50\%) can be used to compute the scale at which performance can be expected to dip below 50\% efficiency.
 
 A lower METG does not necessarily mean that performance for a particular workload is
-better. For example, two systems with METG(50\%) of 100~us and 1~ms,
+better. For example, two systems with METG(50\%) of 100~\textmu{}s and 1~ms,
 respectively, running an application with an average task granularity
 of 10~ms, are both very likely to perform well. Only when the task
 granularity approaches (or drops below) METG(50\%) will performance
@@ -84,9 +83,8 @@ universally measured with trivial (i.e., no) dependencies \cite{LegionTracing18,
 phrased in terms of tasks, TPS can be measured for any system as long
 as the application in question has identifiable units of work that run
 to completion without interruption. TPS is an upper bound on
-runtime-limited application throughput, but not a tight bound, as the
-cost of non-trivial dependencies can be significant and may impact
-scalability. This issue can be easily fixed by running non-trivial
+runtime-limited application throughput. But it is not a tight bound, as the
+cost of non-trivial dependencies can be significant. This issue can be easily fixed by running non-trivial
 configurations of Task Bench.
 
 There is another, deeper issue with TPS. TPS may be measured with
@@ -115,7 +113,10 @@ increasing numbers of and/or variations in the pattern of dependencies. We
 also explore each system's ability to scale, hide communication
 overhead, and mitigate load imbalance.
 
-The paper is organized as follows:
+% The paper is organized as follows:
+This paper makes the following contributions:
+
+% FIXME: if you need more space you can collapsed the itemize:
 
 \begin{itemize}
 \item Section~\ref{sec:metg} defines the METG(50\%) metric and its

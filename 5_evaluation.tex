@@ -96,7 +96,7 @@ $1.3\times$ to $59\times$ (median $3.0\times$). From 1 to 3
 dependencies, the ratio varies from $1.2\times$ to $15\times$ (median
 $2.1\times$). The difference is most pronounced in systems that
 perform runtime work inline. For example, MPI achieves an METG of 390
-ns with 0 dependencies, but this rises to 4.6 us with 3 dependencies,
+ns with 0 dependencies, but this rises to 4.6 \textmu{}s with 3 dependencies,
 a factor of $12\times$ increase. This is unsurprising as in the case
 of 0 dependencies, no \lstinline[language=C++]{MPI_Isend} calls are
 issued at all, so MPI has nothing to do aside from executing kernels
@@ -183,7 +183,7 @@ ideal scaling. Most notably, Spark is typically
 intended for use in industrial data center applications with task
 granularities measured in tens of seconds. Spark uses a centralized
 controller, which limits throughput, and this is visible in the figure
-as line for Spark immediately rises with node count. Keep in mind also
+as the line for Spark immediately rises with node count. Keep in mind also
 that Spark is being evaluated here with a non-trivial dependence
 pattern which is relatively unrepresentative of Spark's normal use
 cases. Spark is more efficient with trivial parallelism, as described
@@ -196,7 +196,7 @@ executing on all other nodes. PaRSEC DTD and StarPU mitigate this
 partially by allowing the user to omit tasks that are not direct
 dependencies of those executed on the current node. However, this DAG
 trimming approach still requires some dynamic checks that scale with
-the number of nodes and thus limits scalability~\cite{PARSEC_DTD}. Approaches based on compile-time analysis can
+the number of nodes and thus limit scalability~\cite{PARSEC_DTD}. Approaches based on compile-time analysis can
 partially or fully mitigate this overhead. PaRSEC PTG improves over DTD 
 by performing DAG expansion at compile time~\cite{PARSEC_DTD}, but
 still retains dynamic checks leading to limited scalability. Regent

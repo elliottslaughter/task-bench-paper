@@ -42,8 +42,7 @@ In Figure~\ref{fig:efficiency-mpi}, we see that
 efficiency starts at 100\%. Initially task granularity
 shrinks with minimal change in efficiency. However as task
 granularity shrinks further, efficiency begins to drop more rapidly, leading
-eventually to asymptote. Intuitively, this asymptote
-represents the fundamental baseline overhead of the system.
+eventually to an asymptote as overhead dominates useful work.
 
 % FIXME: keep this up-to-date with the graphs
 
@@ -51,7 +50,7 @@ METG(50\%) is the intersection of this curve with 50\% efficiency, as
 shown by the red lines in Figure~\ref{fig:flops-mpi} and
 \ref{fig:efficiency-mpi}. At 50\% efficiency, MPI achieves an average
 task granularity of
-4.6 us, thus the METG(50\%) of MPI is 4.6 us for this configuration of
+4.6 \textmu{}s, thus the METG(50\%) of MPI is 4.6 \textmu{}s for this configuration of
 Task Bench. We use 50\% because that is generally an acceptable level
 of efficiency in practice, and values above 90\% can misrepresent the
 performance of some systems (see
@@ -63,8 +62,7 @@ Section~\ref{subsec:peak-performance-and-efficiency}).
 METG has a well-defined
 relationship with quantities of interest to application developers,
 namely weak and strong scaling. Figures~\ref{fig:weak-scaling-mpi} and
-\ref{fig:strong-scaling-mpi} show the behavior of the MPI Task Bench stencil's weak and strong
-scaling, respectively, at a variety of problem sizes. In these
+\ref{fig:strong-scaling-mpi} show the weak and strong scaling behavior of the MPI Task Bench running a stencil pattern at a variety of problem sizes. In these
 figures, the vertical axis is shown as wall time to emphasize the
 relationship to time-to-solution, but it could equivalently be shown
 as task granularity (as the number of tasks per execution is
