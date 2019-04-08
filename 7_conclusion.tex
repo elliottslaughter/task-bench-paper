@@ -3,15 +3,15 @@
 
 Task Bench is a promising new approach for evaluating the performance
 of parallel and distributed programming systems. We have seen that
-systems with support for asynchronous (and/or task-based) programming
-appear to show benefits with more complicated dependency patterns,
-higher node counts (because of higher communication latencies) and
-more communication (because of ability to overlap it with
-computation). However, all these benefits can be eclipsed if baseline
-runtime overheads are too high. The current generation of task-based
-systems (PaRSEC, Realm, Regent, and StarPU) show higher overheads
-than traditional HPC systems, indicating that there continues to be
-work to be done in this area.
+systems vary by orders of magnitude in runtime overhead, as measured
+by METG. Widely used systems in industry have METG measured in
+seconds, reflecting the very coarse tasks and lack of need for strong
+scaling performance in current workloads. At the other extreme,
+traditional HPC systems have METG in the range of 10-100 \textmu{}s,
+necessary for strong scaling to small task granularities. The newer
+task-based systems, with METG in the range of 100 \textmu{}s to 1 ms
+have performance sufficient for weak scaling many HPC workloads, but
+more work is needed to strong scale the most demanding applications.
 
 Not considered in our analysis is the impact of programming system
 features on programmer productivity and performance portability. Most
