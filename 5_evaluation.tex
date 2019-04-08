@@ -40,15 +40,14 @@ to systems which share all cores between the application and runtime. Some of th
 slower systems struggle to achieve peak FLOPS, though in most cases
 the curves suggest that performance would continue to improve if we
 were to run larger problem sizes. Unfortunately, the excessive
-computational cost of running such tests makes it prohibitively
-expensive to run larger problem sizes. For example, the Spark job in
+computational cost of running such tests makes this prohibitively
+expensive. For example, the Spark job in
 this configuration ran for over 6 hours.
 
 Figure~\ref{fig:efficiency} shows efficiency (as a percentage of
 peak FLOPS) plotted against task granularity. This plot is
 used to calculate METG(50\%), as described in Section~\ref{sec:metg}. The
 red, dashed line shows the point where 50\% efficiency is achieved.
-
 In most cases, task granularity asymptotes prior to the 50\% efficiency point,
 though some systems continue to improve as efficiency continues
 to drop. Accounting for this effect is one of the main arguments in
@@ -74,7 +73,11 @@ performance, unlike with compute-bound kernels. Otherwise the
 performance curves are similar. We are currently investigating the
 performance of Charm++.
 
+% FIXME: why is Charm++ slow?
+
 The remaining experiments use compute-bound kernels.
+
+% FIXME: why compute-bound kernels?
 
 \subsection{Number of Dependencies}
 \label{subsec:number-of-dependencies}

@@ -108,7 +108,7 @@ identified automatically based on the input and output data of tasks.
 A task depends on another task if it reads data written by the other task,
 and the data is copied automatically if the two tasks are executed on
 different nodes. To
-improve horizontal scalability, the program is executed in
+improve scalability, the program is executed in
 SPMD fashion on all nodes, and the user is responsible for eliding
 tasks that are not directly connected to those that are to be executed
 on the current node.
@@ -151,12 +151,12 @@ Regent~\cite{Regent15} is an implicitly-parallel task-based language
 which implements the Legion programming model~\cite{Legion12}. We use
 Regent rather than Legion directly because the Regent compiler
 provides a critical optimization, \emph{control replication}, that
-enables superior horizontal scalability~\cite{ControlReplication17}.
+enables superior scalability~\cite{ControlReplication17}.
 
 \subsection{Spark}
 
 Spark~\cite{Spark10} is an implicitly-parallel programming model for
-data analytics, widely used in industrial data center applications. As
+large scale data analytics. As
 one of the programming models in this study not originally intended
 for scientific computing, Spark makes very different tradeoffs from
 other systems under consideration, and therefore makes an interesting
@@ -194,7 +194,7 @@ StarPU~\cite{StarPU11} is a task-based system that supports a \emph{sequential t
 programming model similar to PaRSEC's DTD. Our Task Bench implementation in
 StarPU is very similar to PaRSEC, including the use of a switch
 statement to handle dynamic numbers of task dependencies and manual
-elision of tasks on unrelated nodes to provide horizontal scalability.
+elision of tasks on unrelated nodes to improve scalability.
 We use a simplified version of the 2D block cyclic data distribution from the Chameleon 
 project~\cite{Chameleon}.
 
