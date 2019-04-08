@@ -13,17 +13,19 @@ systems is that the capabilities of the systems vary considerably. For
 example, some systems are \emph{implicitly parallel}, and provide some
 form of parallelism discovery from sequential programs, whereas others
 are \emph{explicitly parallel} and require users to specify the
-parallelism in the program. The Task
-Bench implementations are intended to reflect how actual applications
-would be written in the respective systems. Places where the Task
-Bench implementations may be unidiomatic are noted below.
+parallelism in the program. For systems that provide both implicit and explicit parallelism, the form of parallelism used in Task Bench is emphasized in Table~\ref{tab:systems}.
 
-There are also aspects of some systems that we do not consider in our
-evaluation. For example, a number of systems provide some level of
-support for heterogeneous processors such as GPUs, but the support
-varies so widely (if it exists at all) that it seems difficult to
-compare systems with direct GPU support to those without in an
-apples-to-apples manner.
+%% The Task
+%% Bench implementations are intended to reflect how actual applications
+%% would be written in the respective systems. Places where the Task
+%% Bench implementations may be unidiomatic are noted below.
+
+There are also aspects of some systems that we do not consider. For
+example, tasks may run on CPUs, GPUs, or any execution resource
+supported by a programming system. However, the level of support for
+heterogeneous processors varies widely across programming systems (if it exists at all), so
+in order to include as many systems as possible in our comparisons, we
+evaluate Task Bench only on CPUs in this paper.
 
 In all cases, members of the respective programming systems' teams
 were consulted during the development and evaluation of the
@@ -55,6 +57,8 @@ completion of the task graph execution.
 
 % FIXME: Discuss SMP vs non-SMP versions
 
+% FIXME: Discuss load balancer
+
 \subsection{MPI}
 
 % FIXME: bulk synchronous or point-to-point
@@ -84,7 +88,7 @@ OpenMP~\cite{OpenMPSpec40} is the industry standard API for loop-based
 parallelism on shared-memory systems, and supports task dependencies as of version 4.0. Our Task Bench implementation
 for OpenMP is very similar to OmpSs and uses tasks with
 task dependencies. We tested both GNU GOMP and Intel KMP
-implementations of OpenMP and found KMP to be better performing.
+implementations of OpenMP and found KMP to be better performing on Cori.
 
 % FIXME: keep this in sync with experiments
 
@@ -109,15 +113,21 @@ SPMD fashion on all nodes, and the user is responsible for eliding
 tasks that are not directly connected to those that are to be executed
 on the current node.
 
-Task Bench uses a 2D block cyclic data distribution provided by PaRSEC. Tiles of data are 
-distributed across nodes in pre-defined patterns,
-and can be passed to tasks on other nodes, but
-can only be written on the node where the data is originally
-allocated. In our Task Bench implementation, each task writes to a
-tile as output, and these tiles are passed as inputs to the
-subsequent sets of tasks. As in the OmpSs and OpenMP implementations,
-the task launch code uses a switch statement as the PaRSEC API assumes
-tasks have a fixed number of dependencies.
+In our Task Bench implementation, we evaluate both PTG and DTD models,
+as well as a third option based on DTD that has additional manual
+optimizations applied to further reduce dynamic checks for what tasks
+should be executed on a node, resulting in further improvements to
+scalability.
+
+%% Task Bench uses a 2D block cyclic data distribution provided by PaRSEC. Tiles of data are 
+%% distributed across nodes in pre-defined patterns,
+%% and can be passed to tasks on other nodes, but
+%% can only be written on the node where the data is originally
+%% allocated. In our Task Bench implementation, each task writes to a
+%% tile as output, and these tiles are passed as inputs to the
+%% subsequent sets of tasks. As in the OmpSs and OpenMP implementations,
+%% the task launch code uses a switch statement as the PaRSEC API assumes
+%% tasks have a fixed number of dependencies.
 
 \subsection{Realm}
 
@@ -175,15 +185,15 @@ We performed extensive experiments to verify that no
 extraneous factors interfered with our Spark measurements. We
 completely disabled logging, ensured no RDDs are written
 to disk, confirmed there is no measurable overhead due to JNI
-calls from Java to C, and cross-checked results with known cases
-that hit optimal task throughput in Spark, among other things.
+calls from Java to C or due to the serialization of data structures, and cross-checked results with known cases
+that hit optimal task throughput in Spark.
 
 \subsection{StarPU}
 
 StarPU~\cite{StarPU11} is a task-based system that supports a \emph{sequential task flow} (STF)
 programming model similar to PaRSEC's DTD. Our Task Bench implementation in
 StarPU is very similar to PaRSEC, including the use of a switch
-statement to handle dynamic numbers of task dependencies, and manual
+statement to handle dynamic numbers of task dependencies and manual
 elision of tasks on unrelated nodes to provide horizontal scalability.
 We use a simplified version of the 2D block cyclic data distribution from the Chameleon 
 project~\cite{Chameleon}.

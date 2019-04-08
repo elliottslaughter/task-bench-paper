@@ -11,18 +11,18 @@ compute-bound applications efficiency can be measured as the
 percentage of the available FLOPS achieved. On Cori with 1.26 TFLOPS available per Haswell node, METG(50\%) corresponds to
 the smallest task granularity achieved while maintaining at least 0.63
 TFLOPS. Absolute (rather than relative) efficiency is preferred
-because it makes it easier to conduct fair comparisons with
-programming systems that reserve one or more cores for internal use.
+because it better quantifies the performance tradeoff made by
+programming systems that reserve processor cores to implement asynchronous operations (such as data movement).
 
 Figures~\ref{fig:flops-mpi} and \ref{fig:efficiency-mpi} show how METG is
 calculated. The application, in this case an MPI implementation of the
 Task Bench stencil pattern in Figure~\ref{fig:task-graphs-stencil}, is
-run on a single Haswell node of Cori with a problem size large enough to
-ensure that it achieves peak FLOPS. This confirms
+run on a single Haswell node of Cori with a problem size large enough
+that runtime is dominated by the application's inner loops. This confirms
 that the application is properly configured and that the
 efficiency metric is achievable. The problem
-size is then repeatedly reduced while maintaining exactly the same hardware
-configuration (in particular, the same number of nodes). The
+size is then repeatedly reduced while maintaining exactly the same hardware and software
+configuration (in particular, the same number of nodes and tasks). The
 expectation is that as problem size shrinks,
 performance will begin to drop and eventually approach zero, as shown in Figure~\ref{fig:flops-mpi}. Systems
 with lower runtime overheads maintain higher performance at smaller
@@ -41,8 +41,8 @@ described in more detail in Section~\ref{sec:task-bench}.
 In Figure~\ref{fig:efficiency-mpi}, we see that
 efficiency starts at 100\%. Initially task granularity
 shrinks with minimal change in efficiency. However as task
-granularity shrinks further, efficiency begins to drop more rapidly, leading
-eventually to an asymptote as overhead dominates useful work.
+granularity shrinks further, efficiency drops more rapidly, leading
+to an asymptote as overhead dominates useful work.
 
 % FIXME: keep this up-to-date with the graphs
 

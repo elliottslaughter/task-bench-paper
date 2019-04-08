@@ -15,14 +15,12 @@ various systems are shown in Table~\ref{tab:flags}.
 \subsection{Compute-Bound Performance}
 \label{subsec:peak-performance-and-efficiency}
 
-In theory, any system should be able to hit peak efficiency as long as
+In theory, any system should be able to hit peak performance as long as
 the kernels are well-written and of sufficiently large granularity. In
-practice, achieving peak performance is tricky, subject to a number of
-pitfalls, and unfortunately, frequently skipped in evaluations of
+practice, achieving peak performance is tricky, and many subtle pitfalls of implementation or configuration can easily lead to poor performance. Unfortunately, peak performance is also frequently skipped in evaluations of
 runtime system overhead. However, verifying that peak performance is
-achieved is important to ensuring that such evaluations of overhead and
-efficiency are well-grounded and avoid common pitfalls in
-configuration.
+achieved is important to ensuring that evaluations of overhead and
+efficiency are well-grounded.
 
 Figure~\ref{fig:flops} shows the FLOPS achieved with a compute-bound
 kernel with varying problem sizes. This is the full version of
@@ -175,7 +173,7 @@ communication topology and latency.
 
 % FIXME: update this when we have more data
 
-Most systems for high-performance computing are horizontally scalable,
+Most systems for HPC are highly scalable,
 but this is not true of all the systems included in this
 evaluation. Lower is better in Figure~\ref{fig:metg-compute}, and a
 flat line is ideal. Lines that rise with node count indicate less than
@@ -199,10 +197,9 @@ trimming approach still requires some dynamic checks that scale with
 the number of nodes and thus limit scalability~\cite{PARSEC_DTD}. Approaches based on compile-time analysis can
 partially or fully mitigate this overhead. PaRSEC PTG improves over DTD 
 by performing DAG expansion at compile time~\cite{PARSEC_DTD}, but
-still retains dynamic checks leading to limited scalability. Regent
-uses a compile-time optimization that enables full horizontal
-scalability~\cite{ControlReplication17}. A similar, manual
-optimization is shown in the plots as PaRSEC shard.
+still retains dynamic checks leading to limited scalability. PaRSEC shard includes additional manual optimizations over DTD, completely eliminating these dynamic checks. Regent
+uses a compile-time optimization to improve
+scalability~\cite{ControlReplication17}; the increase in METG beyond 16 nodes is due to a known bug in Realm barrier migration which the Realm Task Bench implementation is able to manually work around.
 
 % FIXME: remove parsec dtd shard if no space. 
 
@@ -231,12 +228,11 @@ their fundamental limits due to overhead.
 The difference between the remaining systems is due primarily to the
 scheduling behavior of the various systems. The execution of 4
 simultaneous task graphs only partially mitigates the
-load imbalance between tasks. Therefore, systems that provide an
-additional on-node work stealing capability see additional gains in
+load imbalance between tasks. Systems that provide an
+additional on-node work stealing capability (such as Chapel with the distrib scheduler) see additional gains in
 efficiency at large task granularities. However, the use of
 work-stealing queues can also impact throughput at very small task
-granularities. This can be seen in the difference between the Chapel
-distrib (work stealing) vs default (non-work-stealing) schedulers.
+granularities. For example, Chapel's default (non-work-stealing) scheduler outperforms Chapel distrib at very small task granularities.
 
 \subsection{Communication Hiding}
 

@@ -2,12 +2,12 @@
 \begin{tabular}{l | l | l | l | l}
 System & Paradigm & Parallelism & Distrib. & Network \\
 \hline
-Chapel & multi-resolution & expl., impl. & yes & uGNI\footnote{Chapel uses GASNet to support non-Cray networks.} \\
+Chapel & multi-resolution & \emph{expl.}, impl. & yes & uGNI\footnote{Chapel uses GASNet to support non-Cray networks.} \\
 Charm++ & actor model & explicit & yes & uGNI\footnote{Charm++ provides additional backends for other networks.} \\
 MPI & message passing & explicit & yes & uGNI\footnote{Most MPI implementations provide additional backends for other networks.} \\
-OmpSs & loop-, task-based & expl., impl. & no & \\
-OpenMP & loop-, task-based & expl., impl. & no & \\
-PaRSEC & task-based & imlicit & yes & MPI \\
+OmpSs & loop-, task-based & expl., \emph{impl.} & no & \\
+OpenMP & loop-, task-based & expl., \emph{impl.} & no & \\
+PaRSEC & task-based & implicit & yes & MPI \\
 Realm & task-based & explicit & yes & GASNet \\
 Regent & task-based & implicit & yes & GASNet \\
 Spark & functional & implicit & yes & sockets \\
