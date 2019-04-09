@@ -150,13 +150,12 @@ are useful, as such applications communicate (e.g., for halo
 exchanges) much more frequently.
 
 The least complicated pattern (stencil) is most favorable
-to MPI, as it represents a truly bulk synchronous task graph with no
+to MPI, as it provides no
 opportunity for task parallelism. For the stencil pattern, the
 dominating factor is the basic overhead of executing a task, which is
-minimal for MPI as the Task Bench implementation is bulk synchronous
-and simply executes tasks one after another in alternation with
+minimal for MPI as the Task Bench implementation simply executes tasks one after another in alternation with
 communication phases. In contrast, the asynchronous execution
-mechanisms of the other systems are pure overhead in this scenario.
+mechanisms of other systems are pure overhead in this scenario.
 
 The gap between MPI and other systems shrinks as the complexity of the
 communication pattern grows, and even reverses as task parallelism is
@@ -221,15 +220,15 @@ durations. The task durations are generated with a deterministic
 pseudo random number generator with a deterministic seed to ensure
 identical task durations for all systems.
 
-The MPI implementation of Task Bench, being bulk synchronous,
+The MPI implementation of Task Bench, with its distinct computation and communication phases,
 suffers the most under load imbalance. The biggest
 difference is at large task granularities, where the imbalance has the
 effect of putting an upper bound on MPI efficiency. At smaller task
 granularities the effect shrinks and may even reverse as systems hit
 their fundamental limits due to overhead.
 
-The difference between the remaining systems is due primarily to the
-scheduling behavior of the various systems. The execution of 4
+The difference between the remaining systems is due primarily to
+different scheduling behaviors. The execution of 4
 simultaneous task graphs only partially mitigates the
 load imbalance between tasks. Systems that provide an
 additional on-node work stealing capability (such as Chapel with the distrib scheduler) see additional gains in
