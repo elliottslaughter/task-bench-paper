@@ -159,10 +159,14 @@ mechanisms of other systems are pure overhead in this scenario.
 
 The gap between MPI and other systems shrinks as the complexity of the
 communication pattern grows, and even reverses as task parallelism is
-added in the form of multiple task graphs. Some slower systems
+added in the form of multiple task graphs.
+
+Spark, Swift/T and TensorFlow
 are omitted from comparisons with more complicated dependence
 patterns, as the higher overheads of these systems would have required
-unreasonably large problem sizes (beyond what can be completed in 6 hours) to reach 50\% efficiency.
+unreasonably large problem sizes (beyond what can be completed in 6
+hours) to reach 50\% efficiency. Regent and X10 are missing from some
+graphs as Cori was highly impacted before the deadline.
 
 \subsection{Scalability}
 \label{subsec:scalability}
