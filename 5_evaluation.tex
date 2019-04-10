@@ -177,8 +177,6 @@ possible to evaluate METG at different node counts (shown in
 Figure~\ref{fig:metg-compute}) to see how it is impacted by changes in
 communication topology and latency.
 
-% FIXME: update this when we have more data
-
 Most systems for HPC are highly scalable,
 but this is not true of all the systems included in this
 evaluation. Lower is better in Figure~\ref{fig:metg-compute}, and a
@@ -206,10 +204,6 @@ by performing DAG expansion at compile time~\cite{PARSEC_DTD}, but
 still retains dynamic checks leading to limited scalability. PaRSEC shard includes additional manual optimizations over DTD, completely eliminating these dynamic checks. Regent
 uses a compile-time optimization to improve
 scalability~\cite{ControlReplication17}; the increase in METG beyond 16 nodes is due to a known bug in Realm barrier migration which the Realm Task Bench implementation is able to manually work around.
-
-% FIXME: remove parsec dtd shard if no space. 
-
-% FIXME: talk about overhead spanning 5 orders of magnitude
 
 \subsection{Load Imbalance}
 

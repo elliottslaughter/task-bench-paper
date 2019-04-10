@@ -57,11 +57,7 @@ completion of the task graph execution.
 
 % FIXME: Discuss SMP vs non-SMP versions
 
-% FIXME: Discuss load balancer
-
 \subsection{MPI}
-
-% FIXME: bulk synchronous or point-to-point
 
 Our MPI~\cite{MPI} implementation of Task Bench represents the common
 case of point-to-point communication with distinct computation and
@@ -89,8 +85,6 @@ parallelism on shared-memory systems, and supports task dependencies as of versi
 for OpenMP is very similar to OmpSs and uses tasks with
 task dependencies. We tested both GNU GOMP and Intel KMP
 implementations of OpenMP and found KMP to be better performing on Cori.
-
-% FIXME: keep this in sync with experiments
 
 \subsection{PaRSEC}
 
