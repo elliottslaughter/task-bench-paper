@@ -162,11 +162,9 @@ communication pattern grows, and even reverses as task parallelism is
 added in the form of multiple task graphs.
 
 Spark, Swift/T and TensorFlow
-are omitted from comparisons with more complicated dependence
-patterns, as the higher overheads of these systems would have required
+are omitted from comparisons with more complicated dependencies, as the higher overheads of these systems would have required
 unreasonably large problem sizes (beyond what can be completed in 6
-hours) to reach 50\% efficiency. Regent and X10 are missing from some
-graphs as Cori was highly impacted before the deadline.
+hours) to reach 50\% efficiency. Regent and X10 are incomplete as Cori was highly impacted before the deadline; complete results will be in the final paper.
 
 \subsection{Scalability}
 \label{subsec:scalability}
@@ -210,7 +208,7 @@ scalability~\cite{ControlReplication17}; the increase in METG beyond 16 nodes is
 \input{e5_imbalance}
 
 One advantage of systems with asynchronous execution capabilities is
-the ability to mitigate load imbalance, especially in the presence of
+the ability to mitigate load imbalance with little or no additional programmer effort, especially in the presence of
 task parallelism. To quantify this effect,
 Figure~\ref{fig:efficiency-imbalance} plots task granularity vs
 efficiency curves under load imbalance where each task's duration is multiplied by a uniform random variable between [0,~1). The task durations are generated with a deterministic
