@@ -4,7 +4,9 @@ System & Paradigm & Parallelism & Distrib. & Network \\
 \hline
 Chapel & multi-resolution & \emph{expl.}, impl. & yes & uGNI\footnote{Chapel uses GASNet to support non-Cray networks.} \\
 Charm++ & actor model & explicit & yes & uGNI\footnote{Charm++ provides additional backends for other networks.} \\
+Dask & task-based & implicit & yes & sockets \\
 MPI & message passing & explicit & yes & uGNI\footnote{Most MPI implementations provide additional backends for other networks.} \\
+MPI+X & hybrid & explicit & yes & MPI \\
 OmpSs & loop-, task-based & expl., \emph{impl.} & no & \\
 OpenMP & loop-, task-based & expl., \emph{impl.} & no & \\
 PaRSEC & task-based & implicit & yes & MPI \\
