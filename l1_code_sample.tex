@@ -1,8 +1,13 @@
 \begin{lstlisting}[language=Python,caption={Excerpt from Dask implementation.\label{lst:code-sample}},float]
+def execute_point(g, t, p, scratch, *inputs):
+   output = make_buffer(g.output_bytes_per_task)
+   # call Task Bench C API...
+   return output
+
 def execute_task_graph(g):
    scratch = [
-      make_buffer(g.scratch_bytes)
-      for _ in range(g.width)
+      make_buffer(g.scratch_bytes_per_task)
+      for _ in range(0, g.width)
    ]
 
    outputs = []
