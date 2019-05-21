@@ -1,0 +1,22 @@
+\begin{lstlisting}[language=Python,caption={Excerpt from Dask implementation.\label{lst:code-sample}},float]
+def execute_task_graph(g):
+   scratch = [
+      make_buffer(g.scratch_bytes)
+      for _ in range(g.width)
+   ]
+
+   outputs = []
+   last_row = None
+   for t in range(0, g.timesteps):
+      row = []
+      for p in range(0, g.width):
+         inputs = []
+         for dep in dependencies(g, t, p):
+            inputs.append(last_row[dep])
+         output, scratch[p] = execute_point(
+            g, t, p, scratch[p], *inputs)
+         row.append(output)
+         outputs.append(output)
+      last_row = row
+   return outputs
+\end{lstlisting}
