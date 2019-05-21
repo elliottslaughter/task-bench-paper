@@ -1,0 +1,2 @@
+* Three new implementations (Dask, MPI+OpenMP, MPI+CUDA)
+* Listing 1: Dask code sample
