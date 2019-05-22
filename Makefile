@@ -14,6 +14,7 @@ INCLUDED_TEX = 0_abstract.tex \
 	f3_weak_scaling_mpi.tex \
 	f4_strong_scaling_mpi.tex \
 	f5_task_graphs.tex \
+	l0_compute_kernel.tex \
 	l1_code_sample.tex \
 	t0_equations.tex \
 	t1_systems.tex \

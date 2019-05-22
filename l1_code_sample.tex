@@ -1,4 +1,4 @@
-\begin{lstlisting}[language=Python,caption={Excerpt from Dask implementation.\label{lst:code-sample}},float]
+\begin{lstlisting}[language=Python,caption={Excerpt from Task Bench implementation in Dask.\label{lst:code-sample}},float]
 def execute_point(g, t, p, scratch, inputs):
    output = make_buffer(g.output_bytes_per_task)
    # call Task Bench Core API...
@@ -9,7 +9,6 @@ def execute_task_graph(g):
       make_buffer(g.scratch_bytes_per_task)
       for _ in range(0, g.width)
    ]
-
    outputs = []
    last_row = None
    for t in range(0, g.timesteps):
