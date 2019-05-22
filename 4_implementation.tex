@@ -18,12 +18,12 @@ parallelism in the program. For systems that provide both implicit and explicit 
 %% would be written in the respective systems. Places where the Task
 %% Bench implementations may be unidiomatic are noted below.
 
-There are also aspects of some systems that we do not consider. For
-example, tasks may run on CPUs, GPUs, or any execution resource
-supported by a programming system. However, the level of support for
-heterogeneous processors varies widely across programming systems (if it exists at all), so
-in order to include as many systems as possible in our comparisons, we
-evaluate Task Bench only on CPUs in this paper.
+%% There are also aspects of some systems that we do not consider. For
+%% example, tasks may run on CPUs, GPUs, or any execution resource
+%% supported by a programming system. However, the level of support for
+%% heterogeneous processors varies widely across programming systems (if it exists at all), so
+%% in order to include as many systems as possible in our comparisons, we
+%% evaluate Task Bench only on CPUs in this paper.
 
 In all cases, members of the respective programming systems' teams
 were consulted during the development and evaluation of the
@@ -81,7 +81,7 @@ computation with \lstinline[language=C++]{MPI_Barrier}.
 \subsection{MPI+X}
 
 We provide two MPI+X implementations of Task Bench to evaluate the
-performance of hybrid programming models. Our MPI+OpenMP
+performance of hierarchical programming models. Our MPI+OpenMP
 implementation uses forall-style parallel loops to execute tasks,
 interleaved with MPI point-to-point communication as above. Our
 MPI+CUDA implementation follows an offload model where data is copied

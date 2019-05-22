@@ -52,7 +52,11 @@ ensuring that all implementations behave in a uniform manner and can
 be scripted consistently. Because much of the functionality needed for
 a Task Bench implementation is in the core library, implementations of
 Task Bench are small: Our 15 Task Bench implementations range from 88
-to 1500 lines, with several hundred lines being typical.
+to 1500 lines, with several hundred lines being
+typical. Listings~\ref{lst:compute-kernel} and \ref{lst:code-sample}
+show excerpts from the Task Bench core, and the Dask implementation,
+respectively. Only the code in \ref{lst:code-sample} need be
+implemented for each system.
 
 \input{f5_task_graphs}
 \input{t0_equations}
