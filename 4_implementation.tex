@@ -169,34 +169,27 @@ enables superior scalability~\cite{ControlReplication17}.
 \subsection{Spark}
 
 Spark~\cite{Spark10} is an implicitly-parallel programming model for
-large scale data analytics. As
-one of the programming models in this study not originally intended
-for scientific computing, Spark makes very different tradeoffs from
-other systems under consideration, and therefore makes an interesting
-point of comparison.
-
+large scale data analytics.
 The core abstractions in Spark are functional operators such as map,
-reduce, filter, join, etc. Functions in Spark operate on
+reduce, and join. Data in Spark are stored in
 \emph{resilient
-  distributed datasets} (RDDs), which are globally-visible,
-dynamically single-assignment data structures. One of Spark's primary
-optimizations is the caching of RDDs to avoid unnecessary
+  distributed datasets} (RDDs): globally-visible,
+dynamically single-assignment data structures. Spark caches RDDs in memory to avoid unnecessary
 disk traffic.
 
-Though Spark has tasks internally, these are not exposed to the user,
-so one of the challenges in developing a Task Bench implementation is
-mapping the task graph to a set of operators that result in the
-desired performance behavior. We use a combination of
+Spark has tasks internally but they are not exposed to the user,
+so a Task Bench implementation must map the task graph to a set of operators that result in the
+desired execution. We use
 \lstinline[language=Scala]{flatMap} and
-\lstinline[language=Scala]{groupByKey} operations to generate task
+\lstinline[language=Scala]{groupByKey} to generate task
 dependencies, and then \lstinline[language=Scala]{mapPartitions} to execute a
-series of tasks. We use an explicit hash partitioner to ensure that
+series of tasks. An explicit hash partitioner ensures that
 Spark does not attempt to group multiple Task Bench tasks into a
-single Spark task, as the tasks in Task Bench already represent coarse-grained units of work.
+single Spark task, as tasks in Task Bench already represent coarse-grained units of work.
 
 We performed extensive experiments to verify that no
 extraneous factors interfered with our Spark measurements. We
-completely disabled logging, ensured no RDDs are written
+disabled logging, ensured no RDDs are written
 to disk, confirmed there is no measurable overhead due to JNI
 calls from Java to C or due to the serialization of data structures, and cross-checked results with known cases
 that hit optimal task throughput in Spark.
@@ -205,11 +198,9 @@ that hit optimal task throughput in Spark.
 
 StarPU~\cite{StarPU11} is a task-based system that supports a \emph{sequential task flow} (STF)
 programming model similar to PaRSEC's DTD. Our Task Bench implementation in
-StarPU is very similar to PaRSEC, including the use of a switch
-statement to handle dynamic numbers of task dependencies and manual
-elision of tasks on unrelated nodes to improve scalability.
-We use a simplified version of the 2D block cyclic data distribution from the Chameleon 
-project~\cite{Chameleon}.
+StarPU is very similar to PaRSEC.
+%% We use a simplified version of the 2D block cyclic data distribution from the Chameleon 
+%% project~\cite{Chameleon}.
 
 \subsection{Swift/T}
 
@@ -230,15 +221,8 @@ semantics to capture dependencies on other tasks.
 TensorFlow~\cite{TensorFlow15} is a programming system designed for
 deep learning workloads. Although TensorFlow's API exposes
 machine learning concepts, internally TensorFlow is a task graph execution engine, making it a good fit for
-Task Bench. TensorFlow programs are written by creating nodes in the
-task graph, and then connecting these nodes with edges to implement
-the desired dataflow. Task graphs are composed in a high-level
-language such as Python, but then serialized and run by an
-execution engine written in C++.
-
-Our Task Bench implementation in TensorFlow works by defining a custom
-operator, which we instantiate for each point in the task graph. We
-then define dataflow edges to correspond to the task dependencies.
+Task Bench. TensorFlow programs operate via explicit graph construction. Task graphs are composed in Python and run by an
+execution engine written in C++. Our Task Bench implementation is straightforward.
 
 \subsection{X10}
 
