@@ -26,7 +26,8 @@ INCLUDED_TEX = 0_abstract.tex \
 	e6_communication.tex \
 	e7_bytes.tex \
 	e8_weak.tex \
-	e9_strong.tex
+	e9_strong.tex \
+	e10_cuda_efficiency.tex
 INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
 	figs/task-bench-results/compute/efficiency_stencil_mpi.pdf \
 	figs/task-bench-results/compute/weak_mpi.pdf \
@@ -48,7 +49,8 @@ INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
 	figs/task-bench-results/communication/efficiency_nodes_64_comm_65536.pdf \
 	figs/task-bench-results/memory/bytes_stencil.pdf \
 	figs/task-bench-results/compute/weak.pdf \
-	figs/task-bench-results/compute/strong.pdf
+	figs/task-bench-results/compute/strong.pdf \
+	figs/task-bench-results/cuda_compute/efficiency_stencil.pdf
 GENERATED_FIGS = figs/sample-task-graphs/trivial.pdf \
 	figs/sample-task-graphs/no_comm.pdf \
 	figs/sample-task-graphs/stencil.pdf \
