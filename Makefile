@@ -50,7 +50,7 @@ INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
 	figs/task-bench-results/memory/bytes_stencil.pdf \
 	figs/task-bench-results/compute/weak.pdf \
 	figs/task-bench-results/compute/strong.pdf \
-	figs/task-bench-results/cuda_compute/efficiency_stencil.pdf
+	figs/task-bench-results/cuda_compute/flops_v_flops_stencil.pdf
 GENERATED_FIGS = figs/sample-task-graphs/trivial.pdf \
 	figs/sample-task-graphs/no_comm.pdf \
 	figs/sample-task-graphs/stencil.pdf \
