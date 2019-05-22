@@ -2,3 +2,5 @@
 * Dask code sample
 * Weak/strong scaling graphs
 * GPU efficiency graph
+* Implementation section
+** New section on Dask
