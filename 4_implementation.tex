@@ -163,8 +163,8 @@ Bench as it provides better performance.
 Regent~\cite{Regent15} is an implicitly-parallel task-based language
 which implements the Legion programming model~\cite{Legion12}. We use
 Regent rather than Legion directly because the Regent compiler
-provides a critical optimization, \emph{control replication}, that
-enables superior scalability~\cite{ControlReplication17}.
+provides a critical optimization that
+improves scalability~\cite{ControlReplication17}.
 
 \subsection{Spark}
 
@@ -205,15 +205,12 @@ StarPU is very similar to PaRSEC.
 \subsection{Swift/T}
 
 Swift/T~\cite{Wozniak13} is a parallel scripting language intended
-primarily for the composition of HPC workflows. Tasks in Swift/T can be written in any
-programming language. Swift/T
+primarily for the composition of HPC workflows. Swift/T
 programs follow dataflow semantics, where every statement may
 potentially execute in parallel as soon as its dependencies are
 satisfied; statements only execute sequentially when explicitly
 requested. The Swift/T compiler performs a number of optimizations to
-improve performance of highly parallel programs~\cite{Armstrong14}.
-
-Our Task Bench in Swift/T is straightforward, using Swift/T's dataflow
+improve performance of highly parallel programs~\cite{Armstrong14}. Our Task Bench in Swift/T is straightforward, using Swift/T's dataflow
 semantics to capture dependencies on other tasks.
 
 \subsection{TensorFlow}
