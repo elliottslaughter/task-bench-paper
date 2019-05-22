@@ -208,6 +208,9 @@ still retains dynamic checks leading to limited scalability. PaRSEC shard includ
 uses a compile-time optimization to improve
 scalability~\cite{ControlReplication17}; the increase in METG beyond 16 nodes is due to a known bug in Realm barrier migration which the Realm Task Bench implementation is able to manually work around.
 
+% FIXME: TODO weak/strong scaling graphs
+
+
 \subsection{Load Imbalance}
 
 \input{e5_imbalance}
@@ -261,3 +264,5 @@ smaller message sizes.
 \subsection{Heterogeneous Processors}
 
 \input{e10_cuda_efficiency}
+
+% FIXME: TODO

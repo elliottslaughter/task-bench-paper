@@ -1,8 +1,6 @@
 \section{Implementations}
 \label{sec:implementation}
 
-\input{t1_systems}
-
 We have implemented Task Bench in the 16 parallel and distributed
 programming systems listed in Table~\ref{tab:systems}. We describe the
 systems, and any salient details of their Task Bench implementations,
@@ -33,6 +31,8 @@ corresponding Task Bench implementations. Where assistance was provided, the ins
 in helping to ensure that we provide the highest level of quality in the Task
 Bench implementations for each system.
 
+\input{t1_systems}
+
 \subsection{Chapel}
 
 Chapel~\cite{Chapel15} is a parallel programming language
@@ -57,6 +57,10 @@ completion of the task graph execution.
 
 % FIXME: Discuss SMP vs non-SMP versions
 
+\subsection{Dask}
+
+% FIXME: TODO
+
 \subsection{MPI}
 
 Our MPI~\cite{MPI} implementation of Task Bench represents the common
@@ -67,6 +71,10 @@ strategies and found the best performing to be using
 \lstinline[language=C++]{MPI_Irecv} to implement the communication
 phase, posting receives before sends. Each task dependency maps to one
 send/receive pair in MPI.
+
+\subsection{MPI+X}
+
+% FIXME: TODO
 
 \subsection{OmpSs}
 
