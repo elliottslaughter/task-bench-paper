@@ -74,11 +74,18 @@ strategies and found the best performing to be using
 \lstinline[language=C++]{MPI_Isend} and
 \lstinline[language=C++]{MPI_Irecv} to implement the communication
 phase, posting receives before sends. Each task dependency maps to one
-send/receive pair in MPI.
+send/receive pair in MPI. We also provide a bulk synchronous
+implementation which enforces the boundary between communication and
+computation with \lstinline[language=C++]{MPI_Barrier}.
 
 \subsection{MPI+X}
 
-% FIXME: TODO
+We provide two MPI+X implementations of Task Bench to evaluate the
+performance of hybrid programming models. Our MPI+OpenMP
+implementation uses forall-style parallel loops to execute tasks,
+interleaved with MPI point-to-point communication as above. Our
+MPI+CUDA implementation follows an offload model where data is copied
+to and from the GPU on every timestep.
 
 \subsection{OmpSs}
 
