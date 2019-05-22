@@ -1,6 +1,7 @@
 * Three new implementations (Dask, MPI+OpenMP, MPI+CUDA)
-* Compute kernel and Task Bench implementation code samples
-* Weak/strong scaling graphs
-* GPU efficiency graph
-* Implementation section
-** New section on Dask
+* New sections
+** Implementation: section 4.3 (Dask) and 4.5 (MPI+X)
+** Evaluation: section 5.6 (weak/strong scaling) and 5.9 (GPUs)
+* New figures
+** Listings 1 and 2 (code samples)
+** Figures 11, 12, 15 (experiments)
