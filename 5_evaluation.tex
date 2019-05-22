@@ -34,19 +34,19 @@ efficiency are well-grounded.
 \input{e7_bytes}
 \input{e4_radix}
 
-Figure~\ref{fig:flops} shows the FLOPS achieved with a compute-bound
+Figure~\ref{fig:flops} shows the FLOP/s achieved with a compute-bound
 kernel with varying problem sizes. This is the full version of
-Figure~\ref{fig:flops-mpi}. Each data point in the graph is the mean of 5 runs, with Task Bench configured to execute 1000 time steps of the stencil pattern. In the best case, we measure peak FLOPS of
+Figure~\ref{fig:flops-mpi}. Each data point in the graph is the mean of 5 runs, with Task Bench configured to execute 1000 time steps of the stencil pattern. In the best case, we measure peak FLOP/s of
 $1.26 \times 10^{12}$, which compares favorably with the officially
 reported number of $1.2 \times 10^{12}$ \cite{Cori}. For the purposes
 of measuring efficiency, we use our empirically determined number as
 the baseline for 100\% efficiency.
 
-The vast majority of systems achieve or nearly achieve peak FLOPS. Some
+The vast majority of systems achieve or nearly achieve peak FLOP/s. Some
 systems reserve a number of cores (usually 1 or 2) for internal
-runtime usage; these systems take a minor hit in peak FLOPS compared
+runtime usage; these systems take a minor hit in peak FLOP/s compared
 to systems which share all cores between the application and runtime. Some of the
-slower systems struggle to achieve peak FLOPS, though in most cases
+slower systems struggle to achieve peak FLOP/s, though in most cases
 the curves suggest that performance would continue to improve if we
 were to run larger problem sizes. Unfortunately, the excessive
 computational cost of running such tests makes this prohibitively
@@ -54,7 +54,7 @@ expensive. For example, the Spark job in
 this configuration ran for over 6 hours.
 
 Figure~\ref{fig:efficiency} shows efficiency (as a percentage of
-peak FLOPS) plotted against task granularity. This plot is
+peak FLOP/s) plotted against task granularity. This plot is
 used to calculate METG(50\%), as described in Section~\ref{sec:metg}. The
 red, dashed line shows the point where 50\% efficiency is achieved.
 In most cases, task granularity asymptotes prior to the 50\% efficiency point,
@@ -179,6 +179,7 @@ hours) to reach 50\% efficiency.
 
 \input{e8_weak}
 \input{e9_strong}
+\input{e5_imbalance}
 
 METG is a useful metric in part because it summarizes the basic task
 scheduling overhead of each programming system in a single number. This makes it
@@ -216,6 +217,8 @@ scalability~\cite{ControlReplication17}; the increase in METG beyond 16 nodes is
 
 \subsection{Comparison with Weak and Strong Scaling}
 
+\input{e6_communication}
+
 Figures~\ref{fig:weak-scaling} and \ref{fig:strong-scaling} show
 conventional strong and weak scaling of the stencil pattern for
 comparison with the METG results in
@@ -229,9 +232,6 @@ curve depending on how close each system is to being limited by
 overhead.
 
 \subsection{Load Imbalance}
-
-\input{e5_imbalance}
-\input{e6_communication}
 
 One advantage of systems with asynchronous execution capabilities is
 the ability to mitigate load imbalance with little or no additional programmer effort, especially in the presence of
@@ -281,4 +281,25 @@ smaller message sizes.
 
 \input{e10_cuda_efficiency}
 
-% FIXME: TODO
+Figure~\ref{fig:cuda-efficiency} shows a comparison between the MPI
+and MPI+CUDA implementations on the Piz Daint supercomputer. The CUDA
+compute kernel achieves a peak performance of $4.759 \times 10^{12}$
+FLOP/s, which compares favorably with the officially reported number
+$4.761 \times 10^{12}$. The CPU kernel achieves $5.726 \times 10^{11}$
+FLOP/s. Note that the x-axis is measured in the number of FLOP
+performed during the run, as the GPU kernels must perform more work to
+achieve peak performance.
+
+Our MPI+CUDA implementation uses an offload model in which input and
+output data is copied to and from the GPU on each time step. We tested
+two configurations: \lstinline{w1} uses 1 task per GPU, whereas
+\lstinline{w4} overdecomposes by a factor of $4\times$, using 4 MPI
+ranks per GPU to push work to the GPU in parallel and thus achieve
+some overlap between communication and computation. We see that the
+overdecomposed \lstinline{w4} configuration achieves higher FLOP/s but
+drops more rapidly at smaller problem sizes, due to the overhead of
+scheduling $4\times$ as many CUDA kernel launches. In either case, the
+GPU requires more work to achieve high performance, and the overhead
+of copying data to and from the GPU dominates at small task
+granularities. Thus at smaller problem sizes the CPU achieves higher
+performance.
