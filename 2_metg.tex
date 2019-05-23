@@ -10,9 +10,9 @@ achieves overall efficiency of at least 50\%. For example, in
 compute-bound applications efficiency can be measured as the
 percentage of the available FLOP/s achieved. On Cori with 1.26 TFLOP/s available per Haswell node, METG(50\%) corresponds to
 the smallest task granularity achieved while maintaining at least 0.63
-TFLOP/s. Absolute (rather than relative) efficiency is preferred
-because it better quantifies the performance tradeoff made by
-programming systems that reserve processor cores to implement asynchronous operations (such as data movement).
+TFLOP/s. For applications not amenable to being characterized by peak
+performance, an application-specific measure of performance can be
+used instead (e.g., mesh cells processed per second).
 
 Figures~\ref{fig:flops-mpi} and \ref{fig:efficiency-mpi} show how METG is
 calculated. The application, in this case an MPI implementation of the
