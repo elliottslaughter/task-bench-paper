@@ -12,7 +12,9 @@ Though smaller than full applications, mini-apps can be challenging to
 implement to a level of quality sufficient for conducting comparative
 studies between programming systems. The largest study we know of,
 for the mini-app LULESH~\cite{LULESH13}, compares 7 programming
-systems (Chapel, Charm++, CUDA, Lizst, Loci, OpenMP, and MPI). Other
+systems (Chapel, Charm++, CUDA, Lizst, Loci, OpenMP, and MPI), each of
+which require a wholly separate, tuned implementation (in contrast to
+Task Bench). Other
 studies usually lack a comprehensive evaluation, even if multiple
 implementations are available:
 
@@ -53,7 +55,7 @@ suite~\cite{PRK14}, the PRK Stencil code has been reasonably widely
 implemented, and a follow-up paper~\cite{PRKRuntimes16} compares MPI
 variants, SHMEM, UPC, Charm++, and Grappa. However, PRK Stencil is a
 single, simple code involving 2 kernels (which combined fit in under 50 lines
-of C++) and a halo exchange on a structured grid. The NAS benchmark suite~\cite{NAS91, NAS95} are also relatively widely studied with
+of C++) and a halo exchange on a structured grid. The NAS benchmark suite~\cite{NAS91, NAS95} is also relatively widely studied with
 implementations in OpenMP~\cite{NASOpenMP99}, MPI and
 MPI+OpenMP~\cite{NASMPIOpenMP00}, and
 Charm++~\cite{NASCharm96}. The benchmarks consist mostly of small

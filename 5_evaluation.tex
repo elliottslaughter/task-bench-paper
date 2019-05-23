@@ -14,12 +14,12 @@ various systems are shown in Table~\ref{tab:flags}.
 
 For GPU experiments we use the Piz Daint supercomputer~\cite{PizDaint}, a Cray XC50 with
 one Intel Xeon E5-2690 v3 (12 physical cores) and one NVIDIA Tesla
-P100 per node. We use GCC \textbf{X.Y}, Cray MPICH \textbf{Z.W}, and
-CUDA \textbf{A.B}.
+P100 per node. We use GCC 6.2.0, Cray MPICH 7.7.2, and
+CUDA 9.1.85.
 
 % FIXME: get Piz Daint software versions.
 
-\subsection{Compute-Bound Performance}
+\subsection{Compute Kernel Performance}
 \label{subsec:peak-performance-and-efficiency}
 
 In theory, any system should be able to hit peak performance as long as
@@ -67,7 +67,7 @@ reward implementation strategies, such as devoting nearly 100\% of
 system resources to the runtime system, that make no sense for real
 applications.
 
-\subsection{Memory-Bound Performance}
+\subsection{Memory Kernel Performance}
 
 % Really want this to appear in the next section, but Latex forces it to be placed here to get the layout we want.
 \input{e3_metg_compute}
@@ -81,9 +81,9 @@ Not all cores are required to saturate memory bandwidth. As a result,
 systems that reserve one or more cores are able to hit 100\% of peak
 performance, unlike with compute-bound kernels. Otherwise the
 performance curves are similar. We are currently investigating the
-performance of Charm++ and Regent.
+performance of Charm++, Regent and X10.
 
-% FIXME: why are Charm++ and Regent slow?
+% FIXME: why are Charm++, Regent and X10 slow?
 
 The remaining experiments use compute-bound kernels.
 
@@ -185,7 +185,11 @@ METG is a useful metric in part because it summarizes the basic task
 scheduling overhead of each programming system in a single number. This makes it
 possible to evaluate METG at different node counts (shown in
 Figure~\ref{fig:metg-compute}) to see how it is impacted by changes in
-communication topology and latency.
+communication topology and latency. An interesting observation is that
+the systems with the smallest METG on one node have roughly an order
+of magnitude higher METG at 256 nodes. The obvious conclusion is that
+increased communication latency requires significantly larger tasks to
+achieve the same level of efficiency.
 
 Most systems for HPC are highly scalable,
 but this is not true of all the systems included in this
@@ -286,8 +290,8 @@ and MPI+CUDA implementations on the Piz Daint supercomputer. The CUDA
 compute kernel achieves a peak performance of $4.759 \times 10^{12}$
 FLOP/s, which compares favorably with the officially reported number
 $4.761 \times 10^{12}$. The CPU kernel achieves $5.726 \times 10^{11}$
-FLOP/s. Note that the x-axis is measured in the number of FLOP
-performed during the run, as the GPU kernels must perform more work to
+FLOP/s. Note that the x-axis is measured in the number of FLOPs
+performed during the run, as the GPU kernels must be given more work to
 achieve peak performance.
 
 Our MPI+CUDA implementation uses an offload model in which input and
@@ -302,4 +306,10 @@ scheduling $4\times$ as many CUDA kernel launches. In either case, the
 GPU requires more work to achieve high performance, and the overhead
 of copying data to and from the GPU dominates at small task
 granularities. Thus at smaller problem sizes the CPU achieves higher
-performance.
+performance. While Figure~\ref{fig:cuda-efficiency} is not couched in
+terms of MTEG (as the peak performance of the GPU and CPU are very
+different), the conclusion here is similar to
+Section~\ref{subsec:scalability}: The cost of communicating data and
+tasks to and from the GPU imposes a higher task granularity to achieve
+the same efficiency than running on the CPU, reducing the advantage of
+MPI's very lightweight mechanisms.

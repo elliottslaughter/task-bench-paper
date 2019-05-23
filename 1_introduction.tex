@@ -17,7 +17,7 @@ mini-apps still require significant investment to develop
 to the level of quality needed for useful benchmarking. In many cases,
 the effort to tune for performance exceeds the effort to develop a correct implementation. As a result, implementations of mini-apps
 often do not reach the level of maturity required to compare
-systems. Few published studies involve more than a handful of systems~\cite{LULESH13}.
+systems. Few published studies compare more than a handful of systems~\cite{LULESH13}.
 
 There is a second important issue: How does one predict how
 the performance of a mini-app generalizes to a full
@@ -37,7 +37,13 @@ behaviors of parallel and distributed programming systems under a
 variety of conditions. A critical property of Task Bench is that,
 while able to express a wide variety of typical parallel programming
 patterns, it is simple enough to be implemented with reasonable effort
-to a level of quality sufficient for comparative studies.
+to a level of quality sufficient for comparative
+studies. Additionally, Task Bench is separated into a core API shared
+by all the system implementations. New benchmarks immediately run on
+all systems, and new systems immediately run all benchmarks included
+in Task Bench. Thus, Task Bench is much more productive for
+benchmarking than the standard approach in which each benchmark must
+be implemented separately for each system.
 
 A key insight of Task Bench is that many applications can be modeled
 as a set of \emph{tasks}, or coarse-grain units of work, with

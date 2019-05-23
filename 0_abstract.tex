@@ -1,11 +1,13 @@
 \begin{abstract}
-% 129 words
+% 147 words
 We present Task Bench, a \emph{parameterized} benchmark designed to
 explore the performance envelopes of parallel and distributed
 programming systems under a variety of application scenarios. Task
-Bench seeks to combine the ease of implementation and portability of
-microbenchmarks, which makes comparisons between many systems
-possible, with the ability to model a wide range of application
+Bench lowers the barrier to benchmarking multiple systems by making
+the implementation for a given system orthogonal to the benchmarks
+themselves: all benchmarks constructed with Task Bench automatically
+run on all Task Bench implementations, and vice versa. Furthermore,
+Task Bench's parameterization allows a wide variety of benchmark
 scenarios that distill the key characteristics of larger applications.
 
 We conduct a comprehensive study with implementations of Task Bench in

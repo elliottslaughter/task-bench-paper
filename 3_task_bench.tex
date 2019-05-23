@@ -6,9 +6,9 @@ systems and application scenarios, we developed a novel
 parameterized benchmark called Task Bench. Task Bench
 implementations execute a \emph{task graph}, with tasks for each point
 in an \emph{iteration space} and dependencies between tasks determined
-by a \emph{dependence relation}. A task that depends on another task
-must execute after that task, and receives the output data from that
-task as input. Each task can execute any one of a
+by a \emph{dependence relation}. A task $A$ that depends on another task $B$
+must execute after task $B$, and receives the output data from
+task $B$ as input. Each task can execute any one of a
 number of kernels (compute-bound, memory-bound, etc.) and can generate
 a configurable amount of output to control the amount of communication
 performed with each task dependency. Thus Task Bench can explore a large space of application scenarios to
@@ -39,6 +39,9 @@ dependence relations of the patterns in Figure~\ref{fig:task-graphs},
 where $t$ is timestep, $i$ is column, and $W$ is the width of the task
 graph.
 
+\input{f5_task_graphs}
+\input{t0_equations}
+
 Despite its generality, Task Bench is easy to implement, making it
 tractable to develop a suite of high-quality implementations. The central aspects of Task Bench, such as generating
 task graphs and enumerating dependencies, are encapsulated in a core
@@ -56,10 +59,7 @@ to 1500 lines, with several hundred lines being
 typical. Listings~\ref{lst:compute-kernel} and \ref{lst:code-sample}
 show excerpts from the Task Bench core, and the Dask implementation,
 respectively. Only the code in \ref{lst:code-sample} need be
-implemented for each system.
-
-\input{f5_task_graphs}
-\input{t0_equations}
+implemented for each system, minimizing the work required for each additional system.
 
 The Task Bench core library is fully
 validating. Because the task graph configuration is explicitly
