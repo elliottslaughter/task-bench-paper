@@ -14,11 +14,13 @@ def execute_task_graph(g):
    for t in range(0, g.timesteps):
       row = []
       for p in range(0, g.width):
-         inputs = []
-         for dep in dependencies(g, t, p):
-            inputs.append(last_row[dep])
-         output, scratch[p] = execute_point(
-            g, t, p, scratch[p], inputs)
+         output = None
+         if g.contains_point(t, p):
+            inputs = []
+            for dep in dependencies(g, t, p):
+               inputs.append(last_row[dep])
+            output, scratch[p] = execute_point(
+               g, t, p, scratch[p], inputs)
          row.append(output)
          outputs.append(output)
       last_row = row
