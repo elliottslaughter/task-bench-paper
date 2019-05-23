@@ -1,4 +1,5 @@
 \begin{lstlisting}[language=Python,caption={Excerpt from Task Bench implementation in Dask.\label{lst:code-sample}},float]
+@dask.delayed
 def execute_point(g, t, p, scratch, inputs):
    output = make_buffer(g.output_bytes_per_task)
    # call Task Bench Core API...
