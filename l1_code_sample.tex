@@ -2,7 +2,7 @@
 def execute_point(g, t, p, scratch, inputs):
    output = make_buffer(g.output_bytes_per_task)
    # call Task Bench Core API...
-   return output
+   return output, scratch
 
 def execute_task_graph(g):
    scratch = [
