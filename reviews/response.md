@@ -2,16 +2,12 @@ We thank the reviewers for their detailed and insightful feedback.
 
 We have added three new implementations to Task Bench: Dask,
 MPI+OpenMP and MPI+CUDA. Results are included in the evaluation
-section.
-
-One of the salient features of Task Bench is that it permits the
-implementation of a benchmark with M configurations and N systems with
-an amount of effort that is O(M+N) rather than O(MN). We have updated
-the introduction to reflect this.
+section, including preliminary results from experiments with GPUs on
+the Piz Daint supercomputer.
 
 Major changes in the revised paper:
 
-  * Three new implementations (Dask, MPI+OpenMP, MPI+CUDA)
+  * New implementations: Dask, MPI+OpenMP and MPI+CUDA
   * New sections
       - Implementation: sections 4.3 (Dask) and 4.5 (MPI+X)
       - Evaluation: sections 5.6 (weak/strong scaling) and 5.9 (GPUs)
@@ -55,9 +51,17 @@ A comparison with weak/strong scaling has been added in Section 5.6.
 
 Reviewer 4:
 
-The tasks in Task Bench are idealized compute or memory-bound loops; problem size is simulated by controlling the number of iterations in these loops.
+One of the salient features of Task Bench is that it permits the
+implementation of a benchmark with M configurations and N systems with
+an amount of effort that is O(M+N) rather than O(MN). We have updated
+the introduction to reflect this.
 
-Shared memory is permitted and is used in our MPI+OpenMP implementation (among others).
+The tasks in Task Bench are idealized compute or memory-bound loops;
+problem size is simulated by controlling the number of iterations in
+these loops.
+
+Shared memory is permitted and is used in our MPI+OpenMP
+implementation (among others).
 
 The code for determining the dependence pattern and implementations of
 kernels are contained in the core. A code sample from an
