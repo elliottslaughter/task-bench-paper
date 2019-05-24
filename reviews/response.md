@@ -1,13 +1,13 @@
 We thank the reviewers for their detailed and insightful feedback.
 
-We have added four new implementations to Task Bench: Dask, MPI bulk synchronous,
+We have added four new implementations to Task Bench: Dask, bulk synchronous MPI,
 MPI+OpenMP and MPI+CUDA. Results are included in the evaluation
 section, including preliminary results from experiments with GPUs on
 the Piz Daint supercomputer.
 
 Major changes in the revised paper:
 
-  * New implementations: Dask, MPI-bulk sync, MPI+OpenMP and MPI+CUDA
+  * New implementations: Dask, bulk synchronous MPI, MPI+OpenMP and MPI+CUDA
   * New sections
       - Implementation: sections 4.3 (Dask) and 4.5 (MPI+X)
       - Evaluation: sections 5.6 (weak/strong scaling) and 5.9 (GPUs)
@@ -35,7 +35,7 @@ Reviewer 3:
 
 Weak/strong scaling and TPS are all application and system dependent
 metrics. METG differs from these metrics in that can simultaneously
-(a) capture the behavior of the sytem at the limit of its scalability
+(a) capture the behavior of the system at the limit of its scalability
 (which is not true of weak/strong scaling) and (b) while achieving a
 specified amount of useful work (which is not true of TPS). METG also
 isolates the impact of changes to the communication topology at scale,
@@ -51,11 +51,11 @@ A comparison with weak/strong scaling has been added in Section 5.6.
 
 Reviewer 4:
 
-We have implemented a MPI-bulk sync style by adding a MPI_Barrier after 
-computation to make sure allcomputations are done before communication. 
-Besides, we have also implemented a MPI+OpenMP,which also can be
-considerred as BSP mode as all OpenMP threads are synchronized before
-entering communication stage.  
+We have added a bulk synchronous implementation in MPI which uses
+MPI_Barrier to enforce the boundary between communication and
+computation phases. Also, the new MPI+OpenMP implementation also
+shares some characteristics with BSP as the OpenMP parallel for
+construct acts as an implicit barrier for the cores within a node.
 
 One of the salient features of Task Bench is that it permits the
 implementation of a benchmark with M configurations and N systems with
@@ -64,7 +64,7 @@ the introduction to reflect this.
 
 The tasks in Task Bench are idealized compute or memory-bound loops;
 problem size is simulated by controlling the number of iterations in
-these loops. Listing 1 is an example. 
+these loops. Listing 1 is an example.
 
 Shared memory is permitted and is used in our MPI+OpenMP
 implementation (among others).
@@ -74,7 +74,11 @@ kernels are contained in the core. A code sample from an
 implementation is included in Listing 2. As the reviewer can see,
 implementations can be quite simple.
 
-TODO: explain MPI+CUDA?
+We have added an initial evaluation of MPI+CUDA. Our implementation
+uses an offload model in which data is copied to and from the GPU on
+each timestep. We find that even when using multiple ranks per GPU to
+achieve concurrency in data movement and task scheduling, GPUs
+increase the overhead of scheduling small tasks quite substantially.
 
 Reviewer 5:
 
@@ -82,7 +86,7 @@ As described in Section 6, citations [27] and [37] are the only papers
 we're aware of which provide an empirical performance evaluation of a
 substantial number of systems. Many mini-app and benchmark papers only
 include a small number of systems, or describe systems but do not
-include an empirical evalution of performance. When there are
+include an empirical evaluation of performance. When there are
 follow-up papers which describe additional implementations, they
 rarely make comparisons beyond the reference implementation of the
 code.
@@ -94,7 +98,6 @@ thrown.
 Any measure of efficiency can be used with METG. For example, a
 mesh-based application could use mesh cells processed per second (as a
 percentage of the highest throughput achieved with any problem
-size). We measured flops and memory bandwidth as 
-peak performance with Task Bench as it gives us a
-straightforward measure that provides assurance that all
+size). We use peak performance as the measure of efficiency in Task
+Bench because it makes it straightforward to verify that all
 implementations are configured correctly.
