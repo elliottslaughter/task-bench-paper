@@ -1,13 +1,13 @@
 We thank the reviewers for their detailed and insightful feedback.
 
-We have added three new implementations to Task Bench: Dask,
+We have added four new implementations to Task Bench: Dask, MPI bulk synchronous,
 MPI+OpenMP and MPI+CUDA. Results are included in the evaluation
 section, including preliminary results from experiments with GPUs on
 the Piz Daint supercomputer.
 
 Major changes in the revised paper:
 
-  * New implementations: Dask, MPI+OpenMP and MPI+CUDA
+  * New implementations: Dask, MPI-bulk sync, MPI+OpenMP and MPI+CUDA
   * New sections
       - Implementation: sections 4.3 (Dask) and 4.5 (MPI+X)
       - Evaluation: sections 5.6 (weak/strong scaling) and 5.9 (GPUs)
@@ -51,6 +51,12 @@ A comparison with weak/strong scaling has been added in Section 5.6.
 
 Reviewer 4:
 
+We have implemented a MPI-bulk sync style by adding a MPI_Barrier after 
+computation to make sure allcomputations are done before communication. 
+Besides, we have also implemented a MPI+OpenMP,which also can be
+considerred as BSP mode as all OpenMP threads are synchronized before
+entering communication stage.  
+
 One of the salient features of Task Bench is that it permits the
 implementation of a benchmark with M configurations and N systems with
 an amount of effort that is O(M+N) rather than O(MN). We have updated
@@ -58,7 +64,7 @@ the introduction to reflect this.
 
 The tasks in Task Bench are idealized compute or memory-bound loops;
 problem size is simulated by controlling the number of iterations in
-these loops.
+these loops. Listing 1 is an example. 
 
 Shared memory is permitted and is used in our MPI+OpenMP
 implementation (among others).
@@ -67,6 +73,8 @@ The code for determining the dependence pattern and implementations of
 kernels are contained in the core. A code sample from an
 implementation is included in Listing 2. As the reviewer can see,
 implementations can be quite simple.
+
+TODO: explain MPI+CUDA?
 
 Reviewer 5:
 
@@ -86,6 +94,7 @@ thrown.
 Any measure of efficiency can be used with METG. For example, a
 mesh-based application could use mesh cells processed per second (as a
 percentage of the highest throughput achieved with any problem
-size). We use peak performance with Task Bench as it gives us a
+size). We measured flops and memory bandwidth as 
+peak performance with Task Bench as it gives us a
 straightforward measure that provides assurance that all
 implementations are configured correctly.
