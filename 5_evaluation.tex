@@ -287,9 +287,11 @@ and MPI+CUDA implementations on the Piz Daint supercomputer. The CUDA
 compute kernel achieves a peak performance of $4.759 \times 10^{12}$
 FLOP/s, which compares favorably with the officially reported number
 $4.761 \times 10^{12}$. The CPU kernel achieves $5.726 \times 10^{11}$
-FLOP/s. Note that the x-axis is measured in the number of FLOPs
-performed during the run, as the GPU kernels must be given more work to
-achieve peak performance.
+FLOP/s. Note that the CPU and GPU kernels perform different numbers of
+operations as the GPU must be given more work to achieve peak
+performance. The x-axis in Figure~\ref{fig:cuda-efficiency} has been
+normalized so that the number of FLOPs is constant for a given problem
+size.
 
 Our MPI+CUDA implementation uses an offload model in which input and
 output data is copied to and from the GPU on each time step. We tested
