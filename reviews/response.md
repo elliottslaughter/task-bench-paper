@@ -8,12 +8,14 @@ the Piz Daint supercomputer.
 Major changes in the revised paper:
 
   * New implementations: Dask, bulk synchronous MPI, MPI+OpenMP and MPI+CUDA
-  * New sections
-      - Implementation: sections 4.3 (Dask) and 4.5 (MPI+X)
-      - Evaluation: sections 5.6 (weak/strong scaling) and 5.9 (GPUs)
-  * New figures
+  * New sections:
+      - Implementation: Sections 4.3 (Dask) and 4.5 (MPI+X)
+      - Evaluation: Section 5.9 (GPU experiment)
+  * New figures:
       - Listings 1 and 2 (code samples)
-      - Figures 11, 12, 15 (experiments)
+      - Figure 15 (GPU experiment)
+  * Updated Figures 3 and 4 (see also lines 303-315)
+  * Updated Section 7 with insights derived from Task Bench
 
 In response to specific reviewer questions:
 
