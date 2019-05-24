@@ -282,8 +282,6 @@ smaller message sizes.
 
 \subsection{Heterogeneous Processors}
 
-\input{e10_cuda_efficiency}
-
 Figure~\ref{fig:cuda-efficiency} shows a comparison between the MPI
 and MPI+CUDA implementations on the Piz Daint supercomputer. The CUDA
 compute kernel achieves a peak performance of $4.759 \times 10^{12}$
@@ -312,3 +310,5 @@ Section~\ref{subsec:scalability}: The cost of communicating data and
 tasks to and from the GPU imposes a higher task granularity to achieve
 the same efficiency than running on the CPU, reducing the advantage of
 MPI's very lightweight mechanisms.
+
+\input{e10_cuda_efficiency}
