@@ -1,6 +1,8 @@
 \section{Evaluation}
 \label{sec:evaluation}
 
+\input{e0_flags}
+
 We present a comprehensive evaluation of our Task Bench implementations on up to 256
 Haswell nodes of the Cori supercomputer~\cite{Cori}, a Cray XC40
 machine. Cori Haswell nodes have 2 sockets with Intel Xeon E5-2698 v3
@@ -15,11 +17,6 @@ one Intel Xeon E5-2690 v3 (12 physical cores) and one NVIDIA Tesla
 P100 per node. We use GCC 6.2.0, Cray MPICH 7.7.2, and
 CUDA 9.1.85.
 
-\input{e1_flops}
-\input{e2_efficiency}
-\input{e7_bytes}
-\input{e4_radix}
-
 \subsection{Compute Kernel Performance}
 \label{subsec:peak-performance-and-efficiency}
 
@@ -29,6 +26,11 @@ practice, achieving peak performance is tricky, and many subtle pitfalls of impl
 runtime system overhead. However, verifying that peak performance is
 achieved is important to ensuring that evaluations of overhead and
 efficiency are well-grounded.
+
+\input{e1_flops}
+\input{e2_efficiency}
+\input{e7_bytes}
+\input{e4_radix}
 
 Figure~\ref{fig:flops} shows the FLOP/s achieved with a compute-bound
 kernel with varying problem sizes. This is the full version of
@@ -165,7 +167,7 @@ communication pattern grows, and even reverses as task parallelism is
 added in the form of multiple task graphs.
 
 Spark, Swift/T and TensorFlow
-are omitted from comparisons with more complicated dependencies, as the higher overheads of these systems would have required
+are omitted from comparisons with more complicated dependencies, as the higher overheads of these systems require
 unreasonably large problem sizes (beyond what can be completed in 6
 hours) to reach 50\% efficiency.
 
@@ -249,14 +251,14 @@ effectively puts an upper bound on MPI efficiency. At smaller task
 granularities the effect shrinks and may even reverse as systems hit
 their fundamental limits due to overhead.
 
-The difference between the remaining systems is due primarily to
+The remaining differences are due primarily to
 different scheduling behaviors. The execution of 4
 simultaneous task graphs only partially mitigates the
 load imbalance between tasks. Systems that provide an
 additional on-node work stealing capability (such as Chapel with the distrib scheduler) see additional gains in
 efficiency at large task granularities. However, the use of
-work-stealing queues can also impact throughput at very small task
-granularities. For example, Chapel's default (non-work-stealing) scheduler outperforms Chapel distrib at very small task granularities. We do not consider Charm++ load balancers here because the imbalance is \emph{non-persistent} (i.e., timestep $t$ is uncorrelated with timestep $t+1$). We leave the analysis of persisitent load imbalance to future work.
+work-stealing queues can also impact throughput at small task
+granularities. For example, Chapel's default (non-work-stealing) scheduler outperforms Chapel distrib at very small task granularities. We do not consider Charm++ load balancers because the imbalance is \emph{non-persistent} (i.e., timestep $t$ is uncorrelated with timestep $t+1$). We leave analysis of persisitent load imbalance to future work.
 
 \subsection{Communication Hiding}
 

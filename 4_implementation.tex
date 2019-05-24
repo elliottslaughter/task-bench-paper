@@ -52,8 +52,10 @@ Charm++~\cite{Charmpp93} is an explicitly parallel actor-based programming syste
 Chares communicate data and synchronize via messages and can be moved
 to balance load. Our Task Bench implementation uses a chare
 array for the task graph, with one chare for each column. Messages implement dependencies; a task executes as soon as its
-dependencies are all available. Collectives synchronize the
-completion of the task graph execution.
+dependencies are all available.
+
+%% Collectives synchronize the
+%% completion of the task graph execution.
 
 % FIXME: Discuss SMP vs non-SMP versions
 
@@ -101,9 +103,9 @@ Bench. The implementation is otherwise straightforward.
 
 OpenMP~\cite{OpenMPSpec40} is the industry standard API for loop-based
 parallelism on shared-memory systems, and supports task dependencies as of version 4.0. Our Task Bench implementation
-for OpenMP is very similar to OmpSs and uses tasks with
-task dependencies. We tested both GNU GOMP and Intel KMP
-implementations of OpenMP and found KMP to be better performing on Cori.
+for OpenMP is similar to OmpSs and uses
+task dependencies. We tested with GNU GOMP and Intel KMP
+and found KMP to be better performing.
 
 \subsection{PaRSEC}
 
@@ -148,15 +150,14 @@ Realm~\cite{Realm14} is an explicitly-parallel task-based programming
 model used internally by Legion~\cite{Legion12} and
 Regent~\cite{Regent15}. A Realm implementation of Task Bench is a limit study of what can be achieved with Legion or Regent.
 
-Tasks in Realm are executed in a deferred manner, with dependencies
-between tasks explicitly defined by \emph{events} passed from one task
+Tasks in Realm are asynchronous, with dependencies
+defined by \emph{events} passed from one task
 to another. Realm's data model supports collections that live in a
 specific memory. Data must be explicitly copied, and the copies
 synchronized with tasks via events.
-
 Realm also supports a \emph{subgraph} API that enables additional
-optimizations. We report numbers for the subgraph version of Task
-Bench as it provides better performance.
+optimizations. We use subgraphs in the Task
+Bench implementation.
 
 \subsection{Regent}
 
@@ -212,8 +213,6 @@ satisfied; statements only execute sequentially when explicitly
 requested. The Swift/T compiler performs a number of optimizations to
 improve performance of highly parallel programs~\cite{Armstrong14}. Our Task Bench in Swift/T is straightforward, using Swift/T's dataflow
 semantics to capture dependencies on other tasks.
-
-\input{e0_flags}
 
 \subsection{TensorFlow}
 
