@@ -1,19 +1,41 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-Task Bench is a new approach for evaluating the performance
-of parallel and distributed programming systems. We have seen that
-systems vary by orders of magnitude in runtime overhead, as measured
-by METG. Widely used systems in industry have METG measured in
-seconds, reflecting the very coarse tasks and lack of need for strong
-scaling performance in current workloads. At the other extreme,
-traditional HPC systems have METG in the range of 10-100 \textmu{}s,
-necessary for strong scaling to small task granularities, though we
-have shown that METG also increases significantly for these systems
-with the size of the cluster and the use offload accelerators. The newer
-task-based systems, with METG in the range of 100 \textmu{}s to 1 ms
-have performance sufficient for weak scaling many HPC workloads, but
-more work is needed to strong scale the most demanding applications.
+Task Bench is a new approach for evaluating the performance of
+parallel and distributed programming systems. By separating the
+specification of a benchmark from implementations in various
+programming systems, it is possible to explore a broad space of
+application scenarios and to do so with a large number of programming
+systems. Our experiments have enabled the following
+insights:
+
+\begin{itemize}
+
+\item METG for current distributed programming systems varies by over
+  5 orders of magnitude.  Clearly understanding the needed task
+  granularity is an important consideration in choosing a programming
+  system for a new application.
+
+\item While some systems support task granularities as small as a few
+  microseconds, this applies only to small CPU-based clusters. Adding
+  accelerators or moving to clusters of hundreds of nodes raises the
+  METG that any system can achieve by over an order of magnitude.
+
+\item Systems that support asynchronous execution show benefits under
+  load imbalanced workloads, or workloads with balanced computation
+  and communication. However, these gains can be easily nullified by
+  high baseline overheads.
+
+\item Systems for large scale data analysis require very large tasks
+  (in the tens of seconds) to scale beyond small numbers of nodes,
+  reflecting the very coarse tasks and lack of need for strong scaling
+  performance in current workloads.
+
+\item The newer task-based systems have performance sufficient for
+  weak scaling many HPC workloads, but more work is needed to strong
+  scale the most demanding applications.
+
+\end{itemize}
 
 Not considered in our analysis is the impact of programming system
 features on programmer productivity and performance portability. Most
