@@ -10,8 +10,7 @@ achieves overall efficiency of at least 50\%. For example, in
 compute-bound applications efficiency can be measured as the
 percentage of the available FLOP/s achieved. On Cori with 1.26 TFLOP/s available per Haswell node, METG(50\%) corresponds to
 the smallest task granularity achieved while maintaining at least 0.63
-TFLOP/s. For applications not amenable to being characterized by peak
-performance, an application-specific measure of performance can be
+TFLOP/s per node. For applications not amenable to being characterized by raw FLOP/s or B/s, an application-specific measure of performance can be
 used instead (e.g., mesh cells processed per second).
 
 Figures~\ref{fig:flops-mpi} and \ref{fig:efficiency-mpi} show how METG is
@@ -73,10 +72,9 @@ ideally-sloped downward lines when strong scaling. Inefficiency begins
 to appear at smaller problem sizes, towards the bottom of the graph,
 where lines become more compressed. At the
 very bottom, the lines compress together as running time becomes
-dominated by overhead. The red, dashed line in each graph marks
-METG(50\%), the point where efficiency reaches 50\%. Note that the
+dominated by overhead. Note that the
 shapes at the bottom of the strong and weak scaling curves are identical,
-and conform to the shape of the METG curve.
+and conform to the shape of the METG curve (marked by the red, dashed line).
 
 METG therefore has a direct relationship with the smallest problem
 size that can be weak scaled to a given node count with a given level

@@ -14,7 +14,7 @@ Major changes in the revised paper:
   * New figures:
       - Listings 1 and 2 (code samples)
       - Figure 15 (GPU experiment)
-  * Updated Figures 3 and 4 (see also lines 303-315)
+  * Updated Figures 3 and 4 (see also lines 300-312)
   * Updated Section 7 with insights derived from Task Bench
 
 In response to specific reviewer questions:
