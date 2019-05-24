@@ -297,9 +297,8 @@ Our MPI+CUDA implementation uses an offload model in which input and
 output data is copied to and from the GPU on each time step. We tested
 two configurations: \lstinline{w1} uses 1 task per GPU, whereas
 \lstinline{w4} overdecomposes by a factor of $4\times$, using 4 MPI
-ranks per GPU to push work to the GPU in parallel and thus achieve
-some overlap between communication and computation. We see that the
-overdecomposed \lstinline{w4} configuration achieves higher FLOP/s but
+ranks per GPU to push work to the GPU in parallel and thus overlaps communication and computation. We see that the
+\lstinline{w4} configuration achieves higher FLOP/s but
 drops more rapidly at smaller problem sizes, due to the overhead of
 scheduling $4\times$ as many CUDA kernel launches. In either case, the
 GPU requires more work to achieve high performance, and the overhead
