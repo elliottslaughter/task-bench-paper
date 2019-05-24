@@ -33,7 +33,7 @@ Figures 3 and 4 have been updated and new text added.
 
 Reviewer 3:
 
-Weak/strong scaling and TPS are all application and system dependent
+Weak/strong scaling and TPS are also application and system dependent
 metrics. METG differs from these metrics in that can simultaneously
 (a) capture the behavior of the system at the limit of its scalability
 (which is not true of weak/strong scaling) and (b) while achieving a
