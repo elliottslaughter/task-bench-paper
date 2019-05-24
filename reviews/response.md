@@ -13,7 +13,7 @@ Major changes in the revised paper:
       - Evaluation: Section 5.9 (GPU experiment)
   * New figures:
       - Listings 1 and 2 (code samples)
-      - Figure 15 (GPU experiment)
+      - Figure 13 (GPU experiment)
   * Updated Figures 3 and 4 (see also lines 300-312)
   * Updated Section 7 with insights derived from Task Bench
 
