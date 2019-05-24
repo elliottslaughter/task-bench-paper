@@ -1,8 +1,6 @@
 \section{Evaluation}
 \label{sec:evaluation}
 
-\input{e0_flags}
-
 We present a comprehensive evaluation of our Task Bench implementations on up to 256
 Haswell nodes of the Cori supercomputer~\cite{Cori}, a Cray XC40
 machine. Cori Haswell nodes have 2 sockets with Intel Xeon E5-2698 v3
@@ -17,7 +15,10 @@ one Intel Xeon E5-2690 v3 (12 physical cores) and one NVIDIA Tesla
 P100 per node. We use GCC 6.2.0, Cray MPICH 7.7.2, and
 CUDA 9.1.85.
 
-% FIXME: get Piz Daint software versions.
+\input{e1_flops}
+\input{e2_efficiency}
+\input{e7_bytes}
+\input{e4_radix}
 
 \subsection{Compute Kernel Performance}
 \label{subsec:peak-performance-and-efficiency}
@@ -28,11 +29,6 @@ practice, achieving peak performance is tricky, and many subtle pitfalls of impl
 runtime system overhead. However, verifying that peak performance is
 achieved is important to ensuring that evaluations of overhead and
 efficiency are well-grounded.
-
-\input{e1_flops}
-\input{e2_efficiency}
-\input{e7_bytes}
-\input{e4_radix}
 
 Figure~\ref{fig:flops} shows the FLOP/s achieved with a compute-bound
 kernel with varying problem sizes. This is the full version of
@@ -53,6 +49,8 @@ computational cost of running such tests makes this prohibitively
 expensive. For example, the Spark job in
 this configuration ran for over 6 hours.
 
+\input{e3_metg_compute}
+
 Figure~\ref{fig:efficiency} shows efficiency (as a percentage of
 peak FLOP/s) plotted against task granularity. This plot is
 used to calculate METG(50\%), as described in Section~\ref{sec:metg}. The
@@ -68,9 +66,6 @@ system resources to the runtime system, that make no sense for real
 applications.
 
 \subsection{Memory Kernel Performance}
-
-% Really want this to appear in the next section, but Latex forces it to be placed here to get the layout we want.
-\input{e3_metg_compute}
 
 Figure~\ref{fig:bytes} shows the performance of Task Bench
 implementations with a memory-bound kernel. We measure peak memory
@@ -177,8 +172,6 @@ hours) to reach 50\% efficiency.
 \subsection{Scalability}
 \label{subsec:scalability}
 
-\input{e8_weak}
-\input{e9_strong}
 \input{e5_imbalance}
 
 METG is a useful metric in part because it summarizes the basic task
@@ -219,9 +212,10 @@ still retains dynamic checks leading to limited scalability. PaRSEC shard includ
 uses a compile-time optimization to improve
 scalability~\cite{ControlReplication17}; the increase in METG beyond 16 nodes is due to a known bug in Realm barrier migration which the Realm Task Bench implementation is able to manually work around.
 
+\zap{
+\input{e8_weak}
+\input{e9_strong}
 \subsection{Comparison with Weak and Strong Scaling}
-
-\input{e6_communication}
 
 Figures~\ref{fig:weak-scaling} and \ref{fig:strong-scaling} show
 conventional strong and weak scaling of the stencil pattern for
@@ -234,6 +228,9 @@ non-ideal performance. Thus the shape of the weak and strong scaling
 graphs effectively interpolates between ideal performance and the METG
 curve depending on how close each system is to being limited by
 overhead.
+} % zap
+
+\input{e6_communication}
 
 \subsection{Load Imbalance}
 
