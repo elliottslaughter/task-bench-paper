@@ -10,7 +10,7 @@ Major changes in the revised paper:
   * New implementations: Dask, bulk synchronous MPI, MPI+OpenMP and MPI+CUDA
   * New sections:
       - Implementation: Sections 4.3 (Dask) and 4.5 (MPI+X)
-      - Evaluation: Section 5.9 (GPU experiment)
+      - Evaluation: Section 5.8 (GPU experiment)
   * New figures:
       - Listings 1 and 2 (code samples)
       - Figure 13 (GPU experiment)
@@ -50,8 +50,6 @@ application wall time have been added to Section 2.
 METG captures the average task granularity that can be supported. It
 is acceptable for some tasks to be smaller and others larger, as
 overheads will even out across tasks.
-
-A comparison with weak/strong scaling has been added in Section 5.6.
 
 Reviewer 4:
 
