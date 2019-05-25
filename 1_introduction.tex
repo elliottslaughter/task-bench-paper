@@ -38,7 +38,7 @@ variety of conditions. A critical property of Task Bench is that,
 while able to express a wide variety of typical parallel programming
 patterns, it is simple enough to be implemented with reasonable effort
 to a level of quality sufficient for comparative
-studies. Task Bench is provides a core API that is shared across the
+studies. Task Bench provides a core API that is shared across the
 various system implementations. New benchmarks created with Task Bench
 immediately run on all systems, and new systems immediately run all
 benchmarks. Thus, Task Bench is much more productive for benchmarking
@@ -66,7 +66,7 @@ to introduce task parallelism into the workload. Together, these
 design elements permit the exploration of a large space of application
 behaviors.
 
-To address the second issue and isolate the contribution of the programming model's runtime system to application performance, we introduce a new metric called \emph{minimum effective task granularity} (METG). Intuitively, METG(50\%) is the smallest executable task granularity that maintains at least 50\% efficiency, meaning that the application achieves at least 50\% of peak
+To address the second issue and characterize the contribution of a programming model's runtime system to application performance, we introduce a new metric called \emph{minimum effective task granularity} (METG). Intuitively, METG(50\%) is the smallest executable task granularity that maintains at least 50\% efficiency, meaning that the application achieves at least 50\% of peak
 performance (e.g., FLOP/s or memory bandwidth) on a given machine. METG captures the essence of what is important in a weak
 or strong scaling study, the behavior at the limit of scalability. For
 weak scaling, METG(50\%) corresponds directly to the smallest problem size that can be weak-scaled with 50\% efficiency. For strong scaling, METG(50\%) can be used to compute the scale at which performance can be expected to dip below 50\% efficiency.
