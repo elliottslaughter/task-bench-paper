@@ -48,8 +48,12 @@ issues of system overhead. Examples of how to compute METG from
 application wall time have been added to Section 2.
 
 METG captures the average task granularity that can be supported. It
-is acceptable for some tasks to be smaller and others larger, as
-overheads will even out across tasks.
+is acceptable for some tasks to be smaller and others larger. Overhead
+is a function of number of tasks times overhead per task and METG
+captures this well.
+
+The conclusion has been updated with specific insights derived from
+Task Bench.
 
 Reviewer 4:
 
