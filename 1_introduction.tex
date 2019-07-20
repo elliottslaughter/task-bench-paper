@@ -19,36 +19,22 @@ the effort to tune for performance exceeds the effort to develop a correct imple
 often do not reach the level of maturity required to compare
 systems. Few published studies compare more than a handful of systems~\cite{LULESH13}.
 
-There is a second important issue: How does one predict how
-the performance of a mini-app generalizes to a full
-application, even one closely related? Part of the problem is
-that \emph{weak} and \emph{strong} scaling, by far the most commonly
-reported performance metrics,
-do not directly characterize the performance of the underlying
-programming system. Weak scaling can hide arbitrary amounts of runtime
-system overhead with sufficiently large problem sizes, and strong
-scaling does not separate runtime system overhead from costs
-(such as increased communication) that scale with the number of nodes when
-using progressively larger portions of a machine.
-
-To address the first issue, we present Task Bench, a
-\emph{parameterized} benchmark designed for exploring the performance
+We present Task Bench, a benchmark designed for exploring the performance
 behaviors of parallel and distributed programming systems under a
-variety of conditions. A critical property of Task Bench is that,
-while able to express a wide variety of typical parallel programming
-patterns, it is simple enough to be implemented with reasonable effort
-to a level of quality sufficient for comparative
-studies. Task Bench provides a core API that is shared across the
-various system implementations. New benchmarks created with Task Bench
+variety of conditions.  The key property of TaskBench is that it completely separates
+the implementation of TaskBench for a new system to be measured from the implementation
+of a new benchmark application to be run on the systems supported by TaskBench.
+In all benchmarks we know of, the effort to implement $n$ benchmarks on $m$
+systems is ${\cal O}(mn)$.  TaskBench's design reduce the work to ${\cal O}(m) + {\cal O}(n)$,
+enbaling dramatically more systems and benchmarks to be explored for the same amount of programming
+effort.  New benchmarks created with Task Bench
 immediately run on all systems, and new systems immediately run all
-benchmarks. Thus, Task Bench is much more productive for benchmarking
-a wide range of phenomena than the standard approach in which each
-benchmark must be implemented separately for each system.
+benchmarks. 
 
-A key insight of Task Bench is that many applications can be modeled
+Benchmarks in Task Bench are based on the observation that many applications can be modeled
 as a set of \emph{tasks}, or coarse-grain units of work, with
 dependencies between tasks representing the communication and synchronization required for
-distributed execution. Task Bench consists of a configurable \emph{task graph} with tasks for
+distributed execution. A benchmark consists of a parameterized \emph{task graph} with tasks for
 each point in an iteration space. Tasks are connected by dependencies
 as determined by a \emph{dependence relation}. This design permits a
 very concise description of a wide variety of patterns relevant to
@@ -66,19 +52,63 @@ to introduce task parallelism into the workload. Together, these
 design elements permit the exploration of a large space of application
 behaviors.
 
-To address the second issue and characterize the contribution of a programming model's runtime system to application performance, we introduce a new metric called \emph{minimum effective task granularity} (METG). Intuitively, METG(50\%) is the smallest executable task granularity that maintains at least 50\% efficiency, meaning that the application achieves at least 50\% of peak
-performance (e.g., FLOP/s or memory bandwidth) on a given machine. METG captures the essence of what is important in a weak
-or strong scaling study, the behavior at the limit of scalability. For
-weak scaling, METG(50\%) corresponds directly to the smallest problem size that can be weak-scaled with 50\% efficiency. For strong scaling, METG(50\%) can be used to compute the scale at which performance can be expected to dip below 50\% efficiency.
+Adding a new programming system to Task Bench involves  implementing a set of standard
+services, such as executing a task or a data transfer.  This interface is simple enough to 
+be implemented with reasonable effort to a level of quality sufficient for comparative
+studies. Task Bench also provides a core library that encapsulates the functionality
+shared by all system implementations, which not only reduces the implementation effot
+required but also makes it much easier to achieve truly apples-to-apples comparisons
+between systems.
 
-A lower METG does not necessarily mean that performance for a particular workload is
-better. For example, two systems with METG(50\%) of 100~\textmu{}s and 1~ms,
+Using Task Bench we were able to quickly incorporate 13 very different parallel and distributed
+runtime systems.  By running all systems on common benchmarks we were able to quantify phenomena
+that have never before been measured.
+Most strikingly, the performance of the various systems we examine varies by more than five orders
+of magnitude, with very popular, widely used systems at both ends of the spectrum!  Clearly
+the slower systems have ``good enough'' performance for some class of applications, while presumably
+providing advantages in programmer productivity.
+
+These results point to a natural question:   How does one predict whether the performance of a runtime
+system will in fact be good enough for a particular application?  In trying to answer this question,
+we realized that \emph{weak} and \emph{strong} scaling, by far the most commonly
+reported performance metrics, do not directly characterize the performance of the underlying
+programming system. Weak scaling can hide arbitrary amounts of runtime
+system overhead by using sufficiently large problem sizes, and strong
+scaling does not separate runtime system overhead from costs
+(such as increased communication) that scale with the number of nodes when
+using progressively larger portions of a machine. 
+
+To characterize the contribution of a programming model's runtime
+system to application performance, and as an example of the novel studies that can be done
+with Task Bench, we introduce a new metric called
+\emph{minimum effective task granularity} (METG). Intuitively, for a given
+workload, METG(50\%) is the smallest task granularity that maintains
+at least 50\% efficiency, meaning that the application achieves at
+least 50\% of peak performance (e.g., FLOP/s or memory bandwidth) on a
+given machine. METG captures the essence of what is important in a
+weak or strong scaling study, the behavior at the limit of
+scalability. For weak scaling, METG(50\%) corresponds directly to the
+smallest problem size that can be weak-scaled with 50\%
+efficiency. For strong scaling, METG(50\%) can be used to compute the
+scale at which performance can be expected to dip below 50\%
+efficiency.  We note that METG(50\%) for a given runtime system will
+vary with the particular application and the underlying hardware---i.e., METG(50%)
+is not a constant for a given system, but we will see that individual systems have
+a characteristic ranges of METG(50\%) values and that there is additional insight
+in the reasons that the mininum effective task granularity can vary.
+
+Another important characteristic is that a lower METG does not necessarily mean that 
+performance for a particular workload is better. For example, two systems with METG(50\%) of 100~\textmu{}s and 1~ms,
 respectively, running an application with an average task granularity
 of 10~ms, are both very likely to perform well. Only when the task
 granularity approaches (or drops below) METG(50\%) will performance
 likely diverge. Thus METG helps to identify the regime in which a
-given system can deliver good performance.
+given system can deliver good performance, and helps to explain how
+different systems coexist with METG(50\%) values that vary by orders of magnitude.
 
+%
+% FIXME:  Move these two paragraphs out of the introduction and into one of the METG sections.
+%
 Task Bench and METG address issues common in limit studies of runtime
 systems for parallel and distributed programming. Such studies often
 employ the metric \emph{tasks per second} (TPS), which is almost
@@ -122,11 +152,11 @@ This paper makes the following contributions:
 % FIXME: if you need more space you can collapsed the itemize:
 
 \begin{itemize}
-\item Section~\ref{sec:metg} defines the METG(50\%) metric and its
-  relationship to quantities of interest to application developers.
 \item Section~\ref{sec:task-bench} describes the design of Task Bench.
 \item Section~\ref{sec:implementation} details the implementation of
   Task Bench in 15 programming systems.
+\item Section~\ref{sec:metg} defines the METG(50\%) metric and its
+  relationship to quantities of interest to application developers.
 \item Section~\ref{sec:evaluation} provides a comprehensive evaluation
   of Task Bench on up to 256 Haswell nodes of the Cori
   supercomputer~\cite{Cori}.
