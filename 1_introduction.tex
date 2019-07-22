@@ -21,12 +21,12 @@ systems. Few published studies compare more than a handful of systems~\cite{LULE
 
 We present Task Bench, a benchmark designed for exploring the performance
 behaviors of parallel and distributed programming systems under a
-variety of conditions.  The key property of TaskBench is that it completely separates
-the implementation of TaskBench for a new system to be measured from the implementation
-of a new benchmark application to be run on the systems supported by TaskBench.
+variety of conditions.  The key property of Task Bench is that it completely separates
+the implementation of Task Bench for a new system to be measured from the implementation
+of a new benchmark application to be run on the systems supported by Task Bench.
 In all benchmarks we know of, the effort to implement $n$ benchmarks on $m$
-systems is $\mathcal{O}(mn)$.  TaskBench's design reduce the work to $\mathcal{O}(m) + \mathcal{O}(n)$,
-enbaling dramatically more systems and benchmarks to be explored for the same amount of programming
+systems is $\mathcal{O}(mn)$.  Task Bench's design reduce the work to $\mathcal{O}(m + n)$,
+enabling dramatically more systems and benchmarks to be explored for the same amount of programming
 effort.  New benchmarks created with Task Bench
 immediately run on all systems, and new systems immediately run all
 benchmarks. 
@@ -56,7 +56,7 @@ Adding a new programming system to Task Bench involves  implementing a set of st
 services, such as executing a task or a data transfer.  This interface is simple enough to 
 be implemented with reasonable effort to a level of quality sufficient for comparative
 studies. Task Bench also provides a core library that encapsulates the functionality
-shared by all system implementations, which not only reduces the implementation effot
+shared by all system implementations, which not only reduces the implementation effort
 required but also makes it much easier to achieve truly apples-to-apples comparisons
 between systems.
 
@@ -95,7 +95,7 @@ efficiency.  We note that METG(50\%) for a given runtime system will
 vary with the particular application and the underlying hardware---i.e., METG(50%)
 is not a constant for a given system, but we will see that individual systems have
 a characteristic ranges of METG(50\%) values and that there is additional insight
-in the reasons that the mininum effective task granularity can vary.
+in the reasons that the minimum effective task granularity can vary.
 
 Another important characteristic is that a lower METG does not necessarily mean that 
 performance for a particular workload is better. For example, two systems with METG(50\%) of 100~\textmu{}s and 1~ms,
