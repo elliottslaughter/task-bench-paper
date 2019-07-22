@@ -29,8 +29,7 @@ problem sizes compared to systems with higher overheads.
 
 To calculate METG, the data is replotted along axes of efficiency
 (i.e., as a percentage of the peak FLOP/s achieved) and task
-granularity (i.e., $\text{wall time} \times \text{number of
-  cores}/\text{number of tasks}$), as shown in Figure~\ref{fig:efficiency-mpi}. Note that a \emph{task} is defined
+granularity (i.e., $\text{wall time} \times \text{num.~cores}/\text{num.~tasks}$), as shown in Figure~\ref{fig:efficiency-mpi}. Note that a \emph{task} is defined
 broadly to be any continuously-executing unit of application code,
 and thus it makes sense to discuss tasks even in systems
 without an explicit notion of tasking, such as in MPI programs written in a bulk synchronous style. In this case, the tasks run a
