@@ -3,9 +3,9 @@ DOC=task_bench
 # dependencies via include files
 INCLUDED_TEX = 0_abstract.tex \
 	1_introduction.tex \
-	2_metg.tex \
-	3_task_bench.tex \
-	4_implementation.tex \
+	2_task_bench.tex \
+	3_implementation.tex \
+	4_metg.tex \
 	5_evaluation.tex \
 	6_related.tex \
 	7_conclusion.tex \
