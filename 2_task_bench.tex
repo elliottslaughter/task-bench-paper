@@ -66,6 +66,9 @@ show excerpts from the Task Bench core, and the Dask implementation,
 respectively. Only the code in Listing~\ref{lst:code-sample} is
 implemented for each system, minimizing the work required for each additional system.
 
+\input{l0_compute_kernel}
+\input{l1_code_sample}
+
 The Task Bench core library is fully
 validating. Because the task graph configuration is explicitly
 represented (though unmaterialized) in Task Bench, this representation
@@ -77,9 +80,6 @@ completes successfully, is correct. An evaluation of the performance impact of
 validation showed it to be less than 3\% at the smallest task
 granularities in any Task Bench implementation, with a negligible
 effect on overall results.
-
-\input{l0_compute_kernel}
-\input{l1_code_sample}
 
 Task Bench provides two main kernels that can be called from tasks,
 which are compute- and memory-bound, respectively. The compute-bound
