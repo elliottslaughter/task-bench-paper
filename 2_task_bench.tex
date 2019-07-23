@@ -3,25 +3,16 @@
 
 \input{t2_parameters}
 
-% FIXME: This seems a bit abrupt but the old intro doesn't really make sense any more.
-\zap{
-To measure a wide variety of
-systems and application scenarios, we developed a novel
-parameterized benchmark called Task Bench.
-} % zap
+To explore as broad a space of application scenarios as possible, Task
+Bench provides a large number of configuration parameters. The most
+important parameters are described in
+Table~\ref{tab:parameters}. These parameters control the size and
+structure of the task graph, the type and duration of the kernels
+associated with each task, and the amount of data associated with
+each dependence edge in the graph.
 
-Task Bench
-implementations execute a \emph{task graph}, with tasks for each point
-in an \emph{iteration space} and dependencies between tasks determined
-by a \emph{dependence relation}. A task $A$ that depends on another task $B$
-must execute after task $B$, and receives the output data from
-task $B$ as input. Each task can execute any one of a
-number of kernels (compute-bound, memory-bound, etc.) and can generate
-a configurable amount of output to control the amount of communication
-performed with each task dependency. Thus Task Bench can explore a large space of application scenarios to
-understand the performance of parallel and
-distributed programming systems.
-
+Task graphs are a combination of an iteration space (with a task for
+each point in the space) with a dependence relation.
 For simplicity, but without loss of generality, the iteration space in
 Task Bench is constrained to be 2-dimensional, with time along
 the vertical axis and parallel tasks along the
