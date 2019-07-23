@@ -1,7 +1,9 @@
 DOC=task_bench
+SUP=supplement
 
 # dependencies via include files
-INCLUDED_TEX = 0_abstract.tex \
+INCLUDED_TEX = header.tex \
+	0_abstract.tex \
 	1_introduction.tex \
 	2_task_bench.tex \
 	3_implementation.tex \
@@ -61,11 +63,12 @@ GENERATED_FIGS = figs/sample-task-graphs/trivial.pdf \
 	figs/sample-task-graphs/tree.pdf
 
 .PHONY: all
-all: $(DOC).pdf 
+all: $(DOC).pdf $(SUP).pdf
 
 $(DOC).pdf: $(DOC).tex bibliography.bib $(INCLUDED_TEX) $(INCLUDED_FIGS) $(GENERATED_FIGS)
+$(SUP).pdf: $(SUP).tex bibliography.bib $(INCLUDED_TEX) $(INCLUDED_FIGS) $(GENERATED_FIGS)
 
-$(DOC).pdf: %.pdf: %.tex bibliography.bib
+$(DOC).pdf $(SUP).pdf: %.pdf: %.tex bibliography.bib
 	pdflatex -halt-on-error $*.tex
 	(if grep -q bibliography $*.tex; \
 	then \
