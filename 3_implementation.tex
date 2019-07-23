@@ -2,9 +2,21 @@
 \label{sec:implementation}
 
 We have implemented Task Bench in the 15 parallel and distributed
-programming systems listed in Table~\ref{tab:systems}. We describe the
-systems, and any salient details of their Task Bench implementations,
-below.
+programming systems listed in Table~\ref{tab:systems}. These include
+traditional HPC programming models: MPI~\cite{MPI} (with bulk
+synchronous and point-to-point communication) and MPI+X (with OpenMP
+and CUDA); PGAS and actor models: Chapel~\cite{Chapel15},
+Charm++~\cite{Charmpp93}, X10~\cite{X1005}; and newer task-based
+systems: OmpSs~\cite{OmpSs11}, OpenMP~\cite{OpenMPSpec40} (with task
+dependencies), PaRSEC (with \emph{parameterized task graphs}
+(PTG)~\cite{PARSEC13} and \emph{dynamic task discovery}
+(DTD)~\cite{PARSEC_DTD}), Realm~\cite{Realm14},
+Regent~\cite{Regent15}, and StarPU~\cite{StarPU11}. Also, we consider
+several systems used in large scale data analytics and workflows:
+Dask~\cite{Dask15}, Spark~\cite{Spark10}, Swift/T~\cite{Wozniak13},
+and TensorFlow~\cite{TensorFlow15}. We describe the systems, and any
+salient details of their Task Bench implementations, in our
+supplemental material.
 
 One challenge in implementing Task Bench for such a wide variety of
 systems is that the capabilities of the systems vary considerably. For
