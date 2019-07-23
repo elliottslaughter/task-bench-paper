@@ -1,0 +1,207 @@
+\section{Implementations}
+\label{sec:implementation}
+
+\subsection{Chapel}
+
+Chapel~\cite{Chapel15} is a parallel programming language
+with a \emph{multi-res\-o\-lu\-tion} approach, supporting parallelism at a variety of
+levels. Chapel's core features are a partitioned global address space
+(PGAS), data distributions, tasks,
+synchronization primitives, and array promotion. For Task Bench, we target a low level of
+Chapel, using explicit task instantiation (via
+\lstinline[language=Chapel]{coforall}), bulk access to distributed
+arrays for efficient data movement, and atomic integers for
+synchronization.
+
+\subsection{Charm++}
+
+Charm++~\cite{Charmpp93} is an explicitly parallel actor-based programming system. Actors, or
+\emph{chares}, are objects in their own address space.
+Chares communicate data and synchronize via messages and can be moved
+to balance load. Our Task Bench implementation uses a chare
+array for the task graph, with one chare for each column. Messages implement dependencies; a task executes as soon as its
+dependencies are all available.
+
+%% Collectives synchronize the
+%% completion of the task graph execution.
+
+% FIXME: Discuss SMP vs non-SMP versions
+
+\subsection{Dask}
+
+Dask~\cite{Dask15} is an implicitly parallel task-based programming system for large
+scale data analytics with Python. Dask provides abstractions over
+distributed NumPy arrays and Pandas dataframes, and also a lower-level
+interface for launching tasks. We use the lower-level interface to
+implement Task Bench.
+
+\subsection{MPI}
+
+Our MPI~\cite{MPI} implementation of Task Bench represents the common
+case of point-to-point communication with distinct computation and
+communication phases. We experimented with a variety of implementation
+strategies and found the best performing to be using
+\lstinline[language=C++]{MPI_Isend} and
+\lstinline[language=C++]{MPI_Irecv} to implement the communication
+phase, posting receives before sends. Each task dependency maps to one
+send/receive pair in MPI. We also provide a bulk synchronous
+implementation which enforces the boundary between communication and
+computation with \lstinline[language=C++]{MPI_Barrier}.
+
+\subsection{MPI+X}
+
+We provide two MPI+X implementations of Task Bench to evaluate the
+performance of hierarchical programming models. Our MPI+OpenMP
+implementation uses forall-style parallel loops to execute tasks,
+interleaved with MPI point-to-point communication as above. Our
+MPI+CUDA implementation follows an offload model where data is copied
+to and from the GPU on every timestep.
+
+\subsection{OmpSs}
+
+OmpSs~\cite{OmpSs11} is a programming model for loop- and task-based parallelism
+that is source-compatible with OpenMP. Our Task Bench implementation
+uses OpenMP 4.0-style task dependencies. Because OpenMP tasks have a fixed number of dependencies, we use a switch
+statement to implement the dynamic dependencies required for Task
+Bench. The implementation is otherwise straightforward.
+
+% FIXME: More to say about OmpSs? Is there anything different vs the OpenMP implementation?
+
+\subsection{OpenMP}
+
+OpenMP~\cite{OpenMPSpec40} is the industry standard API for loop-based
+parallelism on shared-memory systems, and supports task dependencies as of version 4.0. Our Task Bench implementation
+for OpenMP is similar to OmpSs and uses
+task dependencies. We tested with GNU GOMP and Intel KMP
+and found KMP to be better performing.
+
+\subsection{PaRSEC}
+
+PaRSEC is a task-based programming system supporting two distinct
+programming models: \emph{parameterized task graphs}
+(PTG)~\cite{PARSEC13} and \emph{dynamic task discovery}
+(DTD)~\cite{PARSEC_DTD}.  PTG is a dataflow model in which programmers
+write a concise, algebraic description of the tasks and dataflows in
+the program. This compressed representation is expanded into a full
+task graph by a source-to-source compiler.
+
+In the DTD model, tasks are enumerated in program order (by
+executing the program), and dependencies between tasks are
+identified automatically based on the input and output data of tasks. 
+A task depends on another task if it reads data written by the other task,
+and the data is copied automatically if the two tasks are executed on
+different nodes. To
+improve scalability, the program is executed in
+SPMD fashion on all nodes, and the user is responsible for eliding
+tasks that are not directly connected to those that are to be executed
+on the current node.
+
+In our Task Bench implementation, we evaluate both PTG and DTD models,
+as well as a third option based on DTD that has additional manual
+optimizations applied to further reduce dynamic checks for what tasks
+should be executed on a node, which further improves
+scalability.
+
+%% Task Bench uses a 2D block cyclic data distribution provided by PaRSEC. Tiles of data are 
+%% distributed across nodes in pre-defined patterns,
+%% and can be passed to tasks on other nodes, but
+%% can only be written on the node where the data is originally
+%% allocated. In our Task Bench implementation, each task writes to a
+%% tile as output, and these tiles are passed as inputs to the
+%% subsequent sets of tasks. As in the OmpSs and OpenMP implementations,
+%% the task launch code uses a switch statement as the PaRSEC API assumes
+%% tasks have a fixed number of dependencies.
+
+\subsection{Realm}
+
+Realm~\cite{Realm14} is an explicitly-parallel task-based programming
+model used internally by Legion~\cite{Legion12} and
+Regent~\cite{Regent15}. A Realm implementation of Task Bench is a limit study of what can be achieved with Legion or Regent.
+
+Tasks in Realm are asynchronous, with dependencies
+defined by \emph{events} passed from one task
+to another. Realm's data model supports collections that live in a
+specific memory. Data must be explicitly copied, and the copies
+synchronized with tasks via events.
+Realm also supports a \emph{subgraph} API that enables additional
+optimizations. We use subgraphs in the Task
+Bench implementation.
+
+\subsection{Regent}
+
+Regent~\cite{Regent15} is an implicitly-parallel task-based language
+which implements the Legion programming model~\cite{Legion12}. We use
+Regent rather than Legion directly because the Regent compiler
+provides a critical optimization that
+improves scalability~\cite{ControlReplication17}.
+
+\subsection{Spark}
+
+Spark~\cite{Spark10} is an implicitly-parallel programming model for
+large scale data analytics.
+The core abstractions in Spark are functional operators such as map,
+reduce, and join. Data in Spark are stored in
+\emph{resilient
+  distributed datasets} (RDDs): globally-visible,
+dynamically single-assignment data structures. Spark caches RDDs in memory to avoid unnecessary
+disk traffic.
+
+Spark has tasks internally but they are not exposed to the user,
+so a Task Bench implementation must map the task graph to a set of operators that result in the
+desired execution. We use
+\lstinline[language=Scala]{flatMap} and
+\lstinline[language=Scala]{groupByKey} to generate task
+dependencies, and then \lstinline[language=Scala]{mapPartitions} to execute a
+series of tasks. An explicit hash partitioner ensures that
+Spark does not attempt to group multiple Task Bench tasks into a
+single Spark task, as tasks in Task Bench already represent coarse-grained units of work.
+
+We performed extensive experiments to verify that no
+extraneous factors interfered with our Spark measurements. We
+disabled logging, ensured no RDDs are written
+to disk, confirmed there is no measurable overhead due to JNI
+calls from Java to C or due to the serialization of data structures, and cross-checked results with known cases
+that hit optimal task throughput in Spark.
+
+\subsection{StarPU}
+
+StarPU~\cite{StarPU11} is a task-based system that supports a \emph{sequential task flow} (STF)
+programming model similar to PaRSEC's DTD. Our Task Bench implementation in
+StarPU is very similar to PaRSEC.
+%% We use a simplified version of the 2D block cyclic data distribution from the Chameleon 
+%% project~\cite{Chameleon}.
+
+\subsection{Swift/T}
+
+Swift/T~\cite{Wozniak13} is a parallel scripting language intended
+primarily for the composition of HPC workflows. Swift/T
+programs follow dataflow semantics, where every statement may
+potentially execute in parallel as soon as its dependencies are
+satisfied; statements only execute sequentially when explicitly
+requested. The Swift/T compiler performs a number of optimizations to
+improve performance of highly parallel programs~\cite{Armstrong14}. Our Task Bench in Swift/T is straightforward, using Swift/T's dataflow
+semantics to capture dependencies on other tasks.
+
+\subsection{TensorFlow}
+
+TensorFlow~\cite{TensorFlow15} is a programming system designed for
+deep learning workloads. Although TensorFlow's API exposes
+machine learning concepts, internally TensorFlow is a task graph execution engine, making it a good fit for
+Task Bench. TensorFlow programs operate via explicit graph construction. Task graphs are composed in Python and run by an
+execution engine written in C++. Our Task Bench implementation is straightforward.
+
+\subsection{X10}
+
+X10~\cite{X1005} is an explicitly parallel programming language for
+place-based programming. The core features of X10 are \emph{places}
+which represent distributed memories, a PGAS model where references to
+remote objects can be held (but can only be dereferenced on the local
+place), asynchronous tasks, and a place-changing construct to move the
+execution of a task to a remote place. X10 also supports a variety of
+synchronization primitives.
+
+Our Task Bench implementation uses
+\lstinline[language=X10]{Rail.asyncCopy} for efficient data movement
+between places, along with place-changing and atomic integers for
+synchronization. We use the native backend of X10, which compiles to
+C++.
