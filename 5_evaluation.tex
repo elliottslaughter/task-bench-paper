@@ -29,8 +29,6 @@ efficiency are well-grounded.
 
 \input{e1_flops}
 \input{e2_efficiency}
-\input{e7_bytes}
-\input{e4_radix}
 
 Figure~\ref{fig:flops} shows the FLOP/s achieved with a compute-bound
 kernel with varying problem sizes. This is the full version of
@@ -51,7 +49,8 @@ computational cost of running such tests makes this prohibitively
 expensive. For example, the Spark job in
 this configuration ran for over 6 hours.
 
-\input{e3_metg_compute}
+\input{e7_bytes}
+\input{e4_radix}
 
 Figure~\ref{fig:efficiency} shows efficiency (as a percentage of
 peak FLOP/s) plotted against task granularity. This plot is
@@ -114,6 +113,8 @@ trivial dependencies.
 
 \subsection{Baseline Overhead}
 
+\input{e3_metg_compute}
+
 One of the basic questions when considering different programming
 systems is: How much overhead does the system add? This question is tricky to answer directly because some systems introduce
 overhead \emph{inline} (i.e., by running system internal processes on
@@ -174,8 +175,6 @@ hours) to reach 50\% efficiency.
 \subsection{Scalability}
 \label{subsec:scalability}
 
-\input{e5_imbalance}
-
 METG is a useful metric in part because it summarizes the basic task
 scheduling overhead of each programming system in a single number. This makes it
 possible to evaluate METG at different node counts (shown in
@@ -231,6 +230,7 @@ curve depending on how close each system is to being limited by
 overhead.
 } % zap
 
+\input{e5_imbalance}
 \input{e6_communication}
 
 \subsection{Load Imbalance}

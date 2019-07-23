@@ -1,10 +1,29 @@
 \section{METG}
 \label{sec:metg}
 
-\input{f1_flops_mpi}
-\input{f2_efficiency_mpi}
+Given that Task Bench permits the rapid exploration of a large space
+of application scenarios, one question is how to characterize the
+overall performance of the programming systems under study. As noted
+earlier, the overheads of the systems we consider varies by more than
+five orders of magnitude. This makes it challenging to extract useful
+information from weak and strong scaling runs.
 
-The \emph{minimum effective task granularity}, METG(50\%), for an application $A$ is
+Existing studies which consider programming system efficiency
+typically use the metric \emph{tasks per second} (TPS). TPS results
+are difficult to interpret and apply, because the efficiency (and thus
+the amount of useful work) is not constrained. When using empty
+tasks~\cite{LegionTracing18}, the resulting upper bound on task
+scheduling throughput fails to represent useful work within a
+realistic application. With non-empty tasks, since the efficiency of
+the overall application is typically not reported~\cite{Canary16,
+  Armstrong14}, TPS is not a measurement of runtime-limited
+performance. Large tasks may be used to hide any amount of runtime
+overhead, while small tasks may result in a drop in total application
+throughput even as TPS increases.
+
+We introduce \emph{minimum effective task granularity}, or METG, an
+efficiency-constrained metric for runtime-limited
+performance. METG(50\%) for an application $A$ is
 the smallest average task granularity (i.e., task duration) such that $A$
 achieves overall efficiency of at least 50\%. For example, in
 compute-bound applications efficiency can be measured as the
@@ -12,6 +31,9 @@ percentage of the available FLOP/s achieved. On Cori with 1.26 TFLOP/s available
 the smallest task granularity achieved while maintaining at least 0.63
 TFLOP/s per node. For applications not amenable to being characterized by raw FLOP/s or B/s, an application-specific measure of performance can be
 used instead (e.g., mesh cells processed per second).
+
+\input{f1_flops_mpi}
+\input{f2_efficiency_mpi}
 
 Figures~\ref{fig:flops-mpi} and \ref{fig:efficiency-mpi} show how METG is
 calculated. The application, in this case an MPI implementation of the
