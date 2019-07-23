@@ -18,6 +18,7 @@ INCLUDED_TEX = 0_abstract.tex \
 	l1_code_sample.tex \
 	t0_equations.tex \
 	t1_systems.tex \
+	t2_parameters.tex \
 	e0_flags.tex \
 	e1_flops.tex \
 	e2_efficiency.tex \

@@ -1,0 +1,48 @@
+\begin{table}[t]
+\small
+
+General options:
+
+\vspace{0.25em}
+
+\begin{tabular}{l | l | l}
+Parameter & Values & Purpose \\
+\hline
+
+height & height of graph & number of timesteps \\
+width & width of graph & degree of parallelism \\
+dependence & trivial, stencil, etc. & dependence relation \\
+kernel & compute, memory, etc. & type of kernel \\
+output & bytes per dependency & degree of comm.
+\end{tabular}
+
+\vspace{1em}
+
+Options specific to dependence relations:
+
+\vspace{0.25em}
+
+\begin{tabular}{l | l | l}
+Parameter & Valid For & Purpose \\
+\hline
+radix & nearest & dependencies per task
+\end{tabular}
+
+\vspace{1em}
+
+Options specific to kernels:
+
+\vspace{0.25em}
+
+\begin{tabular}{l | l | l}
+Parameter & Valid For & Purpose \\
+\hline
+iterations & compute, memory & task duration/problem size \\
+span & memory & bytes used per task per iter. \\
+scratch & memory & total working set size \\
+imbalance & load imbalanced & degree of imbalance
+\end{tabular}
+
+\caption{Task Bench parameters.\label{tab:parameters}}
+\vspace{-0.5cm}
+\end{table}

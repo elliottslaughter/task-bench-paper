@@ -1,6 +1,6 @@
 \begin{lstlisting}[language=Python,caption={Excerpt from Task Bench implementation in Dask.},label={lst:code-sample},style=codeblock,float]
 @dask.delayed(nout=2)
-def execute_point(g, t, p, scratch, inputs):
+def execute_point(g, r, c, scratch, inputs):
    output = make_buffer(g.output_bytes_per_task)
    # call Task Bench Core API...
    return output, scratch
@@ -11,16 +11,16 @@ def execute_task_graph(g):
       for _ in range(0, g.width)
    ]
    last_row = None
-   for t in range(0, g.timesteps):
+   for r in range(0, g.height):
       row = []
-      for p in range(0, g.width):
+      for c in range(0, g.width):
          output = None
-         if g.contains_point(t, p):
+         if g.contains_point(r, c):
             inputs = []
-            for dep in g.dependencies(t, p):
+            for dep in g.dependencies(r, c):
                inputs.append(last_row[dep])
             output, scratch[p] = execute_point(
-               g, t, p, scratch[p], inputs)
+               g, r, c, scratch[p], inputs)
          row.append(output)
       last_row = row
 \end{lstlisting}
