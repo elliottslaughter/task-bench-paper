@@ -157,10 +157,10 @@ all at larger node counts.
 
 Most systems for HPC are highly scalable,
 but this is not true of all the systems included in this
-evaluation. Lower is better in Figure~\ref{fig:metg-compute}, and a
-flat line is ideal. Lines that rise with node count indicate less than
-ideal scaling. Most notably, Spark is typically
-intended for use in industrial data center applications with task
+evaluation. Lower is better in Figure~\ref{fig:metg-compute}, and
+flat is ideal. Lines that rise with node count indicate less than
+ideal scaling. Most notably, Spark is primarily
+intended industrial data center applications with task
 granularities measured in tens of seconds. Spark uses a centralized
 controller, which limits throughput, and this is visible in the figure
 as the line for Spark immediately rises with node count. Keep in mind
@@ -173,21 +173,21 @@ Implicitly parallel systems such as PaRSEC, StarPU and Regent that
 rely on runtime analysis to build the DAG can suffer from
 scalability bottlenecks if every node must consider the tasks
 executing on all other nodes. PaRSEC DTD and StarPU mitigate this
-partially by allowing the user to omit tasks that are not direct
-dependencies of those executed on the current node. However, this DAG
-trimming approach still requires some dynamic checks that scale with
-the number of nodes and thus limit scalability~\cite{PARSEC_DTD}. Approaches based on compile-time analysis can
+partially by allowing the user to omit tasks not directly
+dependent on those executed by a given node. However, this DAG
+trimming approach requires dynamic checks that scale with
+the number of nodes and thus limit scalability~\cite{PARSEC_DTD}. Compile-time analysis can
 partially or fully mitigate this overhead. PaRSEC PTG improves over DTD 
 by performing DAG expansion at compile time~\cite{PARSEC_DTD}, but
-still retains dynamic checks leading to limited scalability. PaRSEC shard includes additional manual optimizations over DTD, completely eliminating these dynamic checks. Regent
+retains dynamic checks that limit scalability. PaRSEC shard includes additional manual optimizations over DTD, completely eliminating these dynamic checks. Regent
 uses a compile-time optimization to improve
 scalability~\cite{ControlReplication17}; the increase in METG beyond 16 nodes is due to a known bug in Realm barrier migration which the Realm Task Bench implementation is able to manually work around.
 
 \subsection{Number of Dependencies}
 \label{subsec:number-of-dependencies}
 
-The number of dependencies per task has a strong influence on the
-overhead incurred by each system, as shown in
+The number of dependencies per task has a strong influence on
+overhead, as shown in
 Figure~\ref{fig:radix}. This plot shows METG(50\%) for the nearest
 dependence pattern, when varying the number of dependencies per task
 from 0 to 9.
@@ -202,7 +202,7 @@ The ratio in METG between 0 and 3 dependencies per task ranges from
 $1.01\times$ to $250\times$ (median $2.9\times$). The difference is most pronounced in systems that
 perform runtime work inline. For example, MPI achieves an METG of 390
 ns with 0 dependencies, but this rises to 4.6 \textmu{}s with 3 dependencies,
-a factor of $12\times$ increase. This is unsurprising as in the case
+a $12\times$ increase. This is unsurprising as in the case
 of 0 dependencies, no \lstinline[language=C++]{MPI_Isend} calls are
 issued at all, so MPI has nothing to do aside from executing kernels
 as quickly as possible. For this reason, we recommend evaluating the performance of
@@ -231,12 +231,13 @@ overhead.
 
 \input{e6_communication}
 
+\input{e10_cuda_efficiency}
+
 \subsection{Communication Hiding}
 
-Also of interest is the ability of asynchronous systems to
+Also of interest is the ability to
 hide communication latency in the presence of task
-parallelism. Figure~\ref{fig:efficiency-communication} plots efficiency vs task
-granularity curves for varying amounts of
+parallelism. Figure~\ref{fig:efficiency-communication} plots efficiency with varying amounts of
 communication, determined by the number
 of bytes produced by each task (and therefore communicated with each
 task dependency).
@@ -257,30 +258,27 @@ Figure~\ref{fig:cuda-efficiency} compares MPI
 and MPI+CUDA on the Piz Daint supercomputer. The CUDA
 compute kernel achieves a peak performance of $4.759 \times 10^{12}$
 FLOP/s, which is very close to the officially reported number
-$4.761 \times 10^{12}$. The CPU kernel achieves $5.726 \times 10^{11}$
-FLOP/s. Note that the CPU and GPU kernels perform different numbers of
-operations as the GPU must be given more work to achieve peak
+$4.761 \times 10^{12}$. The CPU achieves $5.726 \times 10^{11}$
+FLOP/s. Note that the kernels perform different numbers of
+operations as the GPU requires more work to reach peak
 performance. The x-axis in Figure~\ref{fig:cuda-efficiency} has been
-normalized so that the number of FLOPs is constant for a given problem
+normalized to keep FLOPs constant for a given problem
 size.
 
-Our MPI+CUDA implementation uses an offload model in which input and
-output data is copied to and from the GPU on each time step. We tested
+Our MPI+CUDA implementation uses an offload model in which data is copied to and from the GPU on each step. We test
 two configurations: \lstinline{w1} uses 1 task per GPU, whereas
-\lstinline{w4} overdecomposes by a factor of $4\times$, using 4 MPI
-ranks per GPU to push work to the GPU in parallel and thus overlaps communication and computation. We see that the
-\lstinline{w4} configuration achieves higher FLOP/s but
+\lstinline{w4} overdecomposes by $4\times$, using 4 MPI
+ranks per GPU to push work to the GPU in parallel.
+\lstinline{w4} achieves higher FLOP/s but
 drops more rapidly at smaller problem sizes, due to the overhead of
 scheduling $4\times$ as many CUDA kernel launches. In either case, the
 GPU requires more work to achieve high performance, and the overhead
-of copying data to and from the GPU dominates at small task
+of copying data dominates at small task
 granularities, where the CPU achieves higher
 performance. While Figure~\ref{fig:cuda-efficiency} is not couched in
-terms of MTEG (as the peak performance of the GPU and CPU are very
+terms of METG (as peak performance on CPU and GPU are very
 different), the conclusion here is similar to
-Section~\ref{subsec:scalability}: The cost of communicating data and
-tasks to and from the GPU imposes a higher task granularity to achieve
+Section~\ref{subsec:scalability}: The cost of sending data and
+tasks to the GPU imposes a higher task granularity to achieve
 the same efficiency than running on the CPU, reducing the advantage at small task granularities of
 very lightweight mechanisms such as those in MPI.
-
-\input{e10_cuda_efficiency}
