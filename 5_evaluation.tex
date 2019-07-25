@@ -17,6 +17,8 @@ one Intel Xeon E5-2690 v3 (12 physical cores) and one NVIDIA Tesla
 P100 per node. We use GCC 6.2.0, Cray MPICH 7.7.2, and
 CUDA 9.1.85.
 
+Load balancing results are in the supplemental material.
+
 \subsection{Compute Kernel Performance}
 \label{subsec:peak-performance-and-efficiency}
 
@@ -29,9 +31,6 @@ efficiency are well-grounded.
 
 \input{e1_flops}
 \input{e2_efficiency}
-\input{e7_bytes}
-
-\input{e3_metg_compute}
 
 Figure~\ref{fig:flops} shows the FLOP/s achieved with a compute-bound
 kernel with varying problem sizes. This is the full version of
@@ -68,6 +67,8 @@ applications.
 
 \subsection{Memory Kernel Performance}
 
+\input{e7_bytes}
+
 Figure~\ref{fig:bytes} shows the performance of Task Bench
 implementations with a memory-bound kernel. We measure peak memory
 bandwidth of 108~GB/s, which compares favorably with the
@@ -85,6 +86,8 @@ The remaining experiments use compute-bound kernels.
 % FIXME: why compute-bound kernels?
 
 \subsection{Baseline Overhead}
+
+\input{e3_metg_compute}
 
 One of the basic questions when considering different programming
 systems is: How much overhead does the system add? This question is tricky to answer directly because some systems introduce
@@ -188,8 +191,6 @@ scalability~\cite{ControlReplication17}; the increase in METG beyond 16 nodes is
 \subsection{Number of Dependencies}
 \label{subsec:number-of-dependencies}
 
-\input{e4_radix}
-
 The number of dependencies per task has a strong influence on the
 overhead incurred by each system, as shown in
 Figure~\ref{fig:radix}. This plot shows METG(50\%) for the nearest
@@ -213,6 +214,8 @@ as quickly as possible. For this reason, we recommend evaluating the performance
 programming systems under realistic workloads, rather than with
 trivial dependencies.
 
+\input{e4_radix}
+
 \zap{
 \input{e8_weak}
 \input{e9_strong}
@@ -231,34 +234,7 @@ curve depending on how close each system is to being limited by
 overhead.
 } % zap
 
-\input{e5_imbalance}
 \input{e6_communication}
-
-\subsection{Load Imbalance}
-
-One advantage of systems with asynchronous execution capabilities is
-the ability to mitigate load imbalance with little or no additional programmer effort, especially in the presence of
-task parallelism. To quantify this effect,
-Figure~\ref{fig:efficiency-imbalance} plots task granularity vs
-efficiency curves under load imbalance where each task's duration is multiplied by a uniform random variable between [0,~1). The task durations are generated with a deterministic
-pseudo random number generator with a consistent seed to ensure
-identical task durations for all systems.
-
-The MPI implementation of Task Bench, with its distinct computation and communication phases,
-suffers the most under load imbalance. The biggest
-difference is at large task granularities, where the imbalance
-effectively puts an upper bound on MPI efficiency. At smaller task
-granularities the effect shrinks and may even reverse as systems hit
-their fundamental limits due to overhead.
-
-The remaining differences are due primarily to
-different scheduling behaviors. The execution of 4
-simultaneous task graphs only partially mitigates the
-load imbalance between tasks. Systems that provide an
-additional on-node work stealing capability (such as Chapel with the distrib scheduler) see additional gains in
-efficiency at large task granularities. However, the use of
-work-stealing queues can also impact throughput at small task
-granularities. For example, Chapel's default (non-work-stealing) scheduler outperforms Chapel distrib at very small task granularities. We do not consider Charm++ load balancers because the imbalance is \emph{non-persistent} (i.e., timestep $t$ is uncorrelated with timestep $t+1$). We leave analysis of persistent load imbalance to future work.
 
 \subsection{Communication Hiding}
 
