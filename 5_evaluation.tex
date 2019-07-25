@@ -29,6 +29,9 @@ efficiency are well-grounded.
 
 \input{e1_flops}
 \input{e2_efficiency}
+\input{e7_bytes}
+
+\input{e3_metg_compute}
 
 Figure~\ref{fig:flops} shows the FLOP/s achieved with a compute-bound
 kernel with varying problem sizes. This is the full version of
@@ -48,9 +51,6 @@ were to run larger problem sizes. Unfortunately, the excessive
 computational cost of running such tests makes this prohibitively
 expensive. For example, the Spark job in
 this case ran for over 6 hours.
-
-\input{e7_bytes}
-\input{e4_radix}
 
 Figure~\ref{fig:efficiency} plots efficiency (as a percentage of
 peak FLOP/s) against task granularity. As described in Section~\ref{sec:metg}, this plot is
@@ -84,35 +84,7 @@ The remaining experiments use compute-bound kernels.
 
 % FIXME: why compute-bound kernels?
 
-\subsection{Number of Dependencies}
-\label{subsec:number-of-dependencies}
-
-The number of dependencies per task has a strong influence on the
-overhead incurred by each system, as shown in
-Figure~\ref{fig:radix}. This plot shows METG(50\%) for the nearest
-dependence pattern, when varying the number of dependencies per task
-from 0 to 9.
-
-% FIXME: make sure these numbers are up to date for final paper
-
-%% From 1 to 3
-%% dependencies, the ratio varies from $1.0\times$ to $150\times$ (median
-%% $2.3\times$).
-
-The ratio in METG between 0 and 3 dependencies per task ranges from
-$1.01\times$ to $250\times$ (median $2.9\times$). The difference is most pronounced in systems that
-perform runtime work inline. For example, MPI achieves an METG of 390
-ns with 0 dependencies, but this rises to 4.6 \textmu{}s with 3 dependencies,
-a factor of $12\times$ increase. This is unsurprising as in the case
-of 0 dependencies, no \lstinline[language=C++]{MPI_Isend} calls are
-issued at all, so MPI has nothing to do aside from executing kernels
-as quickly as possible. For this reason, we recommend evaluating the performance of
-programming systems under realistic workloads, rather than with
-trivial dependencies.
-
 \subsection{Baseline Overhead}
-
-\input{e3_metg_compute}
 
 One of the basic questions when considering different programming
 systems is: How much overhead does the system add? This question is tricky to answer directly because some systems introduce
@@ -178,10 +150,12 @@ METG is a useful metric in part because it summarizes the basic task
 scheduling overhead of each programming system in a single number. This makes it
 possible to evaluate METG at different node counts (shown in
 Figure~\ref{fig:metg-compute}) to see how it is impacted by changes in
-communication topology and latency. An interesting observation is that
+communication topology and latency. A key finding is that
 the systems with the smallest METG on one node have roughly an order
 of magnitude higher METG at 256 nodes---increased communication latencies require significantly larger tasks to
-achieve the same level of efficiency.
+achieve the same level of efficiency, so apparent differences in
+runtime overhead at small node counts can matter much less or not at
+all at larger node counts.
 
 Most systems for HPC are highly scalable,
 but this is not true of all the systems included in this
@@ -210,6 +184,34 @@ by performing DAG expansion at compile time~\cite{PARSEC_DTD}, but
 still retains dynamic checks leading to limited scalability. PaRSEC shard includes additional manual optimizations over DTD, completely eliminating these dynamic checks. Regent
 uses a compile-time optimization to improve
 scalability~\cite{ControlReplication17}; the increase in METG beyond 16 nodes is due to a known bug in Realm barrier migration which the Realm Task Bench implementation is able to manually work around.
+
+\subsection{Number of Dependencies}
+\label{subsec:number-of-dependencies}
+
+\input{e4_radix}
+
+The number of dependencies per task has a strong influence on the
+overhead incurred by each system, as shown in
+Figure~\ref{fig:radix}. This plot shows METG(50\%) for the nearest
+dependence pattern, when varying the number of dependencies per task
+from 0 to 9.
+
+% FIXME: make sure these numbers are up to date for final paper
+
+%% From 1 to 3
+%% dependencies, the ratio varies from $1.0\times$ to $150\times$ (median
+%% $2.3\times$).
+
+The ratio in METG between 0 and 3 dependencies per task ranges from
+$1.01\times$ to $250\times$ (median $2.9\times$). The difference is most pronounced in systems that
+perform runtime work inline. For example, MPI achieves an METG of 390
+ns with 0 dependencies, but this rises to 4.6 \textmu{}s with 3 dependencies,
+a factor of $12\times$ increase. This is unsurprising as in the case
+of 0 dependencies, no \lstinline[language=C++]{MPI_Isend} calls are
+issued at all, so MPI has nothing to do aside from executing kernels
+as quickly as possible. For this reason, we recommend evaluating the performance of
+programming systems under realistic workloads, rather than with
+trivial dependencies.
 
 \zap{
 \input{e8_weak}
@@ -307,7 +309,7 @@ terms of MTEG (as the peak performance of the GPU and CPU are very
 different), the conclusion here is similar to
 Section~\ref{subsec:scalability}: The cost of communicating data and
 tasks to and from the GPU imposes a higher task granularity to achieve
-the same efficiency than running on the CPU, reducing the advantage of
+the same efficiency than running on the CPU, reducing the advantage at small task granularities of
 very lightweight mechanisms such as those in MPI.
 
 \input{e10_cuda_efficiency}
