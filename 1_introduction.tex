@@ -20,7 +20,7 @@ often do not reach the level of maturity required to compare
 systems. Few published studies compare more than a handful of systems~\cite{LULESH13}.
 
 We present Task Bench, a parameterized benchmark designed for exploring the performance
-behaviors of parallel and distributed programming systems under a
+of parallel and distributed programming systems under a
 variety of conditions.  The key property of Task Bench is that it completely separates
 the system-specific implementation from the core implementation
 of the benchmarks themselves.
@@ -28,7 +28,7 @@ In all benchmarks we know of, the effort to implement $n$ benchmarks on $m$
 systems is $\mathcal{O}(mn)$.  Task Bench's design reduces this work to $\mathcal{O}(m + n)$,
 enabling dramatically more systems and benchmarks to be explored for the same amount of programming
 effort.  New benchmarks created with Task Bench
-immediately run on all systems, and new systems immediately run all
+immediately run on all systems, and new systems that implement the Task Bench interface immediately run all
 benchmarks. 
 
 Benchmarks in Task Bench are based on the observation that many applications can be modeled
@@ -56,7 +56,7 @@ Adding a new programming system to Task Bench involves  implementing a set of st
 services, such as executing a task or a data transfer.  This interface is simple enough to 
 be implemented with reasonable effort to a level of quality sufficient for comparative
 studies. Task Bench provides a core library that encapsulates the functionality
-shared by all system implementations, which not only reduces the implementation effort
+shared among systems, which not only reduces the implementation effort
 required but also makes it much easier to achieve truly apples-to-apples comparisons
 between systems.
 
@@ -68,7 +68,7 @@ of magnitude, with very popular, widely used systems at both ends of the spectru
 the slower systems have ``good enough'' performance for some class of applications, while presumably
 providing advantages in programmer productivity.
 
-These results point to a natural question:   How does one predict whether the performance of a runtime
+This result points to a natural question:   How does one predict whether the performance of a runtime
 system will in fact be good enough for a particular application?  In trying to answer this question,
 we realized that \emph{weak} and \emph{strong} scaling, by far the most commonly
 reported performance metrics, do not directly characterize the performance of the underlying
@@ -88,12 +88,12 @@ least 50\% of the higest performance (in FLOP/s, B/s, or another
 application-specific measure) that can be achieved on a given
 machine. The efficiency bound in METG is a key innovation over
 previous approaches, such as \emph{tasks per second} (TPS), that fail
-to quantify the amount of useful work peformed (if tasks are
+to consider the amount of useful work peformed (if tasks are
 non-empty~\cite{Canary16, Armstrong14}) or to perform any useful work at all (if tasks are empty~\cite{LegionTracing18}).
 
 METG captures the essence of what is important in a
 weak or strong scaling study, the behavior at the limit of
-scalability. For weak scaling, METG(50\%) corresponds directly to the
+scalability. For weak scaling, METG(50\%) corresponds to the
 smallest problem size that can be weak-scaled with 50\%
 efficiency. For strong scaling, METG(50\%) can be used to compute the
 scale at which performance can be expected to dip below 50\%
@@ -156,7 +156,7 @@ overhead, and mitigate load imbalance.
 
 The paper is organized as follows: Section~\ref{sec:task-bench}
 describes the design of Task Bench, Section~\ref{sec:implementation}
-details the implementation of Task Bench in 15 programming systems,
+discusses the implementation of Task Bench in 15 programming systems,
 Section~\ref{sec:metg} defines the METG(50\%) metric and its
 relationship to quantities of interest to application developers,
 Section~\ref{sec:evaluation} provides a comprehensive evaluation of

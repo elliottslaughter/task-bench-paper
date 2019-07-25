@@ -47,14 +47,14 @@ the curves suggest that performance would continue to improve if we
 were to run larger problem sizes. Unfortunately, the excessive
 computational cost of running such tests makes this prohibitively
 expensive. For example, the Spark job in
-this configuration ran for over 6 hours.
+this case ran for over 6 hours.
 
 \input{e7_bytes}
 \input{e4_radix}
 
-Figure~\ref{fig:efficiency} shows efficiency (as a percentage of
-peak FLOP/s) plotted against task granularity. This plot is
-used to calculate METG(50\%), as described in Section~\ref{sec:metg}. The
+Figure~\ref{fig:efficiency} plots efficiency (as a percentage of
+peak FLOP/s) against task granularity. As described in Section~\ref{sec:metg}, this plot is
+used to calculate METG(50\%). The
 red, dashed line shows the point where 50\% efficiency is achieved.
 In most cases, task granularity asymptotes prior to the 50\% efficiency point,
 though some systems continue to improve as efficiency continues
@@ -75,8 +75,7 @@ OpenMP-enabled STREAM benchmarks~\cite{STREAM} which report up to 98~GB/s.
 
 Not all cores are required to saturate memory bandwidth. As a result,
 systems that reserve one or more cores are able to hit 100\% of peak
-performance, unlike with compute-bound kernels. Otherwise the
-performance curves are similar. We are currently investigating the
+performance, unlike with compute-bound kernels. We are currently investigating the
 performance of Charm++, Regent and X10.
 
 % FIXME: why are Charm++, Regent and X10 slow?
