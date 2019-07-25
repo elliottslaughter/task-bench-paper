@@ -3,7 +3,7 @@
 
 Parallel and distributed programming systems are most
 commonly evaluated using proxy- or mini-apps, or
-micro\-benchmarks. Mini-apps are explicitly derived from larger
+microbenchmarks. Mini-apps are explicitly derived from larger
 applications and therefore have the advantage of bearing some
 relationship to the original. This advantage typically does not hold
 for microbenchmarks.
@@ -49,26 +49,23 @@ only).
 
 \end{itemize}
 
-Microbenchmarks are often easier to implement, but may not be
-representative of real-world applications. From the PRK
-suite~\cite{PRK14}, the PRK Stencil code has been reasonably widely
-implemented, and a follow-up paper~\cite{PRKRuntimes16} compares MPI
-variants, SHMEM, UPC, Charm++, and Grappa. However, PRK Stencil is a
-single, simple code involving 2 kernels (which combined fit in under 50 lines
-of C++) and a halo exchange on a structured grid. The NAS benchmark suite~\cite{NAS91, NAS95} is also relatively widely studied with
+Microbenchmarks can be easier to implement, but risk being
+unrepresentative of real applications. PRK Stencil~\cite{PRK14}
+contains 2 kernels (which combined fit in under 50 lines of C++)
+and a halo exchange on a structured grid; an
+evaluation~\cite{PRKRuntimes16} compares MPI variants, SHMEM, UPC,
+Charm++, and Grappa. The NAS benchmark suite~\cite{NAS91, NAS95}
+consist mostly of small kernels for dense array computations and has
 implementations in OpenMP~\cite{NASOpenMP99}, MPI and
 MPI+OpenMP~\cite{NASMPIOpenMP00}, and
-Charm++~\cite{NASCharm96}. The benchmarks consist mostly of small
-kernels for dense array computations. Neither the PRK nor the NAS
-benchmark suite achieve the breadth of coverage, flexibility, or ease
-of implementation of Task Bench. We believe the evidence for ease of
-implementation is clear; Task Bench is implemented for more systems
-than all previous mini-apps and microbenchmarks. Task Bench is also
-not a fixed set of benchmarks, and it is even easier to use Task Bench
-to generate a new benchmark to measure some aspect of system
-performance.
+Charm++~\cite{NASCharm96}. Neither PRK nor NAS achieve the breadth of
+coverage, flexibility, or ease of implementation of Task Bench. We
+believe the evidence for ease of implementation is clear; Task Bench
+is implemented for more systems than all previous mini-apps and
+microbenchmarks. Task Bench is also not a fixed set of benchmarks, and
+it is even easier to use Task Bench to generate new benchmarks.
 
-System-specific benchmarks have been used to quantify specific aspects
+System-specific benchmarks quantify specific aspects
 of system performance, such as MPI communication or collective
 latency~\cite{MPPTest99, MPIBench01}. These measurements typically do
 not generalize beyond the immediate system they measure.

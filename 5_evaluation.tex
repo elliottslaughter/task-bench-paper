@@ -69,8 +69,7 @@ applications.
 
 \input{e7_bytes}
 
-Figure~\ref{fig:bytes} shows the performance of Task Bench
-implementations with a memory-bound kernel. We measure peak memory
+Figure~\ref{fig:bytes} shows performance with a memory-bound kernel. We measure peak memory
 bandwidth of 108~GB/s, which compares favorably with the
 OpenMP-enabled STREAM benchmarks~\cite{STREAM} which report up to 98~GB/s.
 
@@ -89,7 +88,7 @@ The remaining experiments use compute-bound kernels.
 
 \input{e3_metg_compute}
 
-One of the basic questions when considering different programming
+One question when considering different programming
 systems is: How much overhead does the system add? This question is tricky to answer directly because some systems introduce
 overhead \emph{inline} (i.e., by running system internal processes on
 the same cores as application tasks), while other systems introduce
@@ -136,21 +135,19 @@ dominating factor is the basic overhead of executing a task, which is
 minimal for MPI as the Task Bench implementation simply executes tasks one after another in alternation with
 communication phases. In contrast, the asynchronous execution
 mechanisms of other systems are pure overhead in this scenario.
-
 The gap between MPI and other systems shrinks as the complexity of the
 communication pattern grows, and even reverses as task parallelism is
 added in the form of multiple task graphs.
 
 Spark, Swift/T and TensorFlow
-are omitted from comparisons with more complicated dependencies, as the higher overheads of these systems require
-unreasonably large problem sizes (beyond what can be completed in 6
+are omitted from comparisons with more complicated dependencies, as the overheads of these systems require
+excessive problem sizes (beyond what can be completed in 6
 hours) to reach 50\% efficiency.
 
 \subsection{Scalability}
 \label{subsec:scalability}
 
-METG is a useful metric in part because it summarizes the basic task
-scheduling overhead of each programming system in a single number. This makes it
+METG is useful in part because it summarizes the overhead of each programming system in a single number. This makes it
 possible to evaluate METG at different node counts (shown in
 Figure~\ref{fig:metg-compute}) to see how it is impacted by changes in
 communication topology and latency. A key finding is that
@@ -246,11 +243,11 @@ communication, determined by the number
 of bytes produced by each task (and therefore communicated with each
 task dependency).
 
-Asynchronous systems such as Charm++ are able to show two benefits in
+Asynchronous systems such as Charm++ demonstrate two benefits in
 these plots. First, by overlapping communication with computation,
 such systems execute smaller task granularities at higher
-levels of efficiency compared to the bulk synchronous MPI
-implementation. Second, the asynchrony and scheduling flexibility from
+levels of efficiency compared to the MPI
+implementations. Second, the asynchrony and scheduling flexibility from
 executing multiple graphs also makes the curves smoother,
 as spikes in latency due to interference from other jobs can be
 mitigated, leading to more predictable performance, especially at
@@ -258,8 +255,8 @@ smaller message sizes.
 
 \subsection{Heterogeneous Processors}
 
-Figure~\ref{fig:cuda-efficiency} shows a comparison between the MPI
-and MPI+CUDA implementations on the Piz Daint supercomputer. The CUDA
+Figure~\ref{fig:cuda-efficiency} compares MPI
+and MPI+CUDA on the Piz Daint supercomputer. The CUDA
 compute kernel achieves a peak performance of $4.759 \times 10^{12}$
 FLOP/s, which is very close to the officially reported number
 $4.761 \times 10^{12}$. The CPU kernel achieves $5.726 \times 10^{11}$
