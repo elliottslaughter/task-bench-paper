@@ -22,15 +22,17 @@ Load balancing results are in the supplemental material.
 \subsection{Compute Kernel Performance}
 \label{subsec:peak-performance-and-efficiency}
 
-In theory, any system should be able to hit peak performance as long as
-the kernels are well-written and of sufficiently large granularity. In
-practice, achieving peak performance is tricky, and many subtle pitfalls of implementation or configuration can easily lead to poor performance. Unfortunately, peak performance is also frequently skipped in evaluations of
-runtime system overhead. However, verifying that peak performance is
-achieved is important to ensuring that evaluations of overhead and
+In theory, any system should achieve peak performance if
+the kernels are well-tuned and of sufficiently large granularity. In
+practice, many subtle pitfalls of implementation or configuration can easily lead to poor performance. Verifying that peak performance is
+achieved helps to ensure that evaluations of overhead and
 efficiency are well-grounded.
 
 \input{e1_flops}
 \input{e2_efficiency}
+\input{e7_bytes}
+
+\input{e3_metg_compute}
 
 Figure~\ref{fig:flops} shows the FLOP/s achieved with a compute-bound
 kernel with varying problem sizes. This is the full version of
@@ -40,7 +42,7 @@ reported number of $1.2 \times 10^{12}$ \cite{Cori}. For the purposes
 of measuring efficiency, we use our empirically determined number as
 the baseline for 100\% efficiency.
 
-The vast majority of systems achieve or nearly achieve peak FLOP/s. Some
+Most systems achieve or nearly achieve peak FLOP/s. Some
 systems reserve a number of cores (usually 1 or 2) for internal
 runtime usage; these systems take a minor hit in peak FLOP/s compared
 to systems which share all cores between the application and runtime. Some of the
@@ -67,8 +69,6 @@ applications.
 
 \subsection{Memory Kernel Performance}
 
-\input{e7_bytes}
-
 Figure~\ref{fig:bytes} shows performance with a memory-bound kernel. We measure peak memory
 bandwidth of 108~GB/s, which compares favorably with the
 OpenMP-enabled STREAM benchmarks~\cite{STREAM} which report up to 98~GB/s.
@@ -85,8 +85,6 @@ The remaining experiments use compute-bound kernels.
 % FIXME: why compute-bound kernels?
 
 \subsection{Baseline Overhead}
-
-\input{e3_metg_compute}
 
 One question when considering different programming
 systems is: How much overhead does the system add? This question is tricky to answer directly because some systems introduce
@@ -115,7 +113,7 @@ task depends on 5 others, spread as widely as possible. And
 Figure~\ref{fig:metg-compute-4x-nearest} shows 4 identical copies of
 the nearest dependence pattern executing concurrently.
 
-We observe in the results that the baseline overheads of different
+We observe that the baseline overheads of different
 systems vary by over 5 orders of magnitude. It is worth
 remembering when considering this metric that this is a \emph{minimum}
 effective task granularity. Therefore applications with an average
