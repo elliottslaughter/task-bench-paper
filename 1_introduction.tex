@@ -35,9 +35,9 @@ Benchmarks in Task Bench are based on the observation that many applications can
 as a set of \emph{tasks}, or coarse-grain units of work, with
 dependencies between tasks representing the communication and synchronization required for
 distributed execution. A benchmark consists of a \emph{task graph} with tasks for
-each point in an iteration space. Tasks are connected by dependencies
-as determined by a \emph{dependence relation}. This design permits a
-very concise description of a wide variety of patterns relevant to
+each point in an \emph{iteration space}, and dependencies
+determined by a \emph{dependence relation}. This design permits a
+concise description of a wide variety of patterns relevant to
 scientific computing and large scale data analysis: trivial parallelism, halo exchanges (such as
 seen in structured and unstructured mesh codes), sweeps (such as used
 in the discrete ordinates method of radiation simulation), FFTs, trees
@@ -63,7 +63,7 @@ between systems.
 Using Task Bench we were able to quickly incorporate 15 very different parallel and distributed
 runtime systems.  By running all systems on common benchmarks we were able to quantify phenomena
 that have never before been measured.
-Most strikingly, the performance of the various systems we examine varies by more than five orders
+Most strikingly, the performance of the systems we examine varies by more than five orders
 of magnitude, with very popular, widely used systems at both ends of the spectrum!  Clearly
 the slower systems have ``good enough'' performance for some class of applications, while presumably
 providing advantages in programmer productivity.
@@ -148,7 +148,7 @@ OmpSs \cite{OmpSs11}, OpenMP \cite{OpenMPSpec40},
 PaRSEC \cite{PARSEC13}, Realm \cite{Realm14}, Regent \cite{Regent15},
 Spark \cite{Spark10}, StarPU \cite{StarPU11},
 Swift/T \cite{Wozniak13}, TensorFlow \cite{TensorFlow15}, and
-X10 \cite{X1005}. Using METG(50\%), we determine the baseline
+X10 \cite{X1005}. Using METG, we determine the baseline
 runtime overhead of each system along with overheads associated with
 increasing numbers of and/or variations in the pattern of dependencies. We
 also explore each system's ability to scale, hide communication
@@ -157,7 +157,7 @@ overhead, and mitigate load imbalance.
 The paper is organized as follows: Section~\ref{sec:task-bench}
 describes the design of Task Bench, Section~\ref{sec:implementation}
 discusses the implementation of Task Bench in 15 programming systems,
-Section~\ref{sec:metg} defines the METG(50\%) metric and its
+Section~\ref{sec:metg} defines the METG metric and its
 relationship to quantities of interest to application developers,
 Section~\ref{sec:evaluation} provides a comprehensive evaluation of
 Task Bench on up to 256 Haswell nodes of the Cori

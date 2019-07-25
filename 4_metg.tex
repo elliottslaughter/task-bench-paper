@@ -60,9 +60,8 @@ described in more detail in Section~\ref{sec:task-bench}.
 
 In Figure~\ref{fig:efficiency-mpi},
 efficiency starts at 100\%. Initially task granularity
-shrinks with minimal change in efficiency. However as task
-granularity shrinks further, efficiency drops more rapidly, leading
-to a vertical asymptote as runtime overhead dominates useful work.
+shrinks with minimal change in efficiency. As tasks shrink further, efficiency drops more rapidly, leading
+to a vertical asymptote as overhead dominates useful work.
 
 % FIXME: keep this up-to-date with the graphs
 
@@ -114,9 +113,10 @@ scaling curve intersects METG(50\%).
 
 The METG metric has another useful property. Because METG is measured ``in place'' (i.e.,
 without changing the number of nodes or cores available to the
-application), METG isolates effects that are
-due to shrinking problem size from effects that are due to
+application), METG isolates effects
+due to shrinking problem size from effects due to
 increased communication and other resource issues as
-progressively larger portions of the machine are used. Section~\ref{sec:evaluation} contains a comprehensive evaluation of
-METG including how it changes with node count for a wide variety of
-programming systems.
+progressively larger portions of the machine are used.
+% Elliott: Do I need this sentence at all? The evaluation section is literally immediately after this.
+%% Section~\ref{sec:evaluation} contains a comprehensive evaluation of
+%% METG including how it changes with node count.

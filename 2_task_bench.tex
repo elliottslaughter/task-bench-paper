@@ -16,7 +16,7 @@ each point in the space) with a dependence relation.
 For simplicity, but without loss of generality, the iteration space in
 Task Bench is constrained to be 2-dimensional, with time along
 the vertical axis and parallel tasks along the
-horizontal. Tasks can depend only on tasks from the immediately
+horizontal. Tasks may depend only on tasks from the immediately
 preceding time step. Figure~\ref{fig:task-graphs} shows a number of sample task
 graphs that can be implemented with Task Bench. Note that layout is
 significant---in particular, column $i$ represents all tasks
@@ -47,9 +47,9 @@ library that is shared among all the Task Bench implementations. The
 core library also includes implementations of the kernels, ensuring
 that the kernels are identical in all systems, eliminating a potential
 source of performance disparity that can be a pitfall for
-implementations of mini-apps. Finally, the Task Bench core library manages the
-parsing of input parameters and the display of output results,
-ensuring that all implementations behave in a uniform manner and can
+implementations of mini-apps. Finally, the core library manages
+parsing input parameters and displaying results,
+ensuring that all implementations behave uniformly and can
 be scripted consistently. Because much of the functionality needed for
 a Task Bench implementation is in the core library, implementations of
 Task Bench are small: Our 15 Task Bench implementations range from 88
@@ -74,11 +74,11 @@ validation showed it to be less than 3\% at the smallest task
 granularities in any Task Bench implementation, with a negligible
 effect on overall results.
 
-Task Bench provides two main kernels that can be called from tasks,
-which are compute- and memory-bound, respectively. The compute-bound
+Task Bench provides two main kernels that can be called from tasks:
+compute- and memory-bound. The compute-bound
 kernel executes a tight loop and is hand-written using AVX2 FMA
 intrinsics. The memory-bound kernel performs sequential reads and
-writes over an array, and is again hand-optimized with AVX2
+writes over an array, again with AVX2
 intrinsics. The duration of both kernels can be configured by setting
 the number of iterations to execute; we use this ability to simulate
 the effects of varying application problem sizes. The memory-bound
