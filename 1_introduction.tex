@@ -78,18 +78,18 @@ scaling does not separate runtime system overhead from costs
 (such as increased communication) that scale with the number of nodes when
 using progressively larger portions of a machine. 
 
-To characterize the contribution of a programming model's runtime
-system to application performance, and as an example of the novel studies that can be done
+To characterize the contribution of runtime overheads
+to application performance, and as an example of the novel studies that can be done
 with Task Bench, we introduce a new metric called
 \emph{minimum effective task granularity} (METG). Intuitively, for a given
 workload, METG(50\%) is the smallest task granularity that maintains
 at least 50\% efficiency, meaning that the application achieves at
-least 50\% of the higest performance (in FLOP/s, B/s, or another
-application-specific measure) that can be achieved on a given
+least 50\% of the higest performance (in FLOP/s, B/s, or other
+application-specific measure) achieved on a given
 machine. The efficiency bound in METG is a key innovation over
 previous approaches, such as \emph{tasks per second} (TPS), that fail
 to consider the amount of useful work peformed (if tasks are
-non-empty~\cite{Canary16, Armstrong14}) or to perform any useful work at all (if tasks are empty~\cite{LegionTracing18}).
+non-empty~\cite{Canary16, Armstrong14}) or to perform useful work at all (if tasks are empty~\cite{LegionTracing18}).
 
 METG captures the essence of what is important in a
 weak or strong scaling study, the behavior at the limit of
@@ -142,17 +142,34 @@ overhead impacts the ability to perform useful application work.
 } % zap
 
 We conduct a comprehensive comparative study of Task Bench
-implementations in 15 different programming systems:
+implementations in 15 programming systems:
 Chapel \cite{Chapel15}, Charm++ \cite{Charmpp93}, Dask \cite{Dask15}, MPI \cite{MPI}, MPI+X (OpenMP and CUDA),
 OmpSs \cite{OmpSs11}, OpenMP \cite{OpenMPSpec40},
 PaRSEC \cite{PARSEC13}, Realm \cite{Realm14}, Regent \cite{Regent15},
 Spark \cite{Spark10}, StarPU \cite{StarPU11},
 Swift/T \cite{Wozniak13}, TensorFlow \cite{TensorFlow15}, and
-X10 \cite{X1005}. Using METG, we determine the baseline
+X10 \cite{X1005}. Using METG, we find a number of factors---node
+count, accelerators, and complex dependencies, among
+others---individually or in combination contribute to an order of
+magnitude or greater increase in METG, even in the most efficient
+systems. While in the most simplified scenarios, some systems can
+achieve a METG(50\%) of 390~ns, we show that a more realistic
+bound for running nearly any application at scale is 100~\textmu{}s with
+current technologies.
+
+%% This implies that simplifying the application space too much
+%% (e.g., by using trivial dependencies) risks overemphasizing the
+%% importance of the lightweight mechanisms in such systems---a risk that
+%% can be mitigated by using Task Bench's more complete coverage of the
+%% space of application scenarios.
+
+\zap{
+Using METG, we determine the baseline
 runtime overhead of each system along with overheads associated with
 increasing numbers of and/or variations in the pattern of dependencies. We
 also explore each system's ability to scale, hide communication
 overhead, and mitigate load imbalance.
+} % zap
 
 The paper is organized as follows: Section~\ref{sec:task-bench}
 describes the design of Task Bench, Section~\ref{sec:implementation}
