@@ -205,9 +205,9 @@ ns with 0 dependencies, but this rises to 4.6 \textmu{}s with 3 dependencies,
 a $12\times$ increase. This is unsurprising as in the case
 of 0 dependencies, no \lstinline[language=C++]{MPI_Isend} calls are
 issued at all, so MPI has nothing to do aside from executing kernels
-as quickly as possible. For this reason, we recommend evaluating the performance of
-programming systems under realistic workloads, rather than with
-trivial dependencies.
+as quickly as possible. Clearly, choosing a representative dependence
+pattern is important when estimating the performance of a workload or
+class of workloads.
 
 \input{e4_radix}
 

@@ -16,24 +16,22 @@ insights:
   granularity is an important consideration in choosing a programming
   system for a new application.
 
-\item While some systems support task granularities as small as a few
-  microseconds, this applies only to small CPU-based clusters. Adding
-  accelerators or moving to clusters of hundreds of nodes raises the
-  METG that any system can achieve by over an order of magnitude.
+\item While some systems support task granularities as small as 390~ns, this applies only to trivial dependencies and small CPU-based clusters. A number of factors (non-trivial dependencies, accelerators and cluster sizes in the hundreds of nodes) raise the
+  METG that any system can reliably achieve by over an order of magnitude: 100~\textmu{}s is a reasonable bound for most applications running at scale with current technologies.
 
 \item Systems that support asynchronous execution show benefits under
-  load imbalanced workloads, or workloads with balanced computation
-  and communication. However, these gains can be nullified by
+  balanced computation
+  and communication, and load imbalance. However, these gains can be nullified by
   high baseline overheads.
 
 \item Systems for large scale data analysis require very large tasks
-  (in the tens of seconds) to scale beyond small numbers of nodes,
+  (tens of seconds) to scale beyond small node counts,
   reflecting the very coarse tasks and lack of need for strong scaling
   performance in current workloads.
 
-\item The newer task-based systems have performance sufficient for
+\item Newer task-based systems have performance sufficient for
   weak scaling many HPC workloads, but more work is needed to strong
-  scale the most demanding applications.
+  scale the most demanding codes.
 
 \end{itemize}
 
