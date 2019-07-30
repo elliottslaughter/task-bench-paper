@@ -19,12 +19,12 @@ the effort to tune for performance exceeds the effort to develop a correct imple
 often do not reach the level of maturity required to compare
 systems. Few published studies compare more than a handful of systems~\cite{LULESH13}.
 
-We present Task Bench, a parameterized benchmark designed for exploring the performance
+We present Task Bench, a parameterized benchmark for exploring the performance
 of parallel and distributed programming systems under a
 variety of conditions.  The key property of Task Bench is that it completely separates
-the system-specific implementation from the core implementation
+the system-specific implementation from the implementation
 of the benchmarks themselves.
-In all benchmarks we know of, the effort to implement $n$ benchmarks on $m$
+In all previous benchmarks we know of, the effort to implement $m$ benchmarks on $n$
 systems is $\mathcal{O}(mn)$.  Task Bench's design reduces this work to $\mathcal{O}(m + n)$,
 enabling dramatically more systems and benchmarks to be explored for the same amount of programming
 effort.  New benchmarks created with Task Bench
@@ -41,15 +41,14 @@ concise description of a wide variety of patterns relevant to
 scientific computing and large scale data analysis: trivial parallelism, halo exchanges (such as
 seen in structured and unstructured mesh codes), sweeps (such as used
 in the discrete ordinates method of radiation simulation), FFTs, trees
-(for divide and conquer algorithms), and so on. The tasks at each
-point in the task graph can be configured to execute kernels with a
+(for divide and conquer algorithms), and so on. Tasks execute kernels with a
 variety of computational properties, including compute- and
-memory-bound operations of varying durations. The dependencies between
+memory-bound operations of varying durations. Dependencies between
 tasks can be configured to carry communication payloads of varying size, permitting
 the design of communication-bound cases. Finally, multiple
 (potentially heterogeneous) task graphs can be executed concurrently
 to introduce task parallelism into the workload. Together, these
-design elements permit the exploration of a large space of application
+design elements enable the exploration of a large space of application
 behaviors.
 
 Adding a new programming system to Task Bench involves  implementing a set of standard
