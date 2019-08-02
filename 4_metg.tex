@@ -1,6 +1,9 @@
 \section{METG}
 \label{sec:metg}
 
+\input{f1_flops_mpi}
+\input{f2_efficiency_mpi}
+
 Given that Task Bench permits the rapid exploration of a large space
 of application scenarios, one question is how to characterize the
 overall performance of the programming systems under study. As noted
@@ -8,10 +11,10 @@ earlier, the overheads of the systems we consider varies by more than
 five orders of magnitude. This makes it challenging to extract useful
 information from weak and strong scaling runs.
 
-Existing studies of programming system efficiency
-typically use the metric \emph{tasks per second} (TPS). TPS results
-are difficult to interpret and apply, because the efficiency (and thus
-the amount of useful work) is not constrained. When using empty
+Existing studies of system efficiency
+typically report \emph{tasks per second} (TPS). TPS results
+are difficult to interpret and apply, because efficiency (and thus
+the amount of useful work) is not constrained. With empty
 tasks~\cite{LegionTracing18}, the resulting upper bound on task
 scheduling throughput fails to represent useful work within a
 realistic application. With non-empty tasks, since the efficiency of
@@ -32,8 +35,8 @@ the smallest task granularity achieved while maintaining at least 0.63
 TFLOP/s per node. For applications not amenable to being characterized by raw FLOP/s or B/s, an application-specific measure of performance can be
 used instead (e.g., mesh cells processed per second).
 
-\input{f1_flops_mpi}
-\input{f2_efficiency_mpi}
+\input{f3_weak_scaling_mpi}
+\input{f4_strong_scaling_mpi}
 
 Figures~\ref{fig:flops-mpi} and \ref{fig:efficiency-mpi} show how METG is
 calculated. The application, in this case an MPI implementation of the
@@ -54,7 +57,7 @@ To calculate METG, the data is replotted along axes of efficiency
 granularity (i.e., $\text{wall time} \times \text{num.~cores}/\text{num.~tasks}$), as shown in Figure~\ref{fig:efficiency-mpi}. Note that a \emph{task} is defined
 broadly to be any continuously-executing unit of application code,
 and thus it makes sense to discuss tasks even in systems
-without an explicit notion of tasking, such as in MPI programs written in a bulk synchronous style. In this case, the tasks run a
+with no explicit notion of tasking, such as in MPI programs written in a bulk synchronous style. In this case, the tasks run a
 compute-bound kernel included in the Task Bench implementation,
 described in more detail in Section~\ref{sec:task-bench}.
 
@@ -75,9 +78,6 @@ of efficiency in practice, and values above 90\% can misrepresent the
 performance of some systems (see
 Section~\ref{subsec:peak-performance-and-efficiency}).
 
-\input{f3_weak_scaling_mpi}
-\input{f4_strong_scaling_mpi}
-
 METG has a well-defined
 relationship with quantities of interest to application developers,
 namely weak and strong scaling. Figures~\ref{fig:weak-scaling-mpi} and
@@ -95,6 +95,8 @@ very bottom, the lines compress together as running time becomes
 dominated by overhead. Note that the
 shapes at the bottom of the strong and weak scaling curves are identical,
 and conform to the shape of the METG curve (marked by the red, dashed line).
+
+\input{e0_flags}
 
 METG therefore has a direct relationship with the smallest problem
 size that can be weak scaled to a given node count with a given level
