@@ -12,20 +12,9 @@ Parameter & Values & Purpose \\
 height & height of graph & number of timesteps \\
 width & width of graph & degree of parallelism \\
 dependence & trivial, stencil, etc. & dependence relation \\
+\quad \raisebox{0.35ex}{$\llcorner$} radix & (for nearest pattern) & dependencies per task \\
 kernel & compute, memory, etc. & type of kernel \\
 output & bytes per dependency & degree of comm.
-\end{tabular}
-
-\vspace{1em}
-
-Options specific to dependence relations:
-
-\vspace{0.25em}
-
-\begin{tabular}{l | l | l}
-Parameter & Valid For & Purpose \\
-\hline
-radix & nearest & dependencies per task
 \end{tabular}
 
 \vspace{1em}
