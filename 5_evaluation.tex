@@ -248,14 +248,14 @@ smaller message sizes.
 
 \subsection{Heterogeneous Processors}
 
-Figure~\ref{fig:cuda-efficiency} compares MPI
+In order to determine the cost of scheduling tasks on the GPU, Figure~\ref{fig:cuda-efficiency} compares MPI
 and MPI+CUDA on the Piz Daint supercomputer. The CUDA
 compute kernel achieves a peak performance of $4.759 \times 10^{12}$
 FLOP/s, which is very close to the officially reported number
 $4.761 \times 10^{12}$. The CPU achieves $5.726 \times 10^{11}$
 FLOP/s. Note that the kernels perform different numbers of
 operations as the GPU requires more work to reach peak
-performance. The x-axis in Figure~\ref{fig:cuda-efficiency} has been
+performance. The x-axis in Figure~\ref{fig:cuda-efficiency} is
 normalized to keep FLOPs constant for a given problem
 size.
 
