@@ -1,8 +1,6 @@
 \section{Task Bench}
 \label{sec:task-bench}
 
-\input{t2_parameters}
-
 To explore as broad a space of application scenarios as possible, Task
 Bench provides a large number of configuration parameters. The most
 important parameters are described in
@@ -10,6 +8,8 @@ Table~\ref{tab:parameters}. These parameters control the size and
 structure of the task graph, the type and duration of the kernels
 associated with each task, and the amount of data associated with
 each dependence edge in the graph.
+
+\input{t2_parameters}
 
 Task graphs are a combination of an iteration space (with a task for
 each point in the space) with a dependence relation.
@@ -37,9 +37,6 @@ dependence relations of the patterns in Figure~\ref{fig:task-graphs},
 where $t$ is timestep, $i$ is column, and $W$ is the width of the task
 graph.
 
-\input{f5_task_graphs}
-\input{t0_equations}
-
 Despite its generality, Task Bench is easy to implement, making it
 tractable to develop a suite of high-quality implementations. The central aspects of Task Bench, such as generating
 task graphs and enumerating dependencies, are encapsulated in a core
@@ -59,8 +56,8 @@ show excerpts from the Task Bench core, and the Dask implementation,
 respectively. Only the code in Listing~\ref{lst:code-sample} is
 implemented for each system, minimizing the work required for each additional system.
 
-\input{l0_compute_kernel}
-\input{l1_code_sample}
+\input{f5_task_graphs}
+\input{t0_equations}
 
 The Task Bench core library is fully
 validating. Because the task graph configuration is explicitly
@@ -85,3 +82,6 @@ the effects of varying application problem sizes. The memory-bound
 kernel is carefully written to keep the working set size constant as
 the number of iterations decreases, to avoid unwanted speedups due to
 cache effects.
+
+\input{l0_compute_kernel}
+\input{l1_code_sample}

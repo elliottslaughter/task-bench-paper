@@ -140,11 +140,6 @@ efficiency, as in METG, can we meaningfully measure how runtime
 overhead impacts the ability to perform useful application work.
 } % zap
 
-% Seems to be nearly impossible to get rid of the hyphen, so just give
-% up and allow this paragraph to break across it.
-\let\oldbrokenpenalty\brokenpenalty
-\brokenpenalty=0
-
 We conduct a comprehensive comparative study of Task Bench
 implementations in 15 programming systems:
 Chapel \cite{Chapel15}, Charm++ \cite{Charmpp93}, Dask \cite{Dask15}, MPI \cite{MPI}, MPI+X (OpenMP, CUDA),
@@ -165,8 +160,6 @@ and communication. While small-scale benchmarks of these systems
 suffer from increased overhead, we find that the benefits of these systems become
 tangible at scale (provided the runtime overhead doesn't increase
 beyond about 100~\textmu{}s).
-
-\brokenpenalty=\oldbrokenpenalty
 
 %% We find asynchronous systems can provide benefits
 %% (e.g., overlapping compute and communication), but only if system overheads do not exceed roughly

@@ -1,8 +1,6 @@
 \section{Implementations}
 \label{sec:implementation}
 
-\input{t1_systems}
-
 We have implemented Task Bench in the 15 parallel and distributed
 programming systems listed in Table~\ref{tab:systems}. We describe the systems, and any
 salient details of their Task Bench implementations, below.
@@ -51,6 +49,8 @@ Chares communicate data and synchronize via messages and can be moved
 to balance load. Our Task Bench implementation uses a chare
 array for the task graph, with one chare for each column. Messages implement dependencies; a task executes as soon as its
 dependencies are all available.
+
+\input{t1_systems}
 
 %% Collectives synchronize the
 %% completion of the task graph execution.
@@ -219,6 +219,9 @@ deep learning workloads. Although TensorFlow's API exposes
 machine learning concepts, internally TensorFlow is a task graph execution engine, making it a good fit for
 Task Bench. TensorFlow programs operate via explicit graph construction. Task graphs are composed in Python and run by an
 execution engine written in C++. Our Task Bench implementation is straightforward.
+
+\input{f1_flops_mpi}
+\input{f2_efficiency_mpi}
 
 \subsection{X10}
 
