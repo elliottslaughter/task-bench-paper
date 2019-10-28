@@ -1,0 +1,177 @@
+* Summary
+** Reviewer A (Score: B, Expertise: Y)
+*** not convinced about the generality of Task Bench
+*** some questions about METG
+** Reviewer B (Score: B, Expertise: X)
+*** dependence patterns don't represent full/mini-apps
+*** interconnect latency not represented
+** Reviewer C (Score: C, Expertise: X)
+*** not enough detail about Task Bench and how different dependence patterns are implemented
+*** trivial graphs not evaluated
+** Reviewer D (Score: C, Expertise: X)
+*** not enough insight from the empirical study (didn't read conclusion??)
+*** not convinced about the generality of Task Bench to cover every aspect of every programming model
+** Reviewer E (Score: C, Expertise: Z)
+*** kernels are not representative enough
+*** 50% value for METG not justified
+*** not enough results with memory-bound kernels
+* Reviewer A (Score: B, Expertise: Y)
+** Weaknesses
+
+  * The scientific novelty per se is quite limited. The paper is
+    almost an experimental analysis of different applications and of
+    their performance in one target parallel system.
+
+  * The approach seems to be very tailored to task-based parallel
+    programming frameworks. Although they are a large fraction of the
+    whole set of parallel programming tools, other approaches seem to
+    be excluded from this. The authors sometimes tried to present a
+    wider generality of TaskBench, which can be adapted to other
+    parallel systems without an explicit notion of task. However, I
+    found the description of this part a bit weak and further
+    clarifications should be provided.
+
+** Questions
+
+See the part about the weaknesses that I found during my reading of
+the paper. I would like to see proper answers to such points during
+the rebuttal if possible.
+
+** Comments
+
+(para. 4)
+[...] My only concern is about the customizability of this
+approach. Each library has its own low-level configuration parameters
+(e.g., concurrency limit in Intel TBB FlowGraph, and others) that are
+framework-specific. How is it possible to optimize the implementation
+of the same application in the various framework by starting from an
+abstract API to build the task graph?
+
+(para. 5)
+[...] What is the maximum expected efficiency for a given application?
+In most cases the peak limit of the machine is an ideal limit
+difficult or even impossible to achieve with any framework. The
+authors should better describe how to define a good
+application-related performance metric for applications where raw
+FLOPS are not a good model.
+
+(para. 6)
+What is the equivalent notion of tasks in those frameworks [where the
+notion of tasks is not explicitly available (e.g., MPI)]? This part
+should be extended with further clarifications and example since it is
+of great importance for stating the generality of TaskBench.
+
+* Reviewer B (Score: B, Expertise: X)
+** Weaknesses
+
+a) The dependency patterns covered in the paper are more complex in
+reality, even for applications with structured dependencies (e.g. LUD,
+QR factorization). Also, they come in many mixed flavors and
+representing even a mini-app with one single graph pattern is not
+realistic.
+
+b) The approach seems to ignore interconnect latency
+discrepancies. For example, in a fat-node architecture (e.g. Summit),
+characterizing the commonly used one GPU per MPI rank + OpenMP
+approach will simply ignore the two-entirely-different weights of
+possible edges: the edges between the ranks inside the same node
+(i.e. NVLINK) and the edges between nodes (i.e. infiniband).
+
+** Questions
+
+a) How do the authors ensure that their TaskBench implementation of
+each of the 15 methods use the underlying API in the most efficient
+manner?
+
+b) Why 50% is claimed to be a generally acceptable level of efficiency
+(i.e. lines 563-564)? Can the authors cite some work on this?
+
+c) How can a user specify the inter-node vs intra-node parallelism
+ratio in the given task graphs? For example, what will be the ratio
+between total MPI ranks and the OpenMP NUM_THREADS (in the OpenMP+MPI
+approach)?
+
+d) Is there a way to represent data-transfer / computation overlaps in
+the graphs?
+
+* Reviewer C (Score: C, Expertise: X)
+** Weaknesses
+
+  * Task Bench details
+
+    While the paper advertises the runtime independent nature of Task
+    Bench, (too) little details are given about Task Bench itself. The
+    reviewer would have liked to see how the different computational
+    patterns are implemented in Task Bench's runtime agnostic way.
+
+  * Focus on task graphs
+
+    The evaluation focuses entirely on the evaluation of task graphs,
+    primarily the stencil computation pattern. An important class of
+    problems in HPC belong to the "trivial" class, yet have not been
+    evaluated.
+
+** Questions
+
+  * How exactly are the benchmarks written in a backend-agnostic way?
+
+  * How can other researchers use Task Bench? Is it open-source?
+
+  * How can you be sure that the implementation of Task Bench itself
+    is not contributing to the overhead of the runtime system?
+
+* Reviewer D (Score: C, Expertise: X)
+** Weaknesses
+
+  * More insights are expected from the empirical study.
+
+  * Not convinced that Task Bench is general enough to cover every
+    aspect of a given programming model.
+
+** Questions
+
+I wonder whether the authors obtain any insights about the advantages
+or disadvantages of any programming models.
+
+How Task Bench can cover every feature of a given programming mode?
+
+Could the authors compare the overhead of each programming model? The
+overhead defined here is the time use for executing programming
+model's code instead of user programs.
+
+I wonder whether the authors have some data collected from the
+hardware performance monitoring units (PMU). For example, I wonder
+whether any programming models support task locality optimization,
+which can be quantified with cache miss metrics.
+
+* Reviewer E (Score: C, Expertise: Z)
+** Weaknesses
+
+  * This paper is a bit hard to follow. The writing needs to be polished.
+
+  * The compute- and memory-bound kernels used to simulate application
+    problems need to have more details described, to make it more
+    convincing and representable.
+
+  * Some experimental results to justify that METG "50%" is the
+    optimal or more acceptable choice.
+
+  * Since memory-bound algorithms are critical in real applications,
+    more experiments on them are needed. And only one compute-bound
+    kernel has been used, and it seems simple and hard to represent
+    real applications.
+
+** Questions
+
+  * How to keep the core library the same for CPU programming systems
+    and GPU programming systems, like CUDA? Also for implicitly
+    parallel systems and explicitly parallel systems?
+
+  * P. 7 Line 762: I don't see "Most systems hit 100% of peak, unlike
+    the compute-bound case." Any explanation?
+
+  * Why Tensorflow is missing from Fig. 8?
+
+  * P. 8 Line 839-844: Could you explain these sentences? How to get
+    this summary for large-scale data analytics workloads and
+    scientific simulations?
