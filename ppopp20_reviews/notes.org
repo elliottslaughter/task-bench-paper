@@ -1,6 +1,6 @@
 * Summary
 ** Reviewer A (Score: B, Expertise: Y)
-*** not convinced about the generality of Task Bench
+*** not convinced about the generality of Task Bench (to different programming systems)
 *** some questions about METG
 ** Reviewer B (Score: B, Expertise: X)
 *** dependence patterns don't represent full/mini-apps
