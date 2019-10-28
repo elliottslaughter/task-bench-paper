@@ -150,8 +150,8 @@ possible, we include responses to specific reviewer questions below.
   * Regarding task granularity, \[2] describes data analytics
     platforms as executing tasks that "complete in hundreds of
     milliseconds". Note this is after optimizations to the scheduler
-    to enable more fine-grained tasks, and task granularity is
-    specifically cited as a challenge in scaling such systems. In
+    to enable more fine-grained tasks, and even then task granularity
+    is specifically cited as a challenge in scaling such systems. In
     contrast, \[3] (related work section) describes typical HPC
     systems that execute millisecond granularity tasks or smaller.
 
