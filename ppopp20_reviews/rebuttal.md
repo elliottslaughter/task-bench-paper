@@ -14,7 +14,7 @@ straightforward style, with interleaved phases of communication and
 computation. Each MPI rank is responsible for a set of columns in the
 task graph. During communication phases we use non-blocking sends and
 receives to communicate task dependencies, and then after calling
-`MPI_Waitall()` we execute the corresponding tasks (whose inputs were
+`MPI_Waitall()` we execute the corresponding task (whose inputs were
 just received). We conducted an independent code review of our MPI
 implementation with developers of a major MPI implementation to
 confirm that the code is written in a manner that is representative of
@@ -38,15 +38,16 @@ patterns evaluated in the paper are necessarily limited (as the
 reviewers have noted, our evaluation is already extremely
 comprehensive), it is entirely possible (and even easy, relatively
 speaking) to design patterns and kernels that do reflect actual mini-
-or full-size applications in Task Bench.
+or full-size applications in Task Bench (and e.g. switch between
+multiple patterns over time as the application moves between different
+phases of computation).
 
 We believe Task Bench compares very favorably with other benchmarks in
 terms of the number of programming system features and behaviors that
 it is capable of exploring. Certainly, compared to any benchmark which
 is widely implemented, Task Bench provides massively more
-expressiveness and configurability. Task Bench provides even more
-implementations than the most widely implemented benchmark that we are
-aware of. And in terms of the depth of analysis that can be performed,
+expressiveness and configurability. Compared to those most widely implemented benchmarks, Task Bench provides even more
+implementations thanks to its ease of porting to new systems. And in terms of the depth of analysis that can be performed,
 the only benchmarks that provides substantially more visibility into
 system-specific performance behaviors are themselves system-specific.
 
@@ -66,37 +67,45 @@ efficiency can be computed as the ratio of that highest throughput
 achieved.
 
 Though our evaluation uses METG(50%), this is not a limitation of
-METG. We chose 50% because it avoids certain pathologies associated
+our technique. We chose 50% because it avoids certain pathologies associated
 with low efficiency thresholds (see lines 711-750 in the paper), and
-also because it matches what we see implemented in practice. For
+also because it matches what we see in practice. For
 example, in a CSCS application for new projects, users are instructed
 to "select the most parallel efficient job size (ratio of benchmark
 speed-up vs. linear speed-up above 50%)" \[1]. This corresponds to 50\%
-parallel efficiency.
+efficiency.
 
 \[1]: https://user.cscs.ch/access/report/
 
-In the interest of answering the reviewers' questions as completely as
+In the interest of answering reviewers' questions as completely as
 possible, we include responses to specific reviewer questions below.
 
 ## Reviewer A
 
   * See above for our description of the MPI implementation. A "task"
-    in MPI includes the time to execute a set of send/receive calls
-    needed to gather the inputs for a given task invocation, the call
-    the core API to execute the task.
+    in MPI includes the time to execute one point in the task graph (i.e. one set of send/receive calls
+    to gather inputs and one call to
+    the core API to execute the task body).
 
 ## Reviewer B
 
-  * In our MPI+OpenMP configuration we use `OMP_NUM_THREADS` equal to
-    the number of physical cores on the node (32 on Cori Haswell). In
-    general this is set on a per-system basis depending on what is
-    most representative of how the system is used in practice.
+  * The Task Bench core API describes what to do but not how to do
+    it. Implementations are permitted to select the strategy that is
+    most efficient for a given machine. For example, our MPI+OpenMP
+    implementation uses shared memory within a node and uses MPI only
+    for inter-node communication. A similar strategy could be applied
+    on fat-node architectures such as Summit.
 
-  * Overlap occurs when there is task parallelism available in the
-    task graph. That is, when two tasks are independent (no mutual
-    dependencies) their execution can be overlapped with the other's
-    data transfers.
+  * Our MPI+OpenMP experiments set `OMP_NUM_THREADS` to the number of
+    physical cores on the node (32 on Cori Haswell). In general these
+    system-specific settings are chosen to optimize performance while
+    remaining faithful to what is representative of real-world usage.
+
+  * The opportunity for overlap occurs when two tasks are independent
+    (have no mutual dependencies). This occurs whenever multiple task
+    graphs are used (Figures 9d, 11). Task Bench's design also permits
+    this to be included in the dependence pattern itself, though we do
+    not explore this approach in the paper.
 
 ## Reviewer C
 
@@ -125,38 +134,35 @@ possible, we include responses to specific reviewer questions below.
     unrepresentative. For this reason we prefer to use METG(50%) as a
     more representative measure. However, an interested reader can see
     Figure 7: the value at 0% efficiency is by definition the overhead
-    of the system (as no useful work is being performed).
+    of the system (as no useful work is being performed, any remaining time is pure overhead).
 
   * We do not have hardware metrics at this time but consider this a
     good direction for future work.
 
 # Reviewer E
 
-  * We provide separate kernel implementations for CPU and GPU.
+  * We provide separate, optimized kernel implementations for CPU and GPU.
 
   * See above for a description of the MPI implementation. The Dask
-    implementation (which is representative of implicitly parallel
-    systems) is shown in Listing 2.
+    implementation in Listing 2 is implicitly parallel.
 
   * Compare Figures 7 and 8. In Figure 7, the spread between systems
     (at the highest efficiency achieved by each system) is larger,
     because some systems reserve cores for internal use. With the
-    exception of OmpSs (which we are investigating), this gap is not
-    present in Figure 8.
+    exception of OmpSs (which we are investigating), this gap disappears in Figure 8.
 
   * A number of slower systems are challenging to run within the time
     limit; TensorFlow is one of these.
 
   * Regarding task granularity, \[2] describes data analytics
-    platforms as executing tasks that "complete in hundreds of
-    milliseconds". Note this is after optimizations to the scheduler
-    to enable more fine-grained tasks, and even then task granularity
-    is specifically cited as a challenge in scaling such systems. In
-    contrast, \[3] (related work section) describes typical HPC
-    systems that execute millisecond granularity tasks or smaller.
+    platforms as executing "tiny" tasks that "complete in hundreds of
+    milliseconds", implying that traditional task granularities in this domain are larger. Note this is after scheduler optimizations 
+    that enable more fine-grained tasks. In
+    contrast, \[3] (related work) describes typical HPC
+    granularities in the millisecond range.
 
-    \[3] Kay Ousterhout, The Case for Tiny Tasks in Compute Cluster,
+    \[2] Kay Ousterhout, The Case for Tiny Tasks in Compute Cluster,
     HotOS13.
 
-    \[2]: Reazul Hoque, et al., Dynamic Task Discovery in PaRSEC - A
+    \[3]: Reazul Hoque, et al., Dynamic Task Discovery in PaRSEC - A
     Data-flow Task-based Runtime, ScalA17.
