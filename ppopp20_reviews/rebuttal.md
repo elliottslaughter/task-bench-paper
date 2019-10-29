@@ -101,6 +101,11 @@ possible, we include responses to specific reviewer questions below.
     system-specific settings are chosen to optimize performance while
     remaining faithful to what is representative of real-world usage.
 
+  * Note that METG is not a per-link statistic but characterizes the
+    programming system's overall ability to make effective use of a
+    machine. The "two weights" are already taken into account with
+    e.g. MPI+OpenMP and shared memory.
+
   * The opportunity for overlap occurs when two tasks are independent
     (have no mutual dependencies). This occurs whenever multiple task
     graphs are used (Figures 9d, 11). Task Bench's design also permits
