@@ -57,7 +57,7 @@ of the paper, we added three new functionally correct implementations
 to Task Bench. If these implementations are tuned to our satisfaction
 in advance of the deadline they will be included in the final paper.
 
-METG is not fundamentally tied to peak performance (FLOP/s or B/s). If
+METG is not fundamentally tied to peak performance (FLOP/s or B/s), nor is it specific to Task Bench. If
 an application is not amenable to being characterized via peak
 performance, another measure of absolute performance can be used. For
 example, an aerodynamics application might choose mesh cells processed
@@ -72,7 +72,7 @@ with low efficiency thresholds (see lines 711-750 in the paper), and
 also because it matches what we see in practice. For
 example, in a CSCS application for new projects, users are instructed
 to "select the most parallel efficient job size (ratio of benchmark
-speed-up vs. linear speed-up above 50%)" \[1]. This corresponds to 50\%
+speed-up vs. linear speed-up above 50%)" \[1]. This corresponds to 50%
 efficiency.
 
 \[1]: https://user.cscs.ch/access/report/
@@ -124,12 +124,15 @@ possible, we include responses to specific reviewer questions below.
     and in the implementations themselves. Lines 343-347 describe our
     evaluation of the validation overhead of Task Bench.
 
-# Reviewer D
+## Reviewer D
 
   * Please see lines 1158-1187 for insights enabled by Task Bench.
 
-  * Task Bench covers a wide variety of features, and does so for
-    every programming system that it implements. We believe this
+  * Task Bench covers a wide variety of features (compute/memory
+    bound, varying task duration, task graph width and height,
+    dependence pattern, communication per task, etc.). Task Bench is
+    designed so that every feature is supported on every programming
+    system. We believe this
     compares favorably against traditional benchmarks which
     necessarily cover only a subset of features, and typically are
     implemented for only a limited number of programming systems.
@@ -144,7 +147,7 @@ possible, we include responses to specific reviewer questions below.
   * We do not have hardware metrics at this time but consider this a
     good direction for future work.
 
-# Reviewer E
+## Reviewer E
 
   * We provide separate, optimized kernel implementations for CPU and GPU.
 
