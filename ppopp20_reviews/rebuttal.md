@@ -48,12 +48,12 @@ it is capable of exploring. Certainly, compared to any benchmark which
 is widely implemented, Task Bench provides massively more
 expressiveness and configurability. Compared to those most widely implemented benchmarks, Task Bench provides even more
 implementations thanks to its ease of porting to new systems. And in terms of the depth of analysis that can be performed,
-the only benchmarks that provides substantially more visibility into
+the only benchmarks that provide substantially more visibility into
 system-specific performance behaviors are themselves system-specific.
 
 Task Bench is open source and we intend for it to be an active project
 which is open to contribution. In fact, since the initial submission
-of the paper we added three new functionally correct implementations
+of the paper, we added three new functionally correct implementations
 to Task Bench. If these implementations are tuned to our satisfaction
 in advance of the deadline they will be included in the final paper.
 
@@ -94,7 +94,7 @@ possible, we include responses to specific reviewer questions below.
     most efficient for a given machine. For example, our MPI+OpenMP
     implementation uses shared memory within a node and uses MPI only
     for inter-node communication. A similar strategy could be applied
-    on fat-node architectures such as Summit.
+    to fat-node architectures such as Summit.
 
   * Our MPI+OpenMP experiments set `OMP_NUM_THREADS` to the number of
     physical cores on the node (32 on Cori Haswell). In general these
@@ -114,8 +114,8 @@ possible, we include responses to specific reviewer questions below.
 
 ## Reviewer C
 
-  * Note that there is an evaluation of trivial dependencies in Figure
-    10. Trivial corresponds to 0 dependencies per task in this chart.
+  * Note that there is an evaluation of trivial dependencies in Figure 10. 
+    Trivial corresponds to 0 dependencies per task in this chart.
 
   * Note that in Figure 10 Task Bench achieves running times per task
     as small as 390 ns (while still maintaining 50% efficiency). In
