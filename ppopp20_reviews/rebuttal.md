@@ -74,7 +74,114 @@ efficiency.
 
 \[1]: https://user.cscs.ch/access/report/
 
-A simplified excerpt from our MPI implementation follows.
+In the interest of answering reviewers' questions as completely as
+possible, we include responses to specific reviewer questions below.
+
+## Reviewer A
+
+  * See our MPI excerpt below. A "task" in MPI includes the time to
+    execute one point in the task graph (i.e. one iteration of the `t`
+    loop).
+
+## Reviewer B
+
+  * The core API describes what to do but not how to do
+    it. Implementations are permitted to select the strategy that is
+    most efficient for a given machine. For example, our MPI+OpenMP
+    implementation uses shared memory within a node and uses MPI only
+    for inter-node communication. A similar strategy could be applied
+    to fat-node architectures such as Summit.
+
+  * Our MPI+OpenMP experiments set `OMP_NUM_THREADS` to the number of
+    physical cores on the node (32 on Cori Haswell). In general these
+    system-specific settings are chosen to optimize performance while
+    remaining faithful to what is representative of real-world usage.
+
+  * Note that METG is not a per-link statistic but characterizes the
+    programming system's overall ability to make effective use of a
+    machine. The "two weights" are already taken into account with
+    e.g. MPI+OpenMP and shared memory.
+
+  * The opportunity for overlap occurs when two tasks are independent
+    (have no mutual dependencies). This occurs whenever multiple task
+    graphs are used (Figures 9d, 11). Our design also permits
+    this to be included in the dependence pattern itself, though we do
+    not explore this approach in the paper.
+
+## Reviewer C
+
+  * Please see the MPI excerpt below, and also note Listing 2 in the
+    paper shows a Dask implementation.
+
+  * There is an evaluation of trivial dependencies in Figure 10.
+    Trivial corresponds to 0 dependencies per task in this chart.
+
+  * Figure 10 TaskBench achieves running times per task as small as
+    390 ns (while still maintaining 50% efficiency). In general
+    TaskBench is carefully written to be as optimal as possible
+    (e.g. avoiding memory allocations), both in the core API and in
+    the implementations themselves. Lines 343-347 describe our
+    evaluation of the validation overhead of TaskBench.
+
+## Reviewer D
+
+  * Please see lines 1158-1187 for insights enabled by TaskBench.
+
+  * TaskBench covers a wide variety of features (compute/memory
+    bound, varying task duration, task graph width and height,
+    dependence pattern, communication per task, etc.). TaskBench is
+    designed so that every feature is supported on every programming
+    system. We believe this
+    compares favorably against traditional benchmarks which
+    necessarily cover only a subset of features, and typically are
+    implemented for only a limited number of programming systems.
+
+  * As described in lines 711-750, measuring overhead alone is prone
+    to certain pathologies in evaluation which can make the results
+    unrepresentative. For this reason we prefer to use METG(50%) as a
+    more representative measure. However, an interested reader can see
+    Figure 7: the value at 0% efficiency is by definition the overhead
+    of the system (as no useful work is being performed, any remaining time is pure overhead).
+
+  * We do not have hardware metrics at this time but consider this a
+    good direction for future work.
+
+## Reviewer E
+
+  * We provide separate, optimized kernel implementations for CPU and
+    GPU. Note the precise computation performed by the kernel is not
+    relevant; what is important is the computational behavior (compute
+    or memory bound), duration, and the amount of data touched, all of
+    which are fully configurable.
+
+  * See the MPI excerpt below (which is explicitly parallel), and the
+    Dask implementation in Listing 2 (which is implicitly parallel).
+
+  * Compare Figures 7 and 8. In Figure 7, the spread between systems
+    (at the highest efficiency achieved by each system) is larger,
+    because some systems reserve cores for internal use. With the
+    exception of OmpSs (which we are investigating), this gap disappears in Figure 8.
+
+  * A number of slower systems are challenging to run within the time
+    limit; TensorFlow is one of these.
+
+  * Regarding task granularity, \[2] describes data analytics
+    platforms as executing "tiny" tasks that "complete in hundreds of
+    milliseconds", implying that traditional task granularities in this domain are larger. Note this is after scheduler optimizations 
+    that enable more fine-grained tasks. In
+    contrast, \[3] (related work) describes typical HPC
+    granularities in the millisecond range.
+
+    \[2] Kay Ousterhout, The Case for Tiny Tasks in Compute Cluster,
+    HotOS13.
+
+    \[3]: Reazul Hoque, et al., Dynamic Task Discovery in PaRSEC - A
+    Data-flow Task-based Runtime, ScalA17.
+
+## MPI Implementation Excerpt
+
+Note the full implementation is both more general and has additional
+optimizations.
 
 ```
 void execute_task_graph(Graph g) {
@@ -123,107 +230,3 @@ void execute_task_graph(Graph g) {
   }
 }
 ```
-
-In the interest of answering reviewers' questions as completely as
-possible, we include responses to specific reviewer questions below.
-
-## Reviewer A
-
-  * See our MPI excerpt above. A "task" in MPI includes the time to
-    execute one point in the task graph (i.e. one iteration of the `t`
-    loop).
-
-## Reviewer B
-
-  * The core API describes what to do but not how to do
-    it. Implementations are permitted to select the strategy that is
-    most efficient for a given machine. For example, our MPI+OpenMP
-    implementation uses shared memory within a node and uses MPI only
-    for inter-node communication. A similar strategy could be applied
-    to fat-node architectures such as Summit.
-
-  * Our MPI+OpenMP experiments set `OMP_NUM_THREADS` to the number of
-    physical cores on the node (32 on Cori Haswell). In general these
-    system-specific settings are chosen to optimize performance while
-    remaining faithful to what is representative of real-world usage.
-
-  * Note that METG is not a per-link statistic but characterizes the
-    programming system's overall ability to make effective use of a
-    machine. The "two weights" are already taken into account with
-    e.g. MPI+OpenMP and shared memory.
-
-  * The opportunity for overlap occurs when two tasks are independent
-    (have no mutual dependencies). This occurs whenever multiple task
-    graphs are used (Figures 9d, 11). Our design also permits
-    this to be included in the dependence pattern itself, though we do
-    not explore this approach in the paper.
-
-## Reviewer C
-
-  * Please see the MPI excerpt above, and also note Listing 2 in the
-    paper shows a Dask implementation.
-
-  * There is an evaluation of trivial dependencies in Figure 10.
-    Trivial corresponds to 0 dependencies per task in this chart.
-
-  * Figure 10 TaskBench achieves running times per task as small as
-    390 ns (while still maintaining 50% efficiency). In general
-    TaskBench is carefully written to be as optimal as possible
-    (e.g. avoiding memory allocations), both in the core API and in
-    the implementations themselves. Lines 343-347 describe our
-    evaluation of the validation overhead of TaskBench.
-
-## Reviewer D
-
-  * Please see lines 1158-1187 for insights enabled by TaskBench.
-
-  * TaskBench covers a wide variety of features (compute/memory
-    bound, varying task duration, task graph width and height,
-    dependence pattern, communication per task, etc.). TaskBench is
-    designed so that every feature is supported on every programming
-    system. We believe this
-    compares favorably against traditional benchmarks which
-    necessarily cover only a subset of features, and typically are
-    implemented for only a limited number of programming systems.
-
-  * As described in lines 711-750, measuring overhead alone is prone
-    to certain pathologies in evaluation which can make the results
-    unrepresentative. For this reason we prefer to use METG(50%) as a
-    more representative measure. However, an interested reader can see
-    Figure 7: the value at 0% efficiency is by definition the overhead
-    of the system (as no useful work is being performed, any remaining time is pure overhead).
-
-  * We do not have hardware metrics at this time but consider this a
-    good direction for future work.
-
-## Reviewer E
-
-  * We provide separate, optimized kernel implementations for CPU and
-    GPU. Note the precise computation performed by the kernel is not
-    relevant; what is important is the computational behavior (compute
-    or memory bound), duration, and the amount of data touched, all of
-    which are fully configurable.
-
-  * See the MPI excerpt above (which is explicitly parallel), and the
-    Dask implementation in Listing 2 (which is implicitly parallel).
-
-  * Compare Figures 7 and 8. In Figure 7, the spread between systems
-    (at the highest efficiency achieved by each system) is larger,
-    because some systems reserve cores for internal use. With the
-    exception of OmpSs (which we are investigating), this gap disappears in Figure 8.
-
-  * A number of slower systems are challenging to run within the time
-    limit; TensorFlow is one of these.
-
-  * Regarding task granularity, \[2] describes data analytics
-    platforms as executing "tiny" tasks that "complete in hundreds of
-    milliseconds", implying that traditional task granularities in this domain are larger. Note this is after scheduler optimizations 
-    that enable more fine-grained tasks. In
-    contrast, \[3] (related work) describes typical HPC
-    granularities in the millisecond range.
-
-    \[2] Kay Ousterhout, The Case for Tiny Tasks in Compute Cluster,
-    HotOS13.
-
-    \[3]: Reazul Hoque, et al., Dynamic Task Discovery in PaRSEC - A
-    Data-flow Task-based Runtime, ScalA17.
