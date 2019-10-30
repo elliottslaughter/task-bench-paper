@@ -183,8 +183,9 @@ possible, we include responses to specific reviewer questions below.
 
 ## MPI Implementation Excerpt
 
-Note the full implementation is both more general and has additional
-optimizations.
+Note the full implementation is both more general (e.g. it does not
+assume the number of ranks equals the width of the graph) and has
+additional optimizations.
 
 ```
 void execute_task_graph(Graph g) {
