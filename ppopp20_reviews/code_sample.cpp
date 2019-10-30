@@ -5,11 +5,11 @@ void execute_task_graph(Graph g) {
   char *input_bytes = (size_t *)malloc(g.max_dependencies_per_task * sizeof(size_t));
   long num_inputs;
 
-  long rank; // each rank executes one column in the task graph
+  long rank;
   std::vector<long> rank_by_point; // maps points to ranks
   std::vector<MPI_Request> requests;
 
-  // initialize rank and rank_by_point...
+  // initialize data structures...
 
   for (long t = 0; t < g.height; ++t) {
     if (g.contains_point(t, rank)) {
@@ -17,24 +17,20 @@ void execute_task_graph(Graph g) {
       requests.clear();
 
       for (long dep : g.dependencies(t, rank)) {
-        if (g.contains_point(t-1, dep)) {
-          MPI_Request req;
-          MPI_Irecv(
-            inputs[num_inputs], input_bytes[num_inputs], MPI_BYTE,
-            rank_by_point[dep], 0, MPI_COMM_WORLD, req);
-          requests.push_back(req);
-          num_inputs++;
-        }
+        MPI_Request req;
+        MPI_Irecv(
+          inputs[num_inputs], input_bytes[num_inputs], MPI_BYTE,
+          rank_by_point[dep], 0, MPI_COMM_WORLD, req);
+        requests.push_back(req);
+        num_inputs++;
       }
 
       for (long dep : g.reverse_dependencies(t, rank)) {
-        if (g.contains_point(t, dep)) {
-          MPI_Request req;
-          MPI_Isend(
-            output, g.output_bytes_per_task, MPI_BYTE,
-            rank_by_point[dep], 0, MPI_COMM_WORLD, req);
-          requests.push_back(req);
-        }
+        MPI_Request req;
+        MPI_Isend(
+          output, g.output_bytes_per_task, MPI_BYTE,
+          rank_by_point[dep], 0, MPI_COMM_WORLD, req);
+        requests.push_back(req);
       }
 
       MPI_Waitall(requests.size(), requests.data(), MPI_STATUSES_IGNORE);
