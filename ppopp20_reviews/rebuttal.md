@@ -1,20 +1,22 @@
 We thank the reviewers for their feedback.
 
-TaskBench is a new class of benchmark that makes it easy to
-execute a wide variety of application patterns on a large number of
-distributed and parallel programming systems. Despite the name, TaskBench is not specific to task-based programming models. A "task" in
-TaskBench is simply any unit of code that runs to completion without
-requiring network communication. Any application that can be
-separated into units of work interleaved with communication can be
-adapted to TaskBench.
+TaskBench is a new class of benchmark that makes it easy to execute a
+wide variety of application patterns on a large number of distributed
+and parallel programming systems. Despite the name, TaskBench is not
+specific to task-based programming models. A "task" in TaskBench is
+simply any unit of code that runs to completion without requiring
+network communication. Any application that can be separated into
+units of work interleaved with communication can be adapted to
+TaskBench.
 
-As a case in point, our MPI implementation is written in the style of communicating sequential processes, with interleaved phases of communication and
-computation. A code excerpt is included below and will appear in the
-final paper. We conducted an independent code review of our MPI
-implementation with developers of a major MPI implementation to
-confirm that the code is written in a manner that is representative of
-how real-world MPI users write MPI code, and that it achieves good
-performance.
+As a case in point, our MPI implementation is written in the style of
+communicating sequential processes, with interleaved phases of
+communication and computation. A code excerpt is included below and
+will appear in the final paper. We conducted an independent code
+review of our MPI implementation with developers of a major MPI
+implementation to confirm that the code is written in a manner that is
+representative of how real-world MPI users write MPI code, and that it
+achieves good performance.
 
 In general, we are confident in the performance of our TaskBench
 implementations because each one has been submitted to the developers
@@ -53,19 +55,19 @@ of the paper, we added three new functionally correct implementations
 to TaskBench. If these implementations are tuned to our satisfaction
 in advance of the deadline they will be included in the final paper.
 
-METG is not fundamentally tied to peak performance, nor is it specific to TaskBench. If
-an application is not amenable to being characterized via peak
-performance, another measure of absolute performance can be used. For
-example, an aerodynamics application might choose mesh cells processed
-per second. The value of 100% efficiency would be set to the highest
-throughput that can be achieved on a single node. Other values of
-efficiency can be computed as the ratio of that highest throughput
+METG is not fundamentally tied to peak performance, nor is it specific
+to TaskBench. If an application is not amenable to being characterized
+via peak performance, another measure of absolute performance can be
+used. For example, an aerodynamics application might choose mesh cells
+processed per second. The value of 100% efficiency would be set to the
+highest throughput that can be achieved on a single node. Other values
+of efficiency can be computed as the ratio of that highest throughput
 achieved.
 
-Though our evaluation uses METG(50%), this is not a limitation of
-our technique. We chose 50% because it avoids certain pathologies associated
-with low efficiency thresholds (see lines 711-750 in the paper), and
-also because it matches what we see in practice. For
+Though our evaluation uses METG(50%), this is not a limitation of our
+technique. We chose 50% because it avoids certain pathologies
+associated with low efficiency thresholds (see lines 711-750 in the
+paper), and also because it matches what we see in practice. For
 example, in a CSCS application for new projects, users are instructed
 to "select the most parallel efficient job size (ratio of benchmark
 speed-up vs. linear speed-up above 50%)" \[1]. This corresponds to 50%
@@ -103,9 +105,9 @@ possible, we include responses to specific reviewer questions below.
 
   * The opportunity for overlap occurs when two tasks are independent
     (have no mutual dependencies). This occurs whenever multiple task
-    graphs are used (Figures 9d, 11). Our design also permits
-    this to be included in the dependence pattern itself, though we do
-    not explore this approach in the paper.
+    graphs are used (Figures 9d, 11). Our design also permits this to
+    be included in the dependence pattern itself, though we do not
+    explore this approach in the paper.
 
 ## Reviewer C
 
@@ -126,21 +128,21 @@ possible, we include responses to specific reviewer questions below.
 
   * Please see lines 1158-1187 for insights enabled by TaskBench.
 
-  * TaskBench covers a wide variety of features (compute/memory
-    bound, varying task duration, task graph width and height,
-    dependence pattern, communication per task, etc.). TaskBench is
-    designed so that every feature is supported on every programming
-    system. We believe this
-    compares favorably against traditional benchmarks which
-    necessarily cover only a subset of features, and typically are
-    implemented for only a limited number of programming systems.
+  * TaskBench covers a wide variety of features (compute/memory bound,
+    varying task duration, task graph width and height, dependence
+    pattern, communication per task, etc.). TaskBench is designed so
+    that every feature is supported on every programming system. We
+    believe this compares favorably against traditional benchmarks
+    which necessarily cover only a subset of features, and typically
+    are implemented for only a limited number of programming systems.
 
   * As described in lines 711-750, measuring overhead alone is prone
     to certain pathologies in evaluation which can make the results
     unrepresentative. For this reason we prefer to use METG(50%) as a
     more representative measure. However, an interested reader can see
     Figure 7: the value at 0% efficiency is by definition the overhead
-    of the system (as no useful work is being performed, any remaining time is pure overhead).
+    of the system (as no useful work is being performed, any remaining
+    time is pure overhead).
 
   * We do not have hardware metrics at this time but consider this a
     good direction for future work.
@@ -159,17 +161,19 @@ possible, we include responses to specific reviewer questions below.
   * Compare Figures 7 and 8. In Figure 7, the spread between systems
     (at the highest efficiency achieved by each system) is larger,
     because some systems reserve cores for internal use. With the
-    exception of OmpSs (which we are investigating), this gap disappears in Figure 8.
+    exception of OmpSs (which we are investigating), this gap
+    disappears in Figure 8.
 
   * A number of slower systems are challenging to run within the time
     limit; TensorFlow is one of these.
 
   * Regarding task granularity, \[2] describes data analytics
     platforms as executing "tiny" tasks that "complete in hundreds of
-    milliseconds", implying that traditional task granularities in this domain are larger. Note this is after scheduler optimizations 
-    that enable more fine-grained tasks. In
-    contrast, \[3] (related work) describes typical HPC
-    granularities in the millisecond range.
+    milliseconds", implying that traditional task granularities in
+    this domain are larger. Note this is after scheduler optimizations
+    that enable more fine-grained tasks. In contrast, \[3] (related
+    work) describes typical HPC granularities in the millisecond
+    range.
 
     \[2] Kay Ousterhout, The Case for Tiny Tasks in Compute Cluster,
     HotOS13.
