@@ -8,8 +8,7 @@ requiring network communication. Any application that can be
 separated into units of work interleaved with communication can be
 adapted to TaskBench.
 
-As a case in point, our MPI implementation is written in a
-straightforward style, with interleaved phases of communication and
+As a case in point, our MPI implementation is written in the style of communicating sequential processes, with interleaved phases of communication and
 computation. A code excerpt is included below and will appear in the
 final paper. We conducted an independent code review of our MPI
 implementation with developers of a major MPI implementation to
