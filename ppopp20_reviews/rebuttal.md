@@ -10,13 +10,13 @@ units of work interleaved with communication can be adapted to
 TaskBench.
 
 As a case in point, our MPI implementation is written in the style of
-communicating sequential processes, with interleaved phases of
-communication and computation. A code excerpt is included below and
-will appear in the final paper. We conducted an independent code
-review of our MPI implementation with developers of a major MPI
-implementation to confirm that the code is written in a manner that is
-representative of how real-world MPI users write MPI code, and that it
-achieves good performance.
+communicating sequential processes. A code excerpt is included below
+and will appear in the final paper. Our MPI implementation was
+independently reviewed by developers of a major MPI implementation to
+confirm that the code is representative of real-world MPI usage and
+follows best practices for efficiency and good performance
+(e.g. posting receives before sends, and avoiding memory allocations
+in the steady state).
 
 In general, we are confident in the performance of our TaskBench
 implementations because each one has been submitted to the developers
@@ -172,8 +172,7 @@ possible, we include responses to specific reviewer questions below.
     milliseconds", implying that traditional task granularities in
     this domain are larger. Note this is after scheduler optimizations
     that enable more fine-grained tasks. In contrast, \[3] (related
-    work) describes typical HPC granularities in the millisecond
-    range.
+    work) describes HPC granularities as sub-millisecond.
 
     \[2] Kay Ousterhout, The Case for Tiny Tasks in Compute Cluster,
     HotOS13.
