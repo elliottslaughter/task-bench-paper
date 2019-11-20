@@ -1,0 +1,44 @@
+\begin{lstlisting}[language=C++,caption={Excerpt from Task Bench implementation in MPI.},label={lst:code-sample},style=codeblock,float]
+void execute_task_graph(Graph g) {
+  char *output = (char *)malloc(g.output_bytes);
+  char *scratch = (char *)malloc(g.scratch_bytes);
+  char **inputs = (char **)malloc(/*...*/);
+  long rank;
+  // initialize data structures...
+
+  std::vector<MPI_Request> requests;
+  for (long row = 0; row < g.height; ++row) {
+    if (g.contains_point(row, rank)) {
+      long idx = 0;
+      requests.clear();
+
+      for (long dep : g.deps(row, rank)) {
+        MPI_Request req;
+        MPI_Irecv(
+          inputs[idx], g.output_bytes, MPI_BYTE,
+          dep, 0, MPI_COMM_WORLD, &req);
+        requests.push_back(req);
+        idx++;
+      }
+
+      for (long dep : g.reverse_deps(row, rank)) {
+        MPI_Request req;
+        MPI_Isend(
+          output, g.output_bytes, MPI_BYTE,
+          dep, 0, MPI_COMM_WORLD, &req);
+        requests.push_back(req);
+      }
+
+      MPI_Waitall(
+        requests.size(), requests.data(),
+        MPI_STATUSES_IGNORE);
+
+      g.execute_point(
+        row, rank,
+        output, g.output_bytes_per_task,
+        inputs, input_bytes, idx,
+        scratch, g.scratch_bytes_per_task);
+    }
+  }
+}
+\end{lstlisting}

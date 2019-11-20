@@ -20,6 +20,7 @@ INCLUDED_TEX = header.tex \
 	f5_task_graphs.tex \
 	l0_compute_kernel.tex \
 	l1_code_sample.tex \
+	l2_mpi_sample.tex \
 	t0_equations.tex \
 	t1_systems.tex \
 	t2_parameters.tex \
