@@ -30,9 +30,7 @@ void execute_task_graph(Graph g) {
       MPI_Waitall(requests.size(), requests.data(),
         MPI_STATUSES_IGNORE);
 
-      g.execute_point(t, rank, output, g.output_bytes_per_task,
-        inputs, input_bytes, idx,
-        scratch, g.scratch_bytes_per_task);
+      g.execute_point(t, rank, output, inputs, scratch);
     }
   }
 }
