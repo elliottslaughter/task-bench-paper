@@ -16,8 +16,7 @@ dependencies), PaRSEC (with \emph{parameterized task graphs}
 Regent~\cite{Regent15}, and StarPU~\cite{StarPU11}. Also, we consider
 several systems used in large scale data analytics and workflows:
 Dask~\cite{Dask15}, Spark~\cite{Spark10}, Swift/T~\cite{Wozniak13},
-and TensorFlow~\cite{TensorFlow15}. We describe the systems, and any
-salient details of their Task Bench implementations, below.
+and TensorFlow~\cite{TensorFlow15}. We describe the systems and their implementations below.
 
 One challenge in targeting such a wide variety of
 systems is that the capabilities of the systems vary considerably. For
@@ -73,8 +72,7 @@ dependencies are all available.
 Dask~\cite{Dask15} is an implicitly parallel task-based programming system for large
 scale data analytics with Python. Dask provides abstractions over
 distributed NumPy arrays and Pandas dataframes, and also a lower-level
-interface for launching tasks. We use the lower-level interface to
-implement Task Bench.
+interface for launching tasks. We implement Task Bench in the lower-level interface.
 
 \subsection{MPI}
 
