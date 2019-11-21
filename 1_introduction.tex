@@ -51,13 +51,17 @@ to introduce task parallelism into the workload. Together, these
 design elements enable the exploration of a large space of application
 behaviors.
 
-Adding a system to Task Bench involves  implementing a set of standard
-services, such as executing a task or data transfer, simple enough to 
-be implemented with reasonable effort to a level of quality sufficient for comparative
-studies. Task Bench provides a core library that encapsulates functionality
-shared among systems, which not only reduces implementation effort
-but also makes it much easier to achieve truly apples-to-apples comparisons
-between systems.
+Adding a system to Task Bench involves implementing a set of standard
+services, such as executing a task or data transfer. Note that, though
+the benchmarks are described in terms of task graphs, this is simply a
+convenient representation of the computation, and the underlying
+system need not provide any native support for tasks. Tasks are simply
+coarse units of work; dependencies induce communication. We provide
+Task Bench implementations in systems as diverse as MPI and
+Spark. Task Bench provides a core API that encapsulates functionality
+shared among systems, which reduces implementation effort and makes it
+much easier to achieve truly apples-to-apples comparisons between
+systems.
 
 Using Task Bench we were able to quickly incorporate 15 very different parallel and distributed
 programming systems.  By running all systems on common benchmarks we were able to quantify phenomena
@@ -67,9 +71,8 @@ of magnitude, with popular, widely used systems at both ends of the spectrum!  C
 the slower systems have ``good enough'' performance for some class of applications, while presumably
 providing advantages in programmer productivity.
 
-How does one predict whether the performance of a given
-system will be good enough for a particular application?
-Surprisingly, the most commonly reported performance metrics,
+How does one predict whether performance will be good enough for a given application?
+Surprisingly, the most commonly reported metrics,
 \emph{weak} and \emph{strong} scaling, do not directly characterize
 the performance of the underlying
 programming system. Weak scaling can hide arbitrary amounts of runtime
@@ -143,16 +146,19 @@ overhead impacts the ability to perform useful application work.
 % Seems to be nearly impossible to get rid of the hyphen, so just give
 % up and allow this paragraph to break across it.
 \let\oldbrokenpenalty\brokenpenalty
-\brokenpenalty=0
+%% \brokenpenalty=0
 
 We conduct a comprehensive comparative study of Task Bench
-implementations in 15 programming systems:
-Chapel \cite{Chapel15}, Charm++ \cite{Charmpp93}, Dask \cite{Dask15}, MPI \cite{MPI}, MPI+X (OpenMP, CUDA),
-OmpSs \cite{OmpSs11}, OpenMP \cite{OpenMPSpec40},
-PaRSEC \cite{PARSEC13}, Realm \cite{Realm14}, Regent \cite{Regent15},
-Spark \cite{Spark10}, StarPU \cite{StarPU11},
-Swift/T \cite{Wozniak13}, TensorFlow \cite{TensorFlow15}, and
-X10 \cite{X1005}. Using METG, we find that a number of factors---node
+implementations in 15 programming systems
+listed in Section~\ref{sec:implementation}.
+%% :
+%% Chapel \cite{Chapel15}, Charm++ \cite{Charmpp93}, Dask \cite{Dask15}, MPI \cite{MPI}, MPI+X (OpenMP, CUDA),
+%% OmpSs \cite{OmpSs11}, OpenMP \cite{OpenMPSpec40},
+%% PaRSEC \cite{PARSEC13}, Realm \cite{Realm14}, Regent \cite{Regent15},
+%% Spark \cite{Spark10}, StarPU \cite{StarPU11},
+%% Swift/T \cite{Wozniak13}, TensorFlow \cite{TensorFlow15}, and
+%% X10 \cite{X1005}.
+Using METG, we find that a number of factors---node
 count, accelerators, and complex dependencies, among
 others---individually or in combination contribute to an order of
 magnitude or greater increase in METG, even in the most efficient
@@ -166,7 +172,7 @@ suffer from increased overhead, we find that the benefits of these systems becom
 tangible at scale (provided the runtime overhead doesn't increase
 beyond about 100~\textmu{}s).
 
-\brokenpenalty=\oldbrokenpenalty
+%% \brokenpenalty=\oldbrokenpenalty
 
 %% We find asynchronous systems can provide benefits
 %% (e.g., overlapping compute and communication), but only if system overheads do not exceed roughly
@@ -186,11 +192,26 @@ also explore each system's ability to scale, hide communication
 overhead, and mitigate load imbalance.
 } % zap
 
+% Performance issues:
+% Chapel (communication performance, core pinning)
+% Dask (asymptotic complexity of dask.delayed)
+% PaRSEC (task pruning with non-trivial task graphs)
+% Realm (DMA system overhead)
+% TensorFlow (constant folding not parallel)
+
+During the development of Task Bench, we have identified performance
+bugs in five systems: Chapel, Dask, PaRSEC, Realm and
+TensorFlow. Three have been (or are being) fixed and the others have
+been acknowledged by the developers of the respective systems. In some
+cases these correspond to order of magnitude (or even asymptotic)
+improvements in the performance of the underlying systems---benefits
+which apply well beyond Task Bench to all classes of applications.
+
 The paper is organized as follows: Section~\ref{sec:task-bench}
-describes the design of Task Bench. Section~\ref{sec:implementation}
-discusses implementations in 15 programming systems.
-Section~\ref{sec:metg} defines the METG metric and its
-relationship to quantities of interest to application developers.
-Section~\ref{sec:evaluation} provides a comprehensive evaluation of
-Task Bench on up to 256 Haswell nodes of the Cori
-supercomputer~\cite{Cori} (GPU results are reported on Piz Daint~\cite{PizDaint}). Section~\ref{sec:related-work} relates to previous efforts; Section~\ref{sec:conclusion} concludes.
+describes the Task Bench design. Section~\ref{sec:implementation}
+discusses implementations in 15 systems.  Section~\ref{sec:metg}
+defines METG and its relationship to quantities of interest to
+application developers.  Section~\ref{sec:evaluation} provides a
+comprehensive evaluation on the Cori
+supercomputer~\cite{Cori}. Section~\ref{sec:related-work} relates to
+previous efforts; Section~\ref{sec:conclusion} concludes.
