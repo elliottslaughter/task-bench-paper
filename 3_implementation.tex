@@ -101,7 +101,7 @@ to and from the GPU on every timestep.
 \subsection{OmpSs/OpenMP}
 
 OmpSs~\cite{OmpSs11} is a programming model for loop- and task-based parallelism
-that is source-compatible with OpenMP. Our Task Bench implementation
+that is source-compatible with OpenMP. The OmpSs\'s Task Bench implementation
 uses OpenMP 4.0-style~\cite{OpenMPSpec40} task dependencies. 
 Because OpenMP tasks have a fixed number of dependencies, we use a switch
 statement to implement the dynamic dependencies required for Task
