@@ -24,6 +24,7 @@ INCLUDED_TEX = header.tex \
 	t0_equations.tex \
 	t1_systems.tex \
 	t2_parameters.tex \
+	t3_api.tex \
 	e0_flags.tex \
 	e1_flops.tex \
 	e2_efficiency.tex \

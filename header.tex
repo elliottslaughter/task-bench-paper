@@ -15,6 +15,10 @@
 % for multi-line comments
 \newcommand{\zap}[1]{}
 
+% for multi-line item within a table
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
 \lstdefinelanguage{Chapel}
   {morekeywords={coforall,forall},
   sensitive=true,

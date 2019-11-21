@@ -1,0 +1,13 @@
+\begin{table}[t]
+\small
+\begin{tabular}{l | l | l | l | l}
+API & Function \\
+\hline
+Graph::deps(t,i) & returns predecessors of the task(t,i) \\
+Graph::reverse\_deps(t,i) & returns successors of the task(t,i)\\
+Graph::execute\_point(t,i, ...) & execute the body of task(t,i) \\
+\end{tabular}
+
+\caption{Major APIs within core library of the Task Bench (task(t,i) refers to the task on the column i of the timestep t).\label{tab:api}}
+\vspace{-0.5cm}
+\end{table}
