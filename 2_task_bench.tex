@@ -44,6 +44,39 @@ graph.
 \input{f5_task_graphs}
 \input{t0_equations}
 
+Listing~\ref{lst:code-sample} shows an excerpt from the Task Bench
+implementation in MPI. Methods of the \lstinline{Graph} object
+\lstinline{g} are provided by Task Bench's core API and are shared
+among all implementations. These methods are summarized in
+Table~\ref{tab:api}. The MPI implementation follows the style of
+communicating sequential processes, and simply executes a set of send
+and receive calls (lines 24 and 16, respectively) followed by
+executing the task body (line 32). For simplicity, the excerpt
+assumes the number of MPI ranks is equal to the width of the graph;
+the full implementation is more general and provides additional
+optimizations. Despite its simplicity, this MPI implementation is
+among our best performing, and shows that Task Bench can be mapped to
+idiomatic code even in programming systems with no native concept of
+task.
+
+In addition specifying the shape and structure of the task graph, the
+Task Bench core API also provides implementations of the kernels
+executed by each task as well as other utility routines (to parse
+inputs and display results). A sample of the core API compute kernel
+is shown in Listing~\ref{lst:compute-kernel}. In addition to reducing
+the effort required to implement Task Bench, providing central
+implementations of these services ensures that all Task Bench
+implementations can be scripted uniformly and eliminates a potential
+source of performance disparity that can be a pitfall for mini-apps.
+
+%% (task(t,i) refers to the task at column i of timestep t)
+
+\input{t3_api}
+\input{l0_compute_kernel}
+%% \input{l1_code_sample}
+\input{l2_mpi_sample}
+
+\zap{
 Despite its generality, Task Bench is easy to implement, making it
 tractable to develop a suite of high-quality implementations. The central aspects of Task Bench, such as generating
 task graphs and enumerating dependencies, are encapsulated in a core
@@ -62,13 +95,7 @@ typical. Listings~\ref{lst:compute-kernel} and \ref{lst:code-sample}
 show excerpts from the Task Bench core, and the Dask implementation,
 respectively. Only the code in Listing~\ref{lst:code-sample} is
 implemented for each system, minimizing the work required for each additional system.
-
-%% (task(t,i) refers to the task at column i of timestep t)
-
-\input{t3_api}
-\input{l0_compute_kernel}
-%% \input{l1_code_sample}
-\input{l2_mpi_sample}
+} % zap
 
 The Task Bench core library is fully
 validating. Because the task graph configuration is explicitly
