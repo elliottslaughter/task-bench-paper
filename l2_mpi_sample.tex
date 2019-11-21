@@ -7,19 +7,20 @@ void execute_task_graph(Graph g) {
   // initialize data structures...
 
   std::vector<MPI_Request> requests;
-  for (long row = 0; row < g.height; ++row) {
-    if (g.contains_point(row, rank)) {
+  for (long t = 0; t < g.height; ++t) {
+    if (g.contains_point(t, rank)) {
       long idx = 0;
       requests.clear();
 
-      for (long dep : g.deps(row, rank)) {
+      for (long dep : g.deps(t, rank)) {
         MPI_Request req;
         MPI_Irecv(inputs[idx], g.output_bytes, MPI_BYTE,
           dep, 0, MPI_COMM_WORLD, &req);
-        requests.push_back(req); idx++;
+        requests.push_back(req);
+        idx++;
       }
 
-      for (long dep : g.reverse_deps(row, rank)) {
+      for (long dep : g.reverse_deps(t, rank)) {
         MPI_Request req;
         MPI_Isend(output, g.output_bytes, MPI_BYTE,
           dep, 0, MPI_COMM_WORLD, &req);
@@ -29,7 +30,7 @@ void execute_task_graph(Graph g) {
       MPI_Waitall(requests.size(), requests.data(),
         MPI_STATUSES_IGNORE);
 
-      g.execute_point(row, rank, output, g.output_bytes_per_task,
+      g.execute_point(t, rank, output, g.output_bytes_per_task,
         inputs, input_bytes, idx,
         scratch, g.scratch_bytes_per_task);
     }
