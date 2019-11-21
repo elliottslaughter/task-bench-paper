@@ -98,16 +98,16 @@ interleaved with MPI point-to-point communication as above. Our
 MPI+CUDA implementation follows an offload model where data is copied
 to and from the GPU on every timestep.
 
-\subsection{OmpSs/OpenMP}
+\subsection{OmpSs and OpenMP}
 
-OmpSs~\cite{OmpSs11} is a programming model for loop- and task-based parallelism
-that is source-compatible with OpenMP. The OmpSs\'s Task Bench implementation
-uses OpenMP 4.0-style~\cite{OpenMPSpec40} task dependencies. 
-Because OpenMP tasks have a fixed number of dependencies, we use a switch
-statement to implement the dynamic dependencies required for Task
-Bench. The implementation is otherwise straightforward. 
-The Task Bench implementation for OpenMP is similar to OmpSs.
-We tested with GNU GOMP and Intel KMP and found KMP to be better performing.
+OmpSs~\cite{OmpSs11} and OpenMP~\cite{OpenMPSpec40} are programming
+models for loop- and task-based parallelism. (OmpSs is
+source-compatible with OpenMP.) The implementations use OpenMP 4.0
+task dependencies.  Because tasks have a fixed number of dependencies,
+we use a switch statement to implement dynamic dependencies for Task
+Bench. The implementations are otherwise straightforward.  For OpenMP,
+we tested GNU GOMP and Intel KMP and found KMP to be better
+performing.
 
 % FIXME: More to say about OmpSs? Is there anything different vs the OpenMP implementation?
 
