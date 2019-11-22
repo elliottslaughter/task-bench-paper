@@ -71,7 +71,7 @@ scale data analytics with Python. Dask provides abstractions over
 distributed NumPy arrays and Pandas dataframes, and also a lower-level
 interface for launching tasks. We implement Task Bench in the lower-level interface.
 
-\subsection{MPI}
+\subsection{MPI and MPI+X}
 
 We provide two MPI~\cite{MPI} implementations, written in the style of
 communicating sequential processes (CSP) and bulk synchronous
@@ -80,15 +80,12 @@ implementation is shown in Listing~\ref{lst:code-sample}. The BSP
 implementation uses \lstinline[language=C++]{MPI_Barrier} to enforce
 boundaries between phases.
 
-\subsection{MPI+X}
-
-We provide two MPI+X implementations of Task Bench to evaluate the
-performance of hierarchical programming models. Our MPI+OpenMP
-implementation uses forall-style parallel loops to execute tasks, but
-otherwise follows the CSP implementation above. The code uses shared
-memory for data movement within a rank. Our MPI+CUDA implementation
-follows an offload model where data is copied to and from the GPU on
-every timestep.
+We provide two MPI+X implementations to evaluate hierarchical
+programming models. Our MPI+OpenMP implementation uses forall-style
+parallel loops to execute tasks, but otherwise follows the CSP
+implementation above. The code uses shared memory for data movement
+within a rank. Our MPI+CUDA implementation follows an offload model
+where data is copied to and from the GPU on every timestep.
 
 \subsection{OpenMP and OmpSs}
 
