@@ -71,7 +71,7 @@ interface for launching tasks. We implement Task Bench in the lower-level interf
 
 We provide two MPI~\cite{MPI} implementations, written in the style of
 communicating sequential processes (CSP) and bulk synchronous
-programming (BSP), respectively. An excerpt from the CSP
+programming (BSP). An excerpt from the CSP
 implementation is shown in Listing~\ref{lst:code-sample}. The BSP
 implementation uses \lstinline[language=C++]{MPI_Barrier} to enforce
 boundaries between phases.
@@ -181,8 +181,8 @@ We performed extensive experiments to verify that no
 extraneous factors interfered with our Spark measurements. We
 disabled logging, ensured no RDDs are written
 to disk, confirmed there is no measurable overhead due to JNI
-calls from Java to C or due to the serialization of data structures, and cross-checked results with known cases
-that hit optimal task throughput in Spark.
+calls from Java to C or due to serializing data, and cross-checked results with known cases
+with optimal scheduler throughput.
 
 \subsection{StarPU}
 
