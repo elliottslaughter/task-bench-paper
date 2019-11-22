@@ -55,12 +55,9 @@ synchronization.
 
 \subsection{Charm++}
 
-Charm++~\cite{Charmpp93} is an explicitly parallel actor-based programming system. Actors(
-\emph{chares}) are objects in their own address space.
-Chares communicate data and synchronize via messages and can be moved
-to balance load. Our Task Bench implementation uses a chare
-array for the task graph, with one chare for each column. Messages implement dependencies; a task executes as soon as its
-dependencies are all available.
+Charm++~\cite{Charmpp93} is an explicitly parallel actor-based programming system. Actors
+(\emph{chares}) do not share memory and communicate via messages. Our Task Bench implementation uses a chare
+array for the task graph, with one chare for each column, and uses messages to implement dependencies.
 
 %% Collectives synchronize the
 %% completion of the task graph execution.
@@ -76,31 +73,28 @@ interface for launching tasks. We implement Task Bench in the lower-level interf
 
 \subsection{MPI}
 
-Our MPI~\cite{MPI} implementation of Task Bench represents the common
-case of point-to-point communication with distinct computation and
-communication phases. We experimented with a variety of implementation
-strategies and found the best performing to be using
-\lstinline[language=C++]{MPI_Isend} and
-\lstinline[language=C++]{MPI_Irecv} to implement the communication
-phase, posting receives before sends. Each task dependency maps to one
-send/receive pair in MPI. We also provide a bulk synchronous
-implementation which enforces the boundary between communication and
-computation with \lstinline[language=C++]{MPI_Barrier}.
+We provide two MPI~\cite{MPI} implementations, written in the style of
+communicating sequential processes (CSP) and bulk synchronous
+programming (BSP), respectively. An excerpt from the CSP
+implementation is shown in Listing~\ref{lst:code-sample}. The BSP
+implementation uses \lstinline[language=C++]{MPI_Barrier} to enforce
+boundaries between phases.
 
 \subsection{MPI+X}
 
 We provide two MPI+X implementations of Task Bench to evaluate the
 performance of hierarchical programming models. Our MPI+OpenMP
-implementation uses forall-style parallel loops to execute tasks,
-interleaved with MPI point-to-point communication as above. Our
-MPI+CUDA implementation follows an offload model where data is copied
-to and from the GPU on every timestep.
+implementation uses forall-style parallel loops to execute tasks, but
+otherwise follows the CSP implementation above. The code uses shared
+memory for data movement within a rank. Our MPI+CUDA implementation
+follows an offload model where data is copied to and from the GPU on
+every timestep.
 
-\subsection{OmpSs and OpenMP}
+\subsection{OpenMP and OmpSs}
 
-OmpSs~\cite{OmpSs11} and OpenMP~\cite{OpenMPSpec40} are programming
-models for loop- and task-based parallelism. (OpenMP is
-source-compatible with OmpSs.) The implementations use OpenMP 4.0
+OpenMP~\cite{OpenMPSpec40} and OmpSs~\cite{OmpSs11} are programming
+models for loop- and task-based parallelism. (OmpSs is
+source-compatible with OpenMP.) The implementations use OpenMP 4.0
 tasking.  Because tasks have a fixed number of dependencies,
 we use a switch statement to implement dynamic dependencies for Task
 Bench. For OpenMP, we tested GNU GOMP and Intel KMP and found KMP to be better
@@ -126,16 +120,12 @@ write a concise, algebraic description of the tasks and dataflows in
 the program. This compressed representation is expanded into a full
 task graph by a source-to-source compiler.
 
-In the DTD model, tasks are enumerated in program order (by
-executing the program), and dependencies between tasks are
-identified automatically based on the input and output data of tasks. 
-A task depends on another task if it reads data written by the other task,
-and the data is copied automatically if the two tasks are executed on
-different nodes. To
-improve scalability, the program is executed in
-SPMD fashion on all nodes, and the user is responsible for eliding
-tasks that are not directly connected to those that are to be executed
-on the current node.
+In the DTD model, tasks are enumerated in program order (by executing
+the program), and dependencies are identified automatically based on
+the arguments to tasks. To improve scalability, the program is
+executed in SPMD fashion on all nodes, and the user is responsible for
+eliding tasks that are not direct predecessors or successors to those
+executed on the current node.
 
 In our Task Bench implementation, we evaluate both PTG and DTD models,
 as well as a third option based on DTD that has additional manual
@@ -221,7 +211,7 @@ potentially execute in parallel as soon as its dependencies are
 satisfied; statements only execute sequentially when explicitly
 requested. The Swift/T compiler performs a number of optimizations to
 improve performance of highly parallel programs~\cite{Armstrong14}. 
-Our Task Bench in Swift/T uses it's dataflow
+Our Task Bench in Swift/T uses its dataflow
 semantics to capture dependencies on other tasks.
 
 \subsection{TensorFlow}
