@@ -59,6 +59,13 @@ among our best performing, and shows that Task Bench can be mapped to
 idiomatic code even in programming systems with no native concept of
 task.
 
+%% (task(t,i) refers to the task at column i of timestep t)
+
+\input{t3_api}
+\input{l0_compute_kernel}
+%% \input{l1_code_sample}
+\input{l2_mpi_sample}
+
 In addition specifying the shape and structure of the task graph, the
 Task Bench core API also provides implementations of the kernels
 executed by each task as well as other utility routines (to parse
@@ -68,13 +75,6 @@ the effort required to implement Task Bench, providing central
 implementations of these services ensures that all Task Bench
 implementations can be scripted uniformly and eliminates a potential
 source of performance disparity that can be a pitfall for mini-apps.
-
-%% (task(t,i) refers to the task at column i of timestep t)
-
-\input{t3_api}
-\input{l0_compute_kernel}
-%% \input{l1_code_sample}
-\input{l2_mpi_sample}
 
 \zap{
 Despite its generality, Task Bench is easy to implement, making it

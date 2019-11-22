@@ -63,8 +63,10 @@ shared among systems, which reduces implementation effort and makes it
 much easier to achieve truly apples-to-apples comparisons between
 systems.
 
-Using Task Bench we were able to quickly incorporate 15 very different parallel and distributed
-programming systems.  By running all systems on common benchmarks we were able to quantify phenomena
+This approach has allowed us to incorporate 15 very different parallel
+and distributed programming systems (listed in
+Table~\ref{tab:systems}).  By running all systems on common benchmarks
+we were able to quantify phenomena
 that have never before been measured.
 Most strikingly, the overheads of the systems we examine vary by more than five orders
 of magnitude, with popular, widely used systems at both ends of the spectrum!  Clearly
@@ -148,9 +150,8 @@ overhead impacts the ability to perform useful application work.
 \let\oldbrokenpenalty\brokenpenalty
 %% \brokenpenalty=0
 
-We conduct a comprehensive comparative study of Task Bench
-implementations in 15 programming systems
-listed in Section~\ref{sec:implementation}.
+We conduct a comprehensive study of all 15 Task Bench implementations on
+up to 256 Haswell nodes of the Cori supercomputer~\cite{Cori}.
 %% :
 %% Chapel \cite{Chapel15}, Charm++ \cite{Charmpp93}, Dask \cite{Dask15}, MPI \cite{MPI}, MPI+X (OpenMP, CUDA),
 %% OmpSs \cite{OmpSs11}, OpenMP \cite{OpenMPSpec40},
@@ -174,24 +175,6 @@ beyond about 100~\textmu{}s).
 
 %% \brokenpenalty=\oldbrokenpenalty
 
-%% We find asynchronous systems can provide benefits
-%% (e.g., overlapping compute and communication), but only if system overheads do not exceed roughly
-%% 100~\textmu{}s.
-
-%% This implies that simplifying the application space too much
-%% (e.g., by using trivial dependencies) risks overemphasizing the
-%% importance of the lightweight mechanisms in such systems---a risk that
-%% can be mitigated by using Task Bench's more complete coverage of the
-%% space of application scenarios.
-
-\zap{
-Using METG, we determine the baseline
-runtime overhead of each system along with overheads associated with
-increasing numbers of and/or variations in the pattern of dependencies. We
-also explore each system's ability to scale, hide communication
-overhead, and mitigate load imbalance.
-} % zap
-
 % Performance issues:
 % Chapel (communication performance, core pinning)
 % Dask (asymptotic complexity of dask.delayed)
@@ -199,19 +182,22 @@ overhead, and mitigate load imbalance.
 % Realm (DMA system overhead)
 % TensorFlow (constant folding not parallel)
 
-During the development of Task Bench, we have identified performance
-bugs in five systems: Chapel, Dask, PaRSEC, Realm and
-TensorFlow. Three have been (or are being) fixed and the others have
-been acknowledged by the developers of the respective systems. In some
-cases these correspond to order of magnitude (or even asymptotic)
-improvements in the performance of the underlying systems---benefits
-which apply well beyond Task Bench to all classes of applications.
+Beyond comparative study, the ability to explore a large configuration
+space also enables the discovery of bugs in the underlying systems. We
+found five performance issues, ranging from communication efficiency
+(Chapel, Realm), to the efficiency of task pruning, analysis and
+constant folding (PaRSEC, Dask and TensorFlow). Three have been fixed
+and all have been acknowledged by the developers of the respective
+systems. (All were either fixed or worked around in our experiments.)
+In some cases these correspond to order of magnitude (or even
+asymptotic) improvements in the performance of the underlying
+systems---benefits which apply well beyond Task Bench to all classes
+of applications.
 
 The paper is organized as follows: Section~\ref{sec:task-bench}
 describes the Task Bench design. Section~\ref{sec:implementation}
 discusses implementations in 15 systems.  Section~\ref{sec:metg}
 defines METG and its relationship to quantities of interest to
 application developers.  Section~\ref{sec:evaluation} provides a
-comprehensive evaluation on the Cori
-supercomputer~\cite{Cori}. Section~\ref{sec:related-work} relates to
+comprehensive evaluation on Cori. Section~\ref{sec:related-work} relates to
 previous efforts; Section~\ref{sec:conclusion} concludes.
