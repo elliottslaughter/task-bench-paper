@@ -79,7 +79,7 @@ The remaining experiments use compute-bound kernels.
 \subsection{Baseline Overhead}
 
 One question when considering different programming
-systems is: How much overhead does the system add? This question is tricky to answer directly because some systems introduce
+systems is: how much overhead does the system add? This question is tricky to answer directly because some systems introduce
 overhead \emph{inline} (i.e., by running system internal processes on
 the same cores as application tasks), while other systems introduce
 overhead \emph{out-of-line} (i.e., by dedicating one or more cores
@@ -298,7 +298,7 @@ granularities, where the CPU achieves higher
 performance. While Figure~\ref{fig:cuda-efficiency} is not couched in
 terms of METG (as peak performance on CPU and GPU are very
 different), the conclusion here is similar to
-Section~\ref{subsec:scalability}: The cost of sending data and
+Section~\ref{subsec:scalability}: the cost of sending data and
 tasks to the GPU imposes a higher task granularity to achieve
 the same efficiency than running on the CPU, reducing the advantage at small task granularities of
 very lightweight mechanisms such as those in MPI.
