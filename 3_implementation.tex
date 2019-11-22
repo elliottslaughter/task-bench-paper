@@ -91,7 +91,7 @@ where data is copied to and from the GPU on every timestep.
 
 OpenMP~\cite{OpenMPSpec40} and OmpSs~\cite{OmpSs11} are programming
 models for loop- and task-based parallelism. (OmpSs is
-source-compatible with OpenMP.) The implementations use OpenMP 4.0
+source-compatible with OpenMP.) Our implementations use OpenMP 4.0
 tasking.  Because tasks have a fixed number of dependencies,
 we use a switch statement to implement dynamic dependencies for Task
 Bench. For OpenMP, we tested GNU GOMP and Intel KMP and found KMP to be better
@@ -109,26 +109,23 @@ performing.
 
 \subsection{PaRSEC}
 
-PaRSEC is a task-based programming system supporting two distinct
+PaRSEC supports two distinct
 programming models: \emph{parameterized task graphs}
 (PTG)~\cite{PARSEC13} and \emph{dynamic task discovery}
-(DTD)~\cite{PARSEC_DTD}.  PTG is a dataflow model in which programmers
+(DTD)~\cite{PARSEC_DTD}.  PTG is a dataflow model in which users
 write a concise, algebraic description of the tasks and dataflows in
 the program. This compressed representation is expanded into a full
 task graph by a source-to-source compiler.
 
-In the DTD model, tasks are enumerated in program order (by executing
-the program), and dependencies are identified automatically based on
-the arguments to tasks. To improve scalability, the program is
-executed in SPMD fashion on all nodes, and the user is responsible for
-eliding tasks that are not direct predecessors or successors to those
-executed on the current node.
+In DTD, tasks are enumerated in program order and dependencies are
+identified automatically based on task arguments. To improve
+scalability, the program is executed in SPMD fashion on all nodes, and
+the user is responsible for eliding tasks that are not direct
+predecessors or successors to those executed on the current node.
 
-In our Task Bench implementation, we evaluate both PTG and DTD models,
-as well as a third option based on DTD that has additional manual
-optimizations applied to further reduce dynamic checks for what tasks
-should be executed on a node, which further improves
-scalability.
+We implement Task Bench with both PTG and DTD, as well as a third
+option based on DTD that has additional manual optimizations applied
+to further reduce the cost of dynamic checks for task elision.
 
 %% Task Bench uses a 2D block cyclic data distribution provided by PaRSEC. Tiles of data are 
 %% distributed across nodes in pre-defined patterns,
