@@ -163,7 +163,7 @@ improve scalability~\cite{ControlReplication17}.
 \subsection{Spark}
 
 Spark~\cite{Spark10} is an implicitly-parallel programming model for
-large scale data analytics.
+data analytics.
 The core abstractions in Spark are functional operators such as map,
 reduce, and join. Data in Spark are stored in
 \emph{resilient
@@ -172,10 +172,10 @@ dynamically single-assignment data structures. Spark caches RDDs in memory to av
 disk traffic.
 
 Spark has tasks internally but they are not exposed to the user,
-so a Task Bench implementation must map the task graph to a set of operators that result in the
+so a Task Bench implementation must map the task graph to operators that result in the
 desired execution. We use
 \lstinline[language=Scala]{flatMap} and
-\lstinline[language=Scala]{groupByKey} to generate task
+\lstinline[language=Scala]{groupByKey} to generate
 dependencies, and then \lstinline[language=Scala]{mapPartitions} to execute a
 series of tasks. An explicit hash partitioner ensures that
 Spark does not attempt to group multiple Task Bench tasks into a
@@ -219,7 +219,7 @@ execution engine written in C++.
 \subsection{X10}
 
 X10~\cite{X1005} is an explicitly parallel programming language for
-place-based programming. The core features of X10 are \emph{places}
+place-based programming. Features include \emph{places}
 which represent distributed memories, a PGAS model where references to
 remote objects can be held (but can only be dereferenced on the local
 place), asynchronous tasks, and a place-changing construct to move the
