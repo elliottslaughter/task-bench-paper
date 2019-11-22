@@ -15,28 +15,26 @@ each dependence edge in the graph.
 
 \brokenpenalty=\oldbrokenpenalty
 
-Task graphs are a combination of an iteration space (with a task for
-each point in the space) with a dependence relation.
+Task graphs are a combination of an \emph{iteration space} (with a task for
+each point in the space) with a \emph{dependence relation}.
 For simplicity, but without loss of generality, the iteration space in
 Task Bench is constrained to be 2-dimensional, with time along
 the vertical axis and parallel tasks along the
 horizontal. Tasks may depend only on tasks from the immediately
 preceding time step. Figure~\ref{fig:task-graphs} shows a number of sample task
 graphs that can be implemented with Task Bench. Note that layout is
-significant---in particular, column $i$ represents all tasks
-with index $i$ in the iteration space over all the time
-steps. Generally speaking each column will be
+significant: generally speaking each column will be
 assigned to execute on a different processor core.
 
 Dependencies between tasks are controlled by a configurable dependence
 relation. The
 dependence relation enumerates the set of tasks from the
-previous time step each task depends on. This permits a wide variety
-of dependence patterns to be implemented that are relevant to real
-applications in high-performance scientific computing and data analysis: stencils,
-sweeps, FFTs, trees, etc. Dependence patterns may also be
+previous time step each task depends on, permitting a wide variety
+of patterns to be implemented that are relevant to real
+applications: stencils,
+sweeps, FFTs, trees, etc. Dependence relations may be
 parameterized, such as picking the $K$ nearest neighbors, or $K$
-distant neighbors. Table~\ref{tab:equations} shows equations for the
+distant neighbors. They may also vary over time, such as in the FFT pattern. The set of dependence relations is extensible, making it easy to add patterns to represent new classes applications. Table~\ref{tab:equations} shows equations for the
 dependence relations of the patterns in Figure~\ref{fig:task-graphs},
 where $t$ is timestep, $i$ is column, and $W$ is the width of the task
 graph.
@@ -66,7 +64,7 @@ task.
 %% \input{l1_code_sample}
 \input{l2_mpi_sample}
 
-In addition specifying the shape and structure of the task graph, the
+In addition to specifying the shape and structure of the task graph, the
 Task Bench core API also provides implementations of the kernels
 executed by each task as well as other utility routines (to parse
 inputs and display results). A sample of the core API compute kernel

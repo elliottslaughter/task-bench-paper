@@ -7,8 +7,8 @@
 Given that Task Bench permits the rapid exploration of a large space
 of application scenarios, one question is how to characterize the
 performance and efficiency of the systems under study. As noted
-earlier, the overheads of the systems we consider varies by more than
-five orders of magnitude. This makes it challenging to extract useful
+earlier, the overheads of the systems we consider vary by more than
+five orders of magnitude, making it challenging to extract useful
 information from weak and strong scaling runs.
 
 Existing studies of system efficiency
@@ -40,11 +40,10 @@ processed per second (i.e., total number of cells divided by wall
 clock time per iteration of the main simulation loop).
 
 The choice of 50\% is also a parameter and is not fundamental to
-METG. We use 50\% in our studies in order to avoid certain pathologies
+METG. We use 50\% in our studies to avoid pathologies
 associated with lower efficiency thresholds (see
 Section~\ref{subsec:peak-performance-and-efficiency}), and also
-because it aligns with what we observe in practice. For example, in a
-CSCS application for new projects, users are instructed to "select the
+because it aligns with what we observe in practice. For example, in one supercomputer center's application for new projects, users are instructed to "select the
 most parallel efficient job size (ratio of benchmark speed-up
 vs. linear speed-up above 50\%)" \cite{CSCSReport}. This corresponds
 to METG(50\%).
@@ -78,7 +77,7 @@ Section~\ref{sec:task-bench}.
 In Figure~\ref{fig:efficiency-mpi},
 efficiency starts at 100\%. Initially task granularity
 shrinks with minimal change in efficiency. As tasks shrink further, efficiency drops more rapidly, leading
-to a vertical asymptote as overhead dominates useful work.
+to a vertical asymptote as overhead comes to dominate useful work.
 
 % FIXME: keep this up-to-date with the graphs
 

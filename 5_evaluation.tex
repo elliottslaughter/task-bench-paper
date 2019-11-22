@@ -41,7 +41,7 @@ the baseline for 100\% efficiency.
 Most systems achieve or nearly achieve peak FLOP/s. Some
 systems reserve a number of cores (usually 1 or 2) for internal
 runtime usage; these systems take a minor hit in peak FLOP/s compared
-to systems which share all cores between the application and runtime. Some of the
+to systems that share all cores between the application and runtime. Some of the
 higher overhead systems struggle to achieve peak FLOP/s, though in most cases
 the curves suggest that performance would continue to improve if we
 were to run larger problem sizes. Unfortunately, the excessive
@@ -152,8 +152,8 @@ but this is not true of all the systems included in this
 evaluation. Lower is better in Figure~\ref{fig:metg-compute}, and
 flat is ideal. Lines that rise with node count indicate less than
 ideal scaling. Most notably, Spark is primarily
-intended industrial data center applications with task
-granularities measured in tens of seconds. Spark uses a centralized
+intended for industrial data center applications with task
+granularities measured in seconds. Spark uses a centralized
 controller, which limits throughput, and this is visible in the figure
 as the line for Spark immediately rises with node count. Keep in mind
 that Spark is being evaluated here with a non-trivial dependence
@@ -274,7 +274,7 @@ granularities. For example, Chapel's default (non-work-stealing) scheduler outpe
 
 \input{e10_cuda_efficiency}
 
-In order to determine the cost of scheduling tasks on the GPU, Figure~\ref{fig:cuda-efficiency} compares MPI
+To determine the cost of scheduling tasks on GPUs, Figure~\ref{fig:cuda-efficiency} compares MPI
 and MPI+CUDA on the Piz Daint supercomputer. The CUDA
 compute kernel achieves a peak performance of $4.759 \times 10^{12}$
 FLOP/s, which is very close to the officially reported number
