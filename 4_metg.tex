@@ -6,7 +6,7 @@
 
 Given that Task Bench permits the rapid exploration of a large space
 of application scenarios, one question is how to characterize the
-overall performance of the programming systems under study. As noted
+performance and efficiency of the systems under study. As noted
 earlier, the overheads of the systems we consider varies by more than
 five orders of magnitude. This makes it challenging to extract useful
 information from weak and strong scaling runs.
@@ -28,12 +28,26 @@ We introduce \emph{minimum effective task granularity}, or METG, an
 efficiency-constrained metric for runtime-limited
 performance. METG(50\%) for an application $A$ is
 the smallest average task granularity (i.e., task duration) such that $A$
-achieves overall efficiency of at least 50\%. For example, in
+achieves overall efficiency of at least 50\%. Note that METG is parameterized by the efficiency metric. For example, in
 compute-bound applications efficiency can be measured as the
 percentage of the available FLOP/s achieved. On Cori with 1.26 TFLOP/s available per Haswell node, METG(50\%) corresponds to
 the smallest task granularity achieved while maintaining at least 0.63
-TFLOP/s per node. For applications not amenable to being characterized by raw FLOP/s or B/s, an application-specific measure of performance can be
-used instead (e.g., mesh cells processed per second).
+TFLOP/s per node. However, METG is not tied to peak performance, and
+in applications not amenable to being characterized in this way,
+another application-specific measure of performance can be used. For
+example, a simulation on a mesh might use the number of mesh cells
+processed per second (i.e., total number of cells divided by wall
+clock time per iteration of the main simulation loop).
+
+The choice of 50\% is also a parameter and is not fundamental to
+METG. We use 50\% in our studies in order to avoid certain pathologies
+associated with lower efficiency thresholds (see
+Section~\ref{subsec:peak-performance-and-efficiency}), and also
+because it aligns with what we observe in practice. For example, in a
+CSCS application for new projects, users are instructed to "select the
+most parallel efficient job size (ratio of benchmark speed-up
+vs. linear speed-up above 50\%)" \cite{CSCSReport}. This corresponds
+to METG(50\%).
 
 \input{f3_weak_scaling_mpi}
 \input{f4_strong_scaling_mpi}
@@ -57,9 +71,9 @@ To calculate METG, the data is replotted along axes of efficiency
 granularity (i.e., $\text{wall time} \times \text{num.~cores}/\text{num.~tasks}$), as shown in Figure~\ref{fig:efficiency-mpi}. Note that a \emph{task} is defined
 broadly to be any continuously-executing unit of application code,
 and thus it makes sense to discuss tasks even in systems
-with no explicit notion of tasking, such as in MPI programs written in a bulk synchronous style. In this case, the tasks run a
-compute-bound kernel included in the Task Bench implementation,
-described in more detail in Section~\ref{sec:task-bench}.
+with no explicit notion of tasking, such as MPI. In this case, the
+tasks run the compute-bound kernel shown in
+Section~\ref{sec:task-bench}.
 
 In Figure~\ref{fig:efficiency-mpi},
 efficiency starts at 100\%. Initially task granularity
