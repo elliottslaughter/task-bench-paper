@@ -55,8 +55,8 @@ synchronization.
 
 \subsection{Charm++}
 
-Charm++~\cite{Charmpp93} is an explicitly parallel actor-based programming system. Actors, or
-\emph{chares}, are objects in their own address space.
+Charm++~\cite{Charmpp93} is an explicitly parallel actor-based programming system. Actors(
+\emph{chares}) are objects in their own address space.
 Chares communicate data and synchronize via messages and can be moved
 to balance load. Our Task Bench implementation uses a chare
 array for the task graph, with one chare for each column. Messages implement dependencies; a task executes as soon as its
@@ -99,12 +99,11 @@ to and from the GPU on every timestep.
 \subsection{OmpSs and OpenMP}
 
 OmpSs~\cite{OmpSs11} and OpenMP~\cite{OpenMPSpec40} are programming
-models for loop- and task-based parallelism. (OmpSs is
-source-compatible with OpenMP.) The implementations use OpenMP 4.0
-task dependencies.  Because tasks have a fixed number of dependencies,
+models for loop- and task-based parallelism. (OpenMP is
+source-compatible with OmpSs.) The implementations use OpenMP 4.0
+tasking.  Because tasks have a fixed number of dependencies,
 we use a switch statement to implement dynamic dependencies for Task
-Bench. The implementations are otherwise straightforward.  For OpenMP,
-we tested GNU GOMP and Intel KMP and found KMP to be better
+Bench. For OpenMP, we tested GNU GOMP and Intel KMP and found KMP to be better
 performing.
 
 % FIXME: More to say about OmpSs? Is there anything different vs the OpenMP implementation?
@@ -173,9 +172,9 @@ Bench implementation.
 
 Regent~\cite{Regent15} is an implicitly-parallel task-based language
 which implements the Legion programming model~\cite{Legion12}. We use
-Regent rather than Legion directly because the Regent compiler
-provides a critical optimization that
-improves scalability~\cite{ControlReplication17}.
+Regent rather than Legion since the Regent compiler
+provides a critical optimization to
+improve scalability~\cite{ControlReplication17}.
 
 \subsection{Spark}
 
@@ -207,7 +206,7 @@ that hit optimal task throughput in Spark.
 
 \subsection{StarPU}
 
-StarPU~\cite{StarPU11} is a task-based system that supports a \emph{sequential task flow} (STF)
+StarPU~\cite{StarPU11} is a task-based system utilizing a \emph{sequential task flow}
 programming model similar to PaRSEC's DTD. Our Task Bench implementation in
 StarPU is very similar to PaRSEC.
 %% We use a simplified version of the 2D block cyclic data distribution from the Chameleon 
@@ -221,7 +220,8 @@ programs follow dataflow semantics, where every statement may
 potentially execute in parallel as soon as its dependencies are
 satisfied; statements only execute sequentially when explicitly
 requested. The Swift/T compiler performs a number of optimizations to
-improve performance of highly parallel programs~\cite{Armstrong14}. Our Task Bench in Swift/T is straightforward, using Swift/T's dataflow
+improve performance of highly parallel programs~\cite{Armstrong14}. 
+Our Task Bench in Swift/T uses it's dataflow
 semantics to capture dependencies on other tasks.
 
 \subsection{TensorFlow}
@@ -230,7 +230,7 @@ TensorFlow~\cite{TensorFlow15} is a programming system designed for
 deep learning workloads. Although TensorFlow's API exposes
 machine learning concepts, internally TensorFlow is a task graph execution engine, making it a good fit for
 Task Bench. TensorFlow programs operate via explicit graph construction. Task graphs are composed in Python and run by an
-execution engine written in C++. Our Task Bench implementation is straightforward.
+execution engine written in C++.
 
 \subsection{X10}
 
