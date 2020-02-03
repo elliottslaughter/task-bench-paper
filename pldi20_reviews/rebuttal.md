@@ -69,6 +69,43 @@ processors.
 
 MPI p2p is the implementation shown in Listing 2.
 
+## Analysis of Performance Bugs Found
+
+Realm and Chapel use DMA subsystems that are optimized for large
+copies. Early Task Bench experiments revealed high METG values that
+were diagnosed by the Realm/Chapel developers as overhead due to the
+cost of scheduling small copies. Subsequent improvements in Realm and
+Chapel improved small copy overheads (and thus METG) by over an order
+of magnitude in the case of Realm, and by 2x in the case of
+Chapel. These improvements affect any application where fine-grained
+tasks are used.
+
+PaRSEC uses a task pruning algorithm to improve scalability at large
+node counts. Initial Task Bench results achieved less than the
+expected scalability: METG was rising too quickly with node
+count. This was diagnosed by the PaRSEC developers as a bug in task
+pruning, and subsequently fixed. We also implemented a version of the
+PaRSEC code, `shard`, which uses manual pruning to demonstrate that
+additional gains may be possible.
+
+Early Task Bench results for Dask revealed that the cost of scheduling
+a task was $\mathcal{O}(N)$ where $N$ is the number of tasks in a task
+graph, causing overall cost for a task graph with $N$ nodes to be
+$\mathcal{O}(N^2)$. This issue was reported to and confirmed by the
+Dask developers. As a work around, our result in the paper use a
+lower-level interface which does not suffer from this asymptotic
+slowdown.
+
+Initial experiments with TensorFlow revealed that the TensorFlow Task
+Bench implementation was not able to use all cores on a node (thus
+making it impossible to measure METG since the code did not pass the
+efficiency threshold). This was diagnosed by the TensorFlow developers
+as an issue in constant folding. The entire Task Bench task graph was
+being detected as constant, and the constant-folding pass runs on one
+core. As a workaround, the developers suggested marking the task graph
+inputs as non-constant so that TensorFlow's normal task scheduler
+could be used.
+
 ## OpenMP Code Excerpt
 
 ```c++
