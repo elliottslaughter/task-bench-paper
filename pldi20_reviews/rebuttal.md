@@ -73,20 +73,20 @@ MPI p2p is the implementation shown in Listing 2.
 
 ```c++
 void issue_task(Graph g, long t, long p,
-                  char *output,
-                  char **inputs, long num_inputs,
-                  char *scratch) {
+                char *output,
+                char **inputs, long num_inputs,
+                char *scratch) {
   switch (num_inputs) {
   case 1:
     {
       #pragma omp task depend(inout: output) depend(in: inputs[0]) depend(inout: scratch)
-      task_body1(g, t, p, output, inputs[0], scratch);
+      g.execute_point(t, p, output, inputs, scratch);
     }
     break;
   case 2:
     {
       #pragma omp task depend(inout: output) depend(in: inputs[0]) depend(in: inputs[1]) depend(inout: scratch)
-      task_body2(g, t, p, output, inputs[0], inputs[1], scratch);
+      g.execute_point(t, p, output, inputs, scratch);
     }
     break;
   // ...
@@ -97,7 +97,7 @@ void execute_task_graph(Graph g) {
   char **outputs = (char **)malloc(g.width * sizeof(char *));
   char **scratch = (char **)malloc(g.width * sizeof(char *));
   char **inputs = (char **)malloc(g.width * sizeof(char *));
-  char **input_ptrs = (char **)malloc(/* ... */);
+  char ***input_ptrs = (char ***)malloc(/* ... */);
   // initialize data structures...
 
   for (long t = 0; t < g.height; ++t) {
@@ -105,11 +105,11 @@ void execute_task_graph(Graph g) {
       if (g.contains_point(t, p)) {
         long idx = 0;
         for (long dep : g.deps(t, p)) {
-          input_ptrs[idx] = inputs[dep];
+          input_ptrs[p][idx] = inputs[dep];
           idx++;
         }
 
-        issue_task(g, t, p, outputs[p], input_ptrs, idx, scratch[p]);
+        issue_task(g, t, p, outputs[p], input_ptrs[p], idx, scratch[p]);
       }
     }
     std::swap(inputs, outputs);
