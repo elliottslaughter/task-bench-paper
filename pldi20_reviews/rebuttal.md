@@ -35,7 +35,7 @@ these systems can be optimized to reduce unnecessary
 overheads. However, we agree that a comparison across network
 architectures would be a good direction for future work.
 
-TPS is reported in citations \[6, 28, 32].
+TPS is reported in citations \[6, 28, 32]. See also \[A-C] below.
 
 Fitting a Task Bench configuration to a specific application is a
 direction for future work, but the patterns in Figure 1 are all
@@ -66,3 +66,11 @@ total number of FLOPs executed, which directly corresponds to
 We use weak scaling. Height is fixed at 1000 (so the duration of the
 run remains constant) while width varies with the number of
 processors.
+
+## Additional Citations
+
+\[A]: Mashayekhi, Omid, Hang Qu, Chinmayee Shah, and Philip Levis. "Execution Templates: Caching Control Plane Decisions for Strong Scaling of Data Analytics." In 2017 USENIX Annual Technical Conference (USENIX ATC 17), pp. 513-526. 2017.
+
+\[B]: Moritz, Philipp, Robert Nishihara, Stephanie Wang, Alexey Tumanov, Richard Liaw, Eric Liang, Melih Elibol et al. "Ray: A Distributed Framework for Emerging AI Applications." In 13th USENIX Symposium on Operating Systems Design and Implementation (OSDI 18), pp. 561-577. 2018.
+
+\[C]: Sadooghi, Iman, Geet Kumar, Ke Wang, Dongfang Zhao, Tonglin Li, and Ioan Raicu. "Albatross: An Efficient Cloud-Enabled Task Scheduling and Execution Framework Using Distributed Message Queues." In 2016 IEEE 12th International Conference on e-Science (e-Science), pp. 11-20. IEEE, 2016.
