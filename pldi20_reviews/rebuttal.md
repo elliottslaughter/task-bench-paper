@@ -156,8 +156,19 @@ void execute_task_graph(Graph g) {
 
 ## Additional Citations
 
-\[A]: Mashayekhi, Omid, Hang Qu, Chinmayee Shah, and Philip Levis. "Execution Templates: Caching Control Plane Decisions for Strong Scaling of Data Analytics." In 2017 USENIX Annual Technical Conference (USENIX ATC 17), pp. 513-526. 2017.
+\[A]: Mashayekhi, Omid, Hang Qu, Chinmayee Shah, and Philip
+Levis. "Execution Templates: Caching Control Plane Decisions for
+Strong Scaling of Data Analytics." In 2017 USENIX Annual Technical
+Conference (USENIX ATC 17), pp. 513-526. 2017.
 
-\[B]: Moritz, Philipp, Robert Nishihara, Stephanie Wang, Alexey Tumanov, Richard Liaw, Eric Liang, Melih Elibol et al. "Ray: A Distributed Framework for Emerging AI Applications." In 13th USENIX Symposium on Operating Systems Design and Implementation (OSDI 18), pp. 561-577. 2018.
+\[B]: Moritz, Philipp, Robert Nishihara, Stephanie Wang, Alexey
+Tumanov, Richard Liaw, Eric Liang, Melih Elibol et al. "Ray: A
+Distributed Framework for Emerging AI Applications." In 13th USENIX
+Symposium on Operating Systems Design and Implementation (OSDI 18),
+pp. 561-577. 2018.
 
-\[C]: Sadooghi, Iman, Geet Kumar, Ke Wang, Dongfang Zhao, Tonglin Li, and Ioan Raicu. "Albatross: An Efficient Cloud-Enabled Task Scheduling and Execution Framework Using Distributed Message Queues." In 2016 IEEE 12th International Conference on e-Science (e-Science), pp. 11-20. IEEE, 2016.
+\[C]: Sadooghi, Iman, Geet Kumar, Ke Wang, Dongfang Zhao, Tonglin Li,
+and Ioan Raicu. "Albatross: An Efficient Cloud-Enabled Task Scheduling
+and Execution Framework Using Distributed Message Queues." In 2016
+IEEE 12th International Conference on e-Science (e-Science),
+pp. 11-20. IEEE, 2016.
