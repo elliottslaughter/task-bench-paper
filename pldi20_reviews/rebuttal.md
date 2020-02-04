@@ -2,11 +2,12 @@ We thank the reviewers for their feedback.
 
 Responding to reviewer A on novelty, we provide a quantification (via
 METG) of typical programming system overheads. Contrary to the
-suggestion of reviewer A, we found that the METGs we found in practice
-did not always match our intuitions. In fact, some were off to such a
-large degree (multiple orders of magnitude) that they prompted the
-development teams to conduct major new development to address our
-results (more on this below).
+suggestion of reviewer A, we found that METGs we found in practice did
+not always match intuition. In fact, the actual overheads of some
+systems differed from what the developers of those systems expected to
+such a large degree (multiple orders of magnitude) that it prompted
+substantial new development to address our results (more on this
+below).
 
 METG itself is also a contribution. Without METG, it is difficult to
 quantify the programming system's contribution to application
@@ -24,9 +25,9 @@ given system tend to fall into a certain characteristic range, which
 is consistent across efficiency measures. For example, compare Figures
 6 and 8. The systems in each graph occupy roughly the same regions of
 each graph, and in most cases the relative ordering of systems is the
-same (with a small number of close ties flipped between one and the
-other). This holds when plotting Figure 8 on axes of efficiency vs
-task granularity (which we will include in the final paper).
+same (with a small number of close ties flipped between the two). This
+holds when plotting Figure 8 on axes of efficiency vs task granularity
+(which we will include in the final paper).
 
 METG is also specific to the machine configuration: it can vary with
 network, CPU, etc. However, it is again our experience that METG for a
