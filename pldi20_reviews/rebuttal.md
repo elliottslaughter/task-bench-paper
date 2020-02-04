@@ -1,55 +1,70 @@
-We thank the reviewers for their insightful feedback.
+We thank the reviewers for their feedback.
+
+Responding to reviewer A on novelty, we provide a quantification (via
+METG) of typical programming system overheads. Contrary to the
+suggestion of reviewer A, we found that the METGs we found in practice
+did not always match our intuitions. In fact, some were off to such a
+large degree (multiple orders of magnitude) that they prompted the
+development teams to conduct major new development to address our
+results (more on this below).
+
+METG itself is also a contribution. Without METG, it is difficult to
+quantify the programming system's contribution to application
+overheads. Papers that look at system overheads typically report
+measurements in tasks per second, but either use empty tasks or do not
+report the level of efficiency achieved. (See below for citations.) In
+either case it is impossible to determine how much useful work is
+being performed. METG constrains efficiency so that a fixed amount of
+work is being performed relative to overhead.
+
+METG is parameterized on the efficiency metric. This is necessary, as
+it would not make sense to measure FLOPS on a memory bound benchmark,
+or vice versa. However, in spite of this, we find that the METG values
+tend to fall into a certain characteristic range which is consistent
+across efficiency measures. For example, compare Figures 6 and 8. The
+systems in each graph occupy roughly the same parts of each graph, and
+in most cases the relative ordering of systems is the same (with a
+small number of close ties flipped between one and the other). This
+holds when plotting Figure 8 on axes of efficiency vs task granularity
+(which we will include in the final paper).
+
+METG is also specific to the machine configuration: it can vary with
+network, CPU, etc. However it is again our experience that METG for a
+given programming system tends to span a range of typical values, and
+that these can guide both application and system development. Also,
+more precise measurements can identify specific bugs as noted below.
+
+Beyond this, it would simply be impossible to conduct any quantitative
+evaluation of a large number of systems without Task Bench. This is a
+major contribution. Task Bench permits $\mathcal{O}(N+M)$ rather than
+$\mathcal{O}(NM)$ implementation effort. In looking at the related
+work, we find that the only benchmarks with a comparable number of
+implementations are substantially more limited than Task Bench.
 
 Reviewers A and D note that the bugs described in lines 197-199
 currently do not have a larger analysis. We include a draft of this
 analysis below and will incorporate it into the final paper.
 
-Regarding novelty, reviewer C is correct that a major contribution of
-our paper is a thorough empirical evaluation, but that this is made
-possible by substantial contributions in other areas. Namely, the
-design of task bench which permits $\mathcal{O}(N+M)$ rather than
-$\mathcal{O}(NM)$ implementation effort, and the definition of METG,
-are both critical. Without the former, a comparison of 15 systems
-would be intractable without substantially simplifying the
-benchmark. Without the latter, the results would be prone to bias, and
-even more difficult to interpret.
-
-Contrary to the suggestion of reviewer A, we found that the METGs we
-found in practice did not always match our intuitions. In fact, some
-were off to such a large degree (multiple orders of magnitude) that
-they prompted the development teams to conduct major new development
-to address our results. These cases are included in our analysis
-below.
-
-It is true that METG is a configuration-specific metric. That is, it
-can vary depending on the network, CPU, etc. However it is our
-experience that METG for a given programming system tends to span a
-range of typical values, and that these can guide both application and
-system development. Also, more precise measurements can identify
-specific bugs as noted above.
-
 Reviewer B asks about the impact of the network. It is our experience
 that, except at the absolute lowest METGs, most programming system
 overhead is on the CPU. Thus our study can highlight ways in which
 these systems can be optimized to reduce unnecessary
-overheads. However, we agree that a comparison across network
-architectures would be a good direction for future work.
+overheads. However, we agree that comparing networks is a good
+direction for future work.
 
 TPS is reported in citations \[6, 28, 32]. See also \[A-C] below.
 
-Fitting a Task Bench configuration to a specific application is a
-direction for future work, but the patterns in Figure 1 are all
-derived from common scientific computing workloads (and this is an
-extensible set).
+Fitting Task Bench configurations to specific applications is a
+direction for future work, but the patterns in Figure 1 are derived
+from common scientific workloads (and this is an extensible set).
 
 Irregular parallelism is enabled by allowing dependencies to vary over
-time. For example, the full Task Bench implementation includes a
-random dependence pattern.
+time. For example, Task Bench includes a randomized dependence
+pattern.
 
-The OpenMP implementation uses a switch to execute `#pragma omp task`
-statements with varying numbers of `depends` clauses. An excerpt is
-included below. Note all our implementations are open source and a
-link will be included in the final paper.
+An excerpt from the OpenMP implementation is included below. Note all
+our implementations are open source and a link will be included in the
+final paper.
 
 Responding to reviewer C: the task graph is streamed whenever
 possible. For example, both Realm and Dask operate on explicit task
@@ -58,16 +73,15 @@ the graph while the next is being constructed), whereas Dask requires
 the entire graph to be constructed. But see also our note on Dask
 below.
 
-Problem size corresponds to the `iterations` parameter to Listing
-1. Note that since these are idealized kernels, what matters is the
-total number of FLOPs executed, which directly corresponds to
-`iterations`.
+Problem size is the `iterations` parameter in Listing 1. Note that
+since these are idealized kernels, what matters is the total number of
+FLOPs executed, which directly corresponds to `iterations`.
 
 We use weak scaling. Height is fixed at 1000 (so the duration of the
 run remains constant) while width varies with the number of
 processors.
 
-MPI p2p is the implementation shown in Listing 2.
+MPI p2p is shown in Listing 2.
 
 ## Analysis of Performance Bugs Found
 
@@ -79,6 +93,21 @@ Chapel improved small copy overheads (and thus METG) by over an order
 of magnitude in the case of Realm, and by 2x in the case of
 Chapel. These improvements affect any application where fine-grained
 tasks are used.
+
+Further analysis of Realm efficiency indicated many overheads due to
+dynamic graph construction. The Realm developers implemented a new
+"subgraph" API in response to this feedback to amortize the cost of
+repeatedly constructing isomorphic task graphs. This API is used in
+Task Bench to achieve further speedups, up to nearly an order of
+magnitude.
+
+Analysis of the schedulers in Chapel and X10 revealed that certain
+poor scheduling decisions could result in poor utilization of the CPUs
+on a node. This resulted in poor peak performance, even at large task
+granularities, which in some cases made it impossible to measure METG
+(because peak efficiency did not exceed 50%). We reported these issues
+to the systems' developers and used fixes or workarounds in our
+experiments.
 
 PaRSEC uses a task pruning algorithm to improve scalability at large
 node counts. Initial Task Bench results achieved less than the
@@ -98,13 +127,12 @@ slowdown.
 
 Initial experiments with TensorFlow revealed that the TensorFlow Task
 Bench implementation was not able to use all cores on a node (thus
-making it impossible to measure METG since the code did not pass the
-efficiency threshold). This was diagnosed by the TensorFlow developers
-as an issue in constant folding. The entire Task Bench task graph was
-being detected as constant, and the constant-folding pass runs on one
-core. As a workaround, the developers suggested marking the task graph
-inputs as non-constant so that TensorFlow's normal task scheduler
-could be used.
+making it impossible to measure METG since the efficiency was below
+50%). This was diagnosed by the TensorFlow developers as an issue in
+constant folding. The entire Task Bench task graph was being detected
+as constant, and the constant-folding pass runs on one core. As a
+workaround, the developers suggested marking the task graph inputs as
+non-constant so that TensorFlow's normal task scheduler could be used.
 
 ## OpenMP Code Excerpt
 
