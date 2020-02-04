@@ -13,23 +13,23 @@ quantify the programming system's contribution to application
 overheads. Papers that look at system overheads typically report
 measurements in tasks per second, but either use empty tasks or do not
 report the level of efficiency achieved. (See below for citations.) In
-either case it is impossible to determine how much useful work is
+either case, it is impossible to determine how much useful work is
 being performed. METG constrains efficiency so that a fixed amount of
 work is being performed relative to overhead.
 
 METG is parameterized on the efficiency metric. This is necessary, as
 it would not make sense to measure FLOPS on a memory bound benchmark,
-or vice versa. However, in spite of this, we find that the METG values
-tend to fall into a certain characteristic range which is consistent
-across efficiency measures. For example, compare Figures 6 and 8. The
-systems in each graph occupy roughly the same parts of each graph, and
-in most cases the relative ordering of systems is the same (with a
-small number of close ties flipped between one and the other). This
-holds when plotting Figure 8 on axes of efficiency vs task granularity
-(which we will include in the final paper).
+or vice versa. However, in spite of this, we find that the METGs for a
+given system tend to fall into a certain characteristic range, which
+is consistent across efficiency measures. For example, compare Figures
+6 and 8. The systems in each graph occupy roughly the same regions of
+each graph, and in most cases the relative ordering of systems is the
+same (with a small number of close ties flipped between one and the
+other). This holds when plotting Figure 8 on axes of efficiency vs
+task granularity (which we will include in the final paper).
 
 METG is also specific to the machine configuration: it can vary with
-network, CPU, etc. However it is again our experience that METG for a
+network, CPU, etc. However, it is again our experience that METG for a
 given programming system tends to span a range of typical values, and
 that these can guide both application and system development. Also,
 more precise measurements can identify specific bugs as noted below.
@@ -63,7 +63,7 @@ time. For example, Task Bench includes a randomized dependence
 pattern.
 
 An excerpt from the OpenMP implementation is included below. Note all
-our implementations are open source and a link will be included in the
+our implementations are open source, and a link will be included in the
 final paper.
 
 Responding to reviewer C: the task graph is streamed whenever
@@ -111,28 +111,28 @@ experiments.
 
 PaRSEC uses a task pruning algorithm to improve scalability at large
 node counts. Initial Task Bench results achieved less than the
-expected scalability: METG was rising too quickly with node
-count. This was diagnosed by the PaRSEC developers as a bug in task
-pruning, and subsequently fixed. We also implemented a version of the
-PaRSEC code, `shard`, which uses manual pruning to demonstrate that
+expected scalability: METG was rising too quickly with node count.
+The PaRSEC developers diagnosed this as a bug in task pruning, and it
+was subsequently fixed. We also implemented a version of the PaRSEC
+code, `shard`, which uses manual pruning to demonstrate that
 additional gains may be possible.
 
 Early Task Bench results for Dask revealed that the cost of scheduling
 a task was $\mathcal{O}(N)$ where $N$ is the number of tasks in a task
 graph, causing overall cost for a task graph with $N$ nodes to be
 $\mathcal{O}(N^2)$. This issue was reported to and confirmed by the
-Dask developers. As a work around, our result in the paper use a
+Dask developers. As a work around, our results in the paper use a
 lower-level interface which does not suffer from this asymptotic
 slowdown.
 
 Initial experiments with TensorFlow revealed that the TensorFlow Task
 Bench implementation was not able to use all cores on a node (thus
 making it impossible to measure METG since the efficiency was below
-50%). This was diagnosed by the TensorFlow developers as an issue in
+50%). The TensorFlow developers diagnosed this as an issue in
 constant folding. The entire Task Bench task graph was being detected
 as constant, and the constant-folding pass runs on one core. As a
 workaround, the developers suggested marking the task graph inputs as
-non-constant so that TensorFlow's normal task scheduler could be used.
+non-constant so that TensorFlow's standard task scheduler could be used.
 
 ## OpenMP Code Excerpt
 
