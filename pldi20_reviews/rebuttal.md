@@ -79,8 +79,8 @@ Problem size is the `iterations` parameter in Listing 1. Note that
 since these are idealized kernels, what matters is the total number of
 FLOPs executed, which directly corresponds to `iterations`.
 
-We use weak scaling. Height is fixed at 1000 (so the duration of the
-run remains constant) while width varies with the number of
+We use weak scaling. Height is fixed at 1000 (so the number of tasks
+per core remains constant) while width varies with the number of
 processors.
 
 MPI p2p is shown in Listing 2.
