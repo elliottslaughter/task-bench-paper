@@ -43,8 +43,8 @@ productivity gain.  Compared with related work, the only benchmarks
 with a similar number of implementations are substantially more
 limited than Task Bench.
 
-Reviewers A and D asked about a deeper analysis of the bugs described
-in lines 197-199.  We include a draft of this analysis below and will
+Reviewers A and D ask about a deeper analysis of the bugs described in
+lines 197-199. We include a draft of this analysis below and will
 incorporate it into the final paper.
 
 Reviewer B asks about the impact of the network. It is our experience
