@@ -1,33 +1,32 @@
 We thank the reviewers for their feedback.
 
-Responding to reviewer A on novelty, we provide a quantification (via
-METG) of typical programming system overheads. Contrary to the
-suggestion of reviewer A, we found that METGs we found in practice did
-not always match intuition. In fact, the actual overheads of some
-systems differed from what the developers of those systems expected to
-such a large degree (multiple orders of magnitude) that it prompted
-substantial new development to address our results (more on this
-below).
+Responding to reviewer A's concerns about novelty, we provide a way to
+directly quantify (through METG) runtime overhead. The METGs we found
+in practice did not always match intuition and were sometimes
+surprising. Some system overheads differed so much from what the
+developers of those systems expected (multiple orders of magnitude)
+that it prompted substantial new development to address our results
+(more on this below).
 
-METG itself is also a contribution. Without METG, it is difficult to
-quantify the programming system's contribution to application
-overheads. Papers that look at system overheads typically report
-measurements in tasks per second, but either use empty tasks or do not
-report the level of efficiency achieved. (See below for citations.) In
-either case, it is impossible to determine how much useful work is
-being performed. METG constrains efficiency so that a fixed amount of
-work is being performed relative to overhead.
+Without METG, it is difficult to quantify the programming system's
+contribution to application overheads. Papers that look at system
+overheads typically report measurements in tasks per second, but
+either use empty tasks or do not report the level of efficiency
+achieved. (See below for citations.) In either case, it is impossible
+to determine how much useful work is being performed. METG constrains
+efficiency so that a fixed amount of work is performed relative to
+overhead.
 
-METG is parameterized on the efficiency metric. This is necessary, as
+It is necessary that METG is parameterized on the efficiency metric;
 it would not make sense to measure FLOPS on a memory bound benchmark,
-or vice versa. However, in spite of this, we find that the METGs for a
-given system tend to fall into a certain characteristic range, which
-is consistent across efficiency measures. For example, compare Figures
-6 and 8. The systems in each graph occupy roughly the same regions of
-each graph, and in most cases the relative ordering of systems is the
-same (with a small number of close ties flipped between the two). This
-holds when plotting Figure 8 on axes of efficiency vs task granularity
-(which we will include in the final paper).
+or vice versa. However, we also find that the METGs for a given system
+tend to fall in a characteristic range, which is consistent across
+efficiency measures. For example, compare Figures 6 and 8. The systems
+in each graph occupy roughly the same regions of each graph, and in
+most cases the relative ordering of systems is the same (with a small
+number of near ties reversed). This holds when plotting Figure 8 on
+axes of efficiency vs task granularity (which we will include in the
+final paper).
 
 METG is also specific to the machine configuration: it can vary with
 network, CPU, etc. However, it is again our experience that METG for a
@@ -35,16 +34,18 @@ given programming system tends to span a range of typical values, and
 that these can guide both application and system development. Also,
 more precise measurements can identify specific bugs as noted below.
 
-Beyond this, it would simply be impossible to conduct any quantitative
-evaluation of a large number of systems without Task Bench. This is a
-major contribution. Task Bench permits $\mathcal{O}(N+M)$ rather than
-$\mathcal{O}(NM)$ implementation effort. In looking at the related
-work, we find that the only benchmarks with a comparable number of
-implementations are substantially more limited than Task Bench.
+Separately, it would simply be impossible to conduct any quantitative
+evaluation of a large number of systems without Task Bench.  Task
+Bench permits $\mathcal{O}(N+M)$ rather than $\mathcal{O}(NM)$
+implementation effort; so far as we know, we are the first to
+recognize how to factor a benchmark framework to achieve such a
+productivity gain.  Compared with related work, the only benchmarks
+with a similar number of implementations are substantially more
+limited than Task Bench.
 
-Reviewers A and D note that the bugs described in lines 197-199
-currently do not have a larger analysis. We include a draft of this
-analysis below and will incorporate it into the final paper.
+Reviewers A and D asked about a depper analysis of the bugs described
+in lines 197-199.  We include a draft of this analysis below and will
+incorporate it into the final paper.
 
 Reviewer B asks about the impact of the network. It is our experience
 that, except at the absolute lowest METGs, most programming system
@@ -64,8 +65,8 @@ time. For example, Task Bench includes a randomized dependence
 pattern.
 
 An excerpt from the OpenMP implementation is included below. Note all
-our implementations are open source, and a link will be included in the
-final paper.
+our implementations are open source, and a link will be included in
+the final paper.
 
 Responding to reviewer C: the task graph is streamed whenever
 possible. For example, both Realm and Dask operate on explicit task
