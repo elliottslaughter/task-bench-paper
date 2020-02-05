@@ -43,7 +43,7 @@ productivity gain.  Compared with related work, the only benchmarks
 with a similar number of implementations are substantially more
 limited than Task Bench.
 
-Reviewers A and D asked about a depper analysis of the bugs described
+Reviewers A and D asked about a deeper analysis of the bugs described
 in lines 197-199.  We include a draft of this analysis below and will
 incorporate it into the final paper.
 
