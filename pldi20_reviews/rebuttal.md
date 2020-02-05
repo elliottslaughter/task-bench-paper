@@ -103,13 +103,19 @@ repeatedly constructing isomorphic task graphs. This API is used in
 Task Bench to achieve further speedups, up to nearly an order of
 magnitude.
 
-Analysis of the schedulers in Chapel and X10 revealed that certain
-poor scheduling decisions could result in poor utilization of the CPUs
-on a node. This resulted in poor peak performance, even at large task
-granularities, which in some cases made it impossible to measure METG
-(because peak efficiency did not exceed 50%). We reported these issues
-to the systems' developers and used fixes or workarounds in our
-experiments.
+Analysis of the schedulers in Chapel and X10 revealed poor CPU
+utilization. Chapel uses a naive round-robin scheduler by default,
+which can lead to unexpected load balance issues because certain
+statements in the language (such as remote array assignment)
+implicitly generate tasks. In X10, `async at(p)` and `at(p) async` are
+not equivalent; the former generates a local task before place
+switching while the latter generates the task remotely. The presence
+of additional local tasks could interfere with scheduling and result
+in idle CPUs. In both cases this resulted in poor peak performance,
+even at large task granularities, which in some cases made it
+impossible to measure METG (because peak efficiency did not exceed
+50%). We reported these issues to the systems' developers and used
+fixes or workarounds in our experiments.
 
 PaRSEC uses a task pruning algorithm to improve scalability at large
 node counts. Initial Task Bench results achieved less than the
