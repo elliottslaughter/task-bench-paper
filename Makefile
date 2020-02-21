@@ -1,5 +1,4 @@
 DOC=task_bench
-SUP=supplement
 
 # dependencies via include files
 INCLUDED_TEX = header.tex \
@@ -11,8 +10,6 @@ INCLUDED_TEX = header.tex \
 	5_evaluation.tex \
 	6_related.tex \
 	7_conclusion.tex \
-	a1_implementation.tex \
-	a2_evaluation.tex \
 	f1_flops_mpi.tex \
 	f2_efficiency_mpi.tex \
 	f3_weak_scaling_mpi.tex \
@@ -67,12 +64,11 @@ GENERATED_FIGS = figs/sample-task-graphs/trivial.pdf \
 	figs/sample-task-graphs/tree.pdf
 
 .PHONY: all
-all: $(DOC).pdf $(SUP).pdf
+all: $(DOC).pdf
 
 $(DOC).pdf: $(DOC).tex bibliography.bib $(INCLUDED_TEX) $(INCLUDED_FIGS) $(GENERATED_FIGS)
-$(SUP).pdf: $(SUP).tex bibliography.bib $(INCLUDED_TEX) $(INCLUDED_FIGS) $(GENERATED_FIGS)
 
-$(DOC).pdf $(SUP).pdf: %.pdf: %.tex bibliography.bib
+$(DOC).pdf: %.pdf: %.tex bibliography.bib
 	pdflatex -halt-on-error $*.tex
 	(if grep -q bibliography $*.tex; \
 	then \
