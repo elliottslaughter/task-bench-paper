@@ -1,5 +1,13 @@
-\documentclass[sigplan,10pt,review,anonymous]{acmart}
-\settopmatter{printfolios=true,printccs=false,printacmref=false}
+\documentclass[conference]{IEEEtran}
+\bibliographystyle{IEEEtran}
+
+% Packages that IEEE format needs that were included automatically by ACM
+\usepackage{microtype}
+\usepackage[bookmarksnumbered,unicode]{hyperref}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
 
 \usepackage{listings}
 \usepackage{subfig}
@@ -66,11 +74,3 @@
 \lstdefinestyle{codeblock}{
   basicstyle=\ttfamily\footnotesize\linespread{0.25}\selectfont,
 }
-
-\setcopyright{none}
-\copyrightyear{2020}
-
-\acmYear{2020}
-\acmConference{PLDI}{Jun. 2020}{London, UK}
-\acmISBN{} % \acmISBN{978-x-xxxx-xxxx-x/YY/MM}
-\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
