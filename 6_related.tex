@@ -7,11 +7,11 @@
 %% \let\oldbrokenpenalty\brokenpenalty
 \brokenpenalty=0
 
-Parallel and distributed programming systems are usually
-evaluated using proxy-/mini-apps, or
-microbenchmarks. Mini-apps are explicitly derived from real
+Parallel and distributed programming systems are often
+evaluated using proxy- or mini-apps, or
+microbenchmarks. Mini-apps are explicitly derived from larger
 applications and hence have the advantage of bearing some
-relationships to the original. This advantage typically does not hold
+relationship to the original. This advantage typically does not hold
 for microbenchmarks.
 
 \brokenpenalty=\oldbrokenpenalty
@@ -29,12 +29,9 @@ implementations are available:
 \begin{itemize}
 
 \item
-%The initial paper on PENNANT~\cite{PENNANT} includes an
-%implementation supporting MPI/OpenMP/MPI+OpenMP; follow-up papers present an implementation in
-%Regent~\cite{Regent15, ControlReplication17, LegionTracing18}.
-PENNANT has an initial implementation supporting MPI/OpenMP/MPI+OpenMP
-published in~\cite{PENNANT}, and another one in Regent published
-in~\cite{Regent15, ControlReplication17, LegionTracing18}.  
+The PENNANT reference implementation supports
+MPI/OpenMP/MPI+OpenMP~\cite{PENNANT}. A follow-up paper presents a
+Regent implementation~\cite{Regent15}.
 
 \item
 One follow-up paper for the mini-app CoMD describes a Chapel
@@ -53,29 +50,27 @@ A report on MiniAero~\cite{SandiaReportManyTaskRuntimes15} describes
 four implementations of the mini-app, but only includes performance
 results for three, and of those three only two can be compared in an
 apples-to-apples manner as the last implementation uses a structured
-rather than an unstructured mesh. Follow-up papers describe another
-implementation in Regent~\cite{Regent15,
-  ControlReplication17, LegionTracing18} (comparison against reference
+rather than an unstructured mesh. A follow-up paper describes another
+implementation in Regent~\cite{Regent15} (comparison against reference
 only).
 
 \end{itemize}
 
-Microbenchmarks is easier to implement, but risk being
-unrepresentative of real applications. 
-PRK Stencil~\cite{PRK14}
-contains 2 kernels (that combined fit in under 50 lines of C++)
+Microbenchmarks can be easier to implement, but risk being
+unrepresentative of real applications. PRK Stencil~\cite{PRK14}
+contains 2 kernels (which combined fit in under 50 lines of C++)
 and a halo exchange on a structured grid; an
-evaluation~\cite{PRKRuntimes16} compares MPI, SHMEM, UPC,
+evaluation~\cite{PRKRuntimes16} compares MPI variants, SHMEM, UPC,
 Charm++, and Grappa. The NAS benchmark suite~\cite{NAS91, NAS95}
 consists mostly of small kernels for dense array computations and has
 implementations in OpenMP~\cite{NASOpenMP99}, MPI and
 MPI+OpenMP~\cite{NASMPIOpenMP00}, and
-Charm++~\cite{NASCharm96}. Neither PRK nor NAS achieves the breadth of
+Charm++~\cite{NASCharm96}. Neither PRK nor NAS achieve the breadth of
 coverage, flexibility, or ease of implementation of Task Bench. We
 believe the evidence for ease of implementation is clear; Task Bench
 is implemented for more systems than all previous mini-apps and
 microbenchmarks. Task Bench is also not a fixed set of benchmarks, and
-can be adopted to generate new benchmarks easily.
+makes it easy to generate new benchmarks.
 
 System-specific benchmarks quantify specific aspects
 of system performance, such as MPI communication or collective
