@@ -1,8 +1,6 @@
 \section{Implementations}
 \label{sec:implementation}
 
-\input{t1_systems}
-
 We have implemented Task Bench in the 15 parallel and distributed
 programming systems listed in Table~\ref{tab:systems}. These include
 traditional HPC programming models (MPI and MPI+X), PGAS and actor
@@ -39,8 +37,7 @@ corresponding Task Bench implementations. Where assistance was provided, the ins
 
 MPI~\cite{MPI} is a message-passing API for HPC. We provide an MPI
 implementation written in the style of communicating sequential
-processes (CSP). An excerpt of this implementation is shown in
-Listing~\ref{lst:code-sample}.
+processes (CSP). An excerpt is shown in Listing~\ref{lst:code-sample}.
 
 We provide two MPI+X implementations to evaluate hierarchical
 programming models. Our MPI+OpenMP implementation uses forall-style
@@ -52,17 +49,17 @@ where data is copied to and from the GPU on every timestep.
 \subsection{PGAS and Actor Models}
 
 PGAS and actor models, such as Chapel~\cite{Chapel15},
-Charm++~\cite{Charmpp93} and X10~\cite{X1005}, provide support for
-asynchronous tasks that make them amenable to a straightforward
+Charm++~\cite{Charmpp93} and X10~\cite{X1005} offer
+asynchronous tasks, making them amenable to a straightforward
 implementation of task bench. Synchronization is explicit and may be
 provided by messages (in actor models) or other primitives, such as
 locks or atomics (in PGAS models). PGAS models such as Chapel and X10
 provide global references to data anywhere in the machine, but vary in
 whether data can be accessed remotely or not (Chapel allows this, X10
-does not).
+does not). Chapel also provides support for implicit parallelism which
+we do not evaluate in this paper.
 
-Chapel also provides support for implicit parallelism which we do not
-evaluate in this paper.
+\input{t1_systems}
 
 \subsection{Task-Based Programming Models}
 
@@ -81,17 +78,17 @@ analytical representation of the task graph. Realm (unlike the others
 above) is explicitly parallel and requires tasks to be connected
 explicitly via \emph{events}.
 
-Among the distributed task-based systems, one question is how to
-resolve the inherent scalability bottleneck posed by enumerating tasks
-sequentially. PaRSEC and StarPU resolve this by permitting the user to
-omit tasks that are not directly connected in the dependence
-graph. The program is replicated (for efficiency of the analysis), but
-each task is executed only once. Because the dynamic checks to see if
-a task should be executed are not free of cost, we also provide a
-PaRSEC implementation (under the label \lstinline{shard}) which has
-been hand-written to avoid all such checks. Regent performs an
-equivalent optimization at compile time~\cite{ControlReplication17}
-that does not require user intervention.
+Among distributed task-based systems, there can be a scalability
+bottleneck due to enumerating tasks sequentially. PaRSEC and StarPU
+resolve this by permitting the user to omit tasks that are not
+directly connected in the dependence graph. The program is replicated
+(for efficiency of the analysis), but each task is executed only
+once. Because the dynamic checks to see if a task should be executed
+are not free of cost, we also provide a PaRSEC implementation (under
+the label \lstinline{shard}) which has been hand-written to avoid all
+such checks. Regent performs an equivalent optimization at compile
+time~\cite{ControlReplication17} that does not require user
+intervention.
 
 \subsection{Data Analytics, Machine Learning and Workflows}
 
@@ -104,11 +101,10 @@ task-based systems above.
 
 Spark provides support for functional operators that implicitly map to
 tasks. We use \lstinline[language=Scala]{flatMap} and
-\lstinline[language=Scala]{groupByKey} to generate dependencies, and
-then \lstinline[language=Scala]{mapPartitions} to execute a series of
-tasks. An explicit hash partitioner ensures the correct task
-granularity.
+\lstinline[language=Scala]{groupByKey} to generate dependencies and
+\lstinline[language=Scala]{mapPartitions} to execute tasks. An
+explicit hash partitioner ensures the correct task granularity.
 
-Swift/T~\cite{Wozniak13, Armstrong14} is a parallel scripting language
+Swift/T~\cite{Wozniak13} is a parallel scripting language
 with dataflow semantics, used primarily for workflow automation. Our
 implementation is straightforward.

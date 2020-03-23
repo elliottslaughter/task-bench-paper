@@ -86,9 +86,10 @@ overhead \emph{out-of-line} (i.e., by dedicating one or more cores
 solely to runtime use). Some systems, like Charm++, Realm, and Regent,
 support both configurations.
 
-To answer this question, we use the METG metric to determine the
-smallest task granularity that can be executed at a given level of
-efficiency as a proxy for overhead. Figure~\ref{fig:metg-compute}
+To answer this question, we use METG %% to determine the
+%% smallest task granularity that can be executed at a given level of
+%% efficiency
+as a proxy for overhead. Figure~\ref{fig:metg-compute}
 shows how METG(50\%) varies with node count for a variety of
 dependence patterns supported by Task Bench. METG(50\%) is calculated
 separately at each node count, to distinguish runtime system behavior from
@@ -108,7 +109,7 @@ the nearest dependence pattern executing concurrently.
 We observe that the baseline overheads of different
 systems vary by over 5 orders of magnitude. It is worth
 remembering when considering this metric that this is a \emph{minimum}
-effective task granularity. Therefore applications with an average
+effective task granularity. Applications with an average
 task granularity of \emph{at least} this value can usually be expected
 to execute efficiently. Typical task granularities will
 generally be determined by the application domain being
@@ -246,7 +247,7 @@ smaller message sizes.
 
 \input{e5_imbalance}
 
-One advantage of systems with asynchronous execution capabilities is
+One advantage of asynchronous execution is
 the ability to mitigate load imbalance with little or no additional programmer effort, especially in the presence of
 task parallelism. To quantify this effect,
 Figure~\ref{fig:efficiency-imbalance} plots task granularity vs
