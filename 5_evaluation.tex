@@ -1,6 +1,12 @@
 \section{Evaluation}
 \label{sec:evaluation}
 
+\input{e1_flops}
+\input{e2_efficiency}
+\input{e7_bytes}
+
+\input{e3_metg_compute}
+
 We present a comprehensive evaluation of our Task Bench implementations on up to 256
 Haswell nodes of the Cori supercomputer~\cite{Cori}, a Cray XC40
 machine. Cori Haswell nodes have 2 sockets with Intel Xeon E5-2698 v3
@@ -31,12 +37,6 @@ $1.26 \times 10^{12}$, which compares favorably with the officially
 reported number of $1.2 \times 10^{12}$ \cite{Cori}. For the purposes
 of measuring efficiency, we use our empirically determined number as
 the baseline for 100\% efficiency.
-
-\input{e1_flops}
-\input{e2_efficiency}
-\input{e7_bytes}
-
-\input{e3_metg_compute}
 
 Most systems achieve or nearly achieve peak FLOP/s. Some
 systems reserve a number of cores (usually 1 or 2) for internal
@@ -162,6 +162,8 @@ pattern that is relatively unrepresentative of Spark's normal use
 cases. Spark is more efficient with trivial parallelism, as described
 in Section~\ref{subsec:number-of-dependencies}.
 
+\input{e4_radix}
+
 Implicitly parallel systems such as PaRSEC, StarPU and Regent that
 rely on runtime analysis to build the DAG can suffer from
 scalability bottlenecks if every node must consider the tasks
@@ -202,8 +204,6 @@ as quickly as possible. Clearly, choosing a representative dependence
 pattern is important when estimating the performance of a workload or
 class of workloads.
 
-\input{e4_radix}
-
 \zap{
 \input{e8_weak}
 \input{e9_strong}
@@ -243,6 +243,7 @@ as spikes in latency due to interference from other jobs can be
 mitigated, leading to more predictable performance, especially at
 smaller message sizes.
 
+\zap{
 \subsection{Load Imbalance}
 
 \input{e5_imbalance}
@@ -270,6 +271,7 @@ additional on-node work stealing capability (such as Chapel with the distrib sch
 efficiency at large task granularities. However, the use of
 work-stealing queues can also impact throughput at small task
 granularities. For example, Chapel's default (non-work-stealing) scheduler outperforms Chapel distrib at very small task granularities. We do not consider Charm++ load balancers because the imbalance is \emph{non-persistent} (i.e., timestep $t$ is uncorrelated with timestep $t+1$). We leave analysis of persistent load imbalance to future work.
+} % zap
 
 \subsection{Heterogeneous Processors}
 
