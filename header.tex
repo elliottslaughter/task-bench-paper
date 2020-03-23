@@ -14,6 +14,11 @@
 \usepackage{subfig}
 \usepackage{grffile} % fixes graphicx to handle file names with dots
 
+% work around inconsistent TABLE / Fig. / Listing and numbering
+\renewcommand{\figurename}{Figure}
+\renewcommand{\tablename}{Table}
+\renewcommand{\thetable}{\arabic{table}}
+
 \hypersetup{hidelinks}
 \hypersetup{pdflang={English},
     pdfdisplaydoctitle}
