@@ -10,6 +10,7 @@ INCLUDED_TEX = header.tex \
 	5_evaluation.tex \
 	6_related.tex \
 	7_conclusion.tex \
+	8_case_study.tex \
 	f1_flops_mpi.tex \
 	f2_efficiency_mpi.tex \
 	f3_weak_scaling_mpi.tex \
