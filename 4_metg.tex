@@ -43,9 +43,9 @@ The choice of 50\% is also a parameter and is not fundamental to
 METG. We use 50\% in our studies to avoid pathologies
 associated with lower efficiency thresholds (see
 Section~\ref{subsec:peak-performance-and-efficiency}), and also
-because it aligns with what we observe in practice. For example, in one supercomputer center's application for new projects, users are instructed to "select the
+because it aligns with what we observe in practice. For example, in one supercomputer center's application for new projects, users are instructed to ``select the
 most parallel efficient job size (ratio of benchmark speed-up
-vs. linear speed-up above 50\%)" \cite{CSCSReport}. This corresponds
+vs. linear speed-up above 50\%)'' \cite{CSCSReport}, which corresponds
 to METG(50\%).
 
 \input{f3_weak_scaling_mpi}
@@ -55,7 +55,7 @@ Figures~\ref{fig:flops-mpi} and \ref{fig:efficiency-mpi} show how METG is
 calculated. The application, in this case an MPI implementation of the
 Task Bench stencil pattern in Figure~\ref{fig:task-graphs-stencil}, is
 run on a single Haswell node of Cori with a problem size large enough
-that runtime is dominated by the application's inner loops. This confirms
+that runtime is dominated by the application's inner loops. This result confirms
 that the application is properly configured and that the
 efficiency metric is achievable. The problem
 size is then repeatedly reduced while maintaining exactly the same hardware and software
@@ -86,10 +86,10 @@ shown by the red, dashed lines in Figures~\ref{fig:flops-mpi} and
 \ref{fig:efficiency-mpi}. At 50\% efficiency, MPI achieves an average
 task granularity of
 4.6 \textmu{}s, thus the METG(50\%) of MPI is 4.6 \textmu{}s in this
-configuration. We use 50\% because that is generally an acceptable level
-of efficiency in practice, and values above 90\% can misrepresent the
-performance of some systems (see
-Section~\ref{subsec:peak-performance-and-efficiency}).
+configuration. %% We use 50\% because that is generally an acceptable level
+%% of efficiency in practice, and values above 90\% can misrepresent the
+%% performance of some systems (see
+%% Section~\ref{subsec:peak-performance-and-efficiency}).
 
 METG has a well-defined
 relationship with quantities of interest to application developers,

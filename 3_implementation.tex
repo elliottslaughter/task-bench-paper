@@ -85,7 +85,7 @@ explicitly via \emph{events}.
 
 Among distributed task-based systems, there can be a scalability
 bottleneck due to enumerating tasks sequentially. PaRSEC and StarPU
-resolve this by permitting the user to omit tasks that are not
+allow the user to omit tasks that are not
 directly connected in the dependence graph. The program is replicated
 (for efficiency of the analysis), but each task is executed only
 once. Because the dynamic checks to see if a task should be executed

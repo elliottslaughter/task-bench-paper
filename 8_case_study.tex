@@ -2,8 +2,8 @@
 \label{sec:case-study}
 
 Task Bench is useful not only as a tool for evaluating programming
-system performance, but also for discovering potential areas of
-improvements. During the development of Task Bench, we identified a
+system performance, but also for discovering potential areas for
+improvement. During the development of Task Bench, we identified a
 number of performance issues in the underlying programming
 systems. These discoveries were possible because of the flexibility of
 Task Bench, and our ability to rapidly run new experiments with a
@@ -19,7 +19,7 @@ cost of scheduling small copies. Subsequent improvements in Realm and
 Chapel improved small copy overheads (and thus METG) by over an order
 of magnitude in the case of Realm, and by $2\times$ in the case of
 Chapel. These improvements affect any application where fine-grained
-tasks are used, which is particularly relevant in strong scaling
+data movement is needed, which is particularly relevant in strong scaling
 regimes when running on large numbers of nodes.
 
 We found further areas for improvement in schedulers (Realm, Chapel
@@ -42,7 +42,7 @@ to unexpected load balance issues because certain language features
 resulted in poor peak performance, even at large task granularities,
 which in some cases made it impossible to measure METG (because peak
 efficiency did not exceed 50\%). Chapel's other schedulers add
-overhead, resulting in higher METGs. We worked around this with
+overhead, resulting in higher METGs. We worked around this issue with
 \lstinline{serial}.
 
 PaRSEC uses task pruning to improve scalability at large node

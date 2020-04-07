@@ -21,7 +21,7 @@ one Intel Xeon E5-2690 v3 (12 physical cores) and one NVIDIA Tesla
 P100 per node. We use GCC 6.2.0, Cray MPICH 7.7.2, and
 CUDA 9.1.85.
 
-Due to space constraints we omit our load balance results, which will be included in the final paper.
+\emph{Due to space constraints we omit our load balancing results, which will be included in the revision and final paper.}
 
 \subsection{Compute Kernel Performance}
 \label{subsec:peak-performance-and-efficiency}
@@ -32,9 +32,9 @@ practice, many subtle pitfalls of implementation or configuration can easily lea
 achieved helps to ensure that evaluations of overhead and
 efficiency are well-grounded.
 
-Figure~\ref{fig:flops} shows the FLOP/s achieved with a compute-bound
-kernel with varying problem sizes (simulated by running the kernel for varying numbers of iterations). This is the full version of
-Figure~\ref{fig:flops-mpi}. Each data point in the graph is the mean of 5 runs, with Task Bench configured to execute 1000 time steps of the stencil pattern. In the best case, we measure peak FLOP/s of
+Figure~\ref{fig:flops}, which is the full version of
+Figure~\ref{fig:flops-mpi}, shows the FLOP/s achieved with a compute-bound
+kernel with varying problem sizes (simulated by running the kernel for varying numbers of iterations). Each data point in the graph is the mean of 5 runs, with Task Bench configured to execute 1000 time steps of the stencil pattern. In the best case, we measure peak FLOP/s of
 $1.26 \times 10^{12}$, which compares favorably with the officially
 reported number of $1.2 \times 10^{12}$ \cite{Cori}. For the purposes
 of measuring efficiency, we use our empirically determined number as
@@ -81,7 +81,7 @@ The remaining experiments use compute-bound kernels.
 \subsection{Baseline Overhead}
 
 One question when considering different programming
-systems is: how much overhead does the system add? This question is tricky to answer directly because some systems introduce
+systems is: How much overhead does the system add? This question is tricky to answer directly because some systems introduce
 overhead \emph{inline} (i.e., by running system internal processes on
 the same cores as application tasks), while other systems introduce
 overhead \emph{out-of-line} (i.e., by dedicating one or more cores
