@@ -7,8 +7,13 @@ traditional HPC programming models (MPI and MPI+X), PGAS and actor
 models (Chapel, Charm++ and X10), task-based systems (OmpSs, OpenMP
 4.0, PaRSEC, Realm, Regent, and StarPU) and systems for large scale
 data analytics, machine learning and workflows (Dask, Spark, Swift/T,
-and TensorFlow). We briefly describe the systems and implementations
-below.
+and TensorFlow). Implementing Task Bench in such a wide range of
+systems is possible because the separation between core API (in
+Table~\ref{tab:api}) and system implmentation enables an overall
+effort of $\mathcal{O}(m + n)$ (for $m$ benchmarks on $n$ systems)
+rather than $\mathcal{O}(mn)$ as has been the case for all previous
+benchmarks that we know of. We briefly describe the systems and
+implementations below.
 
 One challenge in targeting such a wide variety of
 systems is that the capabilities of the systems vary considerably. For

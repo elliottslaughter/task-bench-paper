@@ -7,19 +7,29 @@ improvements. During the development of Task Bench, we identified a
 number of performance issues in the underlying programming
 systems. These discoveries were possible because of the flexibility of
 Task Bench, and our ability to rapidly run new experiments with a
-variety of application scenarios. All issues below have been reported
-to and acknowledged by the respective system's developers, and are
-either fixed or worked around in our experiments.
+variety of application scenarios. All issues were reported to and
+acknowledged by the respective system's developers, and are either
+fixed or worked around in our experiments. For brevity, we describe
+one salient example below and summarize the others briefly.
 
-Realm and Chapel use DMA subsystems that are optimized for large
+Realm and Chapel both use DMA subsystems that are optimized for large
 copies. Early Task Bench experiments revealed high METG values that
 were diagnosed by the Realm/Chapel developers as overhead due to the
 cost of scheduling small copies. Subsequent improvements in Realm and
 Chapel improved small copy overheads (and thus METG) by over an order
 of magnitude in the case of Realm, and by $2\times$ in the case of
 Chapel. These improvements affect any application where fine-grained
-tasks are used.
+tasks are used, which is particularly relevant in strong scaling
+regimes when running on large numbers of nodes.
 
+We found further areas for improvement in schedulers (Realm, Chapel
+and Dask), task pruning for scalability (PaRSEC), and optimizations on
+the task graph (TensorFlow). The impact of these optimizations ranged
+from small constant factors to even asymptotic improvements in
+performance and scalability (in the case of PaRSEC and Dask). All
+users will benefit from the improvements driven by our discoveries.
+
+\zap{
 Further analysis of Realm efficiency indicated many overheads due to
 dynamic graph construction. The Realm developers implemented a new
 ``subgraph'' API in response to this feedback to amortize the cost of
@@ -60,3 +70,4 @@ as constant, and the constant-folding pass runs on one core. As a
 workaround, the developers suggested marking the task graph inputs as
 non-constant so that TensorFlow's standard task scheduler could be
 used.
+}
