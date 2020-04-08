@@ -42,9 +42,9 @@ the baseline for 100\% efficiency.
 
 Most systems achieve or nearly achieve peak FLOP/s. Some
 systems reserve a number of cores (usually 1 or 2) for internal
-runtime usage; these systems take a minor hit in peak FLOP/s compared
+use; these systems take a minor hit in peak FLOP/s compared
 to systems that share all cores between the application and runtime. Some of the
-higher overhead systems struggle to achieve peak FLOP/s, though in most cases
+higher-overhead systems struggle to achieve peak FLOP/s, though in most cases
 the curves suggest that performance would continue to improve if we
 were to run larger problem sizes. Unfortunately, the excessive
 computational cost of running such tests makes this prohibitively
@@ -52,15 +52,15 @@ expensive. For example, the Spark job in
 this case ran for over 6 hours.
 
 Figure~\ref{fig:efficiency} plots efficiency (as a percentage of
-peak FLOP/s) against task granularity. As described in Section~\ref{sec:metg}, this plot is
+peak FLOP/s) vs. task granularity. As described in Section~\ref{sec:metg}, this is
 used to calculate METG(50\%). The
-red, dashed line shows the point where 50\% efficiency is achieved.
-In most cases, task granularity asymptotes prior to the 50\% efficiency point,
-though some systems continue to improve as efficiency drops further. Accounting for this effect is one of the main arguments in
-favor of METG with a reasonable efficiency threshold instead of
-measuring task scheduling throughput of empty tasks
-(effectively METG(0\%)). Measuring performance using empty tasks can
-reward implementation strategies, such as devoting nearly 100\% of
+red, dashed line indicates 50\% efficiency.
+In most cases, task granularity asymptotes prior to this point,
+though some systems continue to improve at lower values. Accounting for this effect is one of the main arguments in
+favor of using reasonable efficiency thresholds for METG instead of
+empty tasks
+(i.e., METG(0\%)). Empty tasks
+reward strategies, such as devoting 100\% of
 system resources to the runtime system, that make no sense for real
 applications.
 
@@ -123,13 +123,12 @@ exchanges) much more frequently.
 
 The least complicated pattern (stencil) is most favorable
 to MPI, as it provides no
-opportunity for task parallelism. For the stencil pattern, the
-dominating factor is the basic overhead of executing a task, which is
-minimal for MPI as the Task Bench implementation simply executes tasks one after another in alternation with
-communication phases. In contrast, the asynchronous execution
+opportunity for task parallelism. The
+dominating factor in this case is the overhead of executing a task, which is
+minimal for MPI as the Task Bench implementation simply executes tasks in alternation with
+communication phases. The asynchronous
 mechanisms of other systems are pure overhead in this scenario.
-The gap between MPI and other systems shrinks as the complexity of the
-communication pattern grows, and even reverses as task parallelism is
+The gap between MPI and other systems shrinks as complexity grows, and even reverses as task parallelism is
 added in the form of multiple task graphs.
 
 Spark and Swift/T
@@ -166,8 +165,8 @@ in Section~\ref{subsec:number-of-dependencies}.
 
 \input{e4_radix}
 
-Implicitly parallel systems such as PaRSEC, StarPU and Regent that
-rely on runtime analysis to build the DAG can suffer from
+PaRSEC, StarPU and Regent
+rely on runtime analysis that can suffer from
 scalability bottlenecks if every node must consider the tasks
 executing on all other nodes. PaRSEC DTD and StarPU mitigate this
 partially by allowing the user to omit tasks not directly
@@ -201,8 +200,7 @@ perform runtime work inline. For example, MPI achieves an METG of 390
 ns with 0 dependencies, but this rises to 4.6 \textmu{}s with 3 dependencies,
 a $12\times$ increase. This is unsurprising as in the case
 of 0 dependencies, no \lstinline[language=C++]{MPI_Isend} calls are
-issued at all, so MPI has nothing to do aside from executing kernels
-as quickly as possible. Clearly, choosing a representative dependence
+issued at all, so MPI has nothing to do aside from executing kernels. Clearly, choosing a representative dependence
 pattern is important when estimating the performance of a workload or
 class of workloads.
 

@@ -51,17 +51,16 @@ to METG(50\%).
 \input{f3_weak_scaling_mpi}
 \input{f4_strong_scaling_mpi}
 
-Figures~\ref{fig:flops-mpi} and \ref{fig:efficiency-mpi} show how METG is
-calculated. The application, in this case an MPI implementation of the
-Task Bench stencil pattern in Figure~\ref{fig:task-graphs-stencil}, is
-run on a single Haswell node of Cori with a problem size large enough
-that runtime is dominated by the application's inner loops. This result confirms
+Figure~\ref{fig:flops-mpi} shows how METG is
+measured. We run the application (MPI Task Bench) on a Cori Haswell node
+with a problem size large enough that runtime is dominated by kernel
+execution. This result confirms
 that the application is properly configured and that the
 efficiency metric is achievable. The problem
 size is then repeatedly reduced while maintaining exactly the same hardware and software
 configuration (in particular, the same number of nodes and tasks). The
 expectation is that as problem size shrinks,
-performance will begin to drop and eventually approach zero, as shown in Figure~\ref{fig:flops-mpi}. Systems
+performance will begin to drop and eventually approach zero. Systems
 with lower runtime overheads maintain higher performance at smaller
 problem sizes compared to systems with higher overheads.
 
@@ -81,7 +80,7 @@ to a vertical asymptote as overhead comes to dominate useful work.
 
 % FIXME: keep this up-to-date with the graphs
 
-METG(50\%) is the intersection of this curve with 50\% efficiency, as
+METG(50\%) is the intersection of the curve at 50\% efficiency, as
 shown by the red, dashed lines in Figures~\ref{fig:flops-mpi} and
 \ref{fig:efficiency-mpi}. At 50\% efficiency, MPI achieves an average
 task granularity of
@@ -92,9 +91,9 @@ configuration. %% We use 50\% because that is generally an acceptable level
 %% Section~\ref{subsec:peak-performance-and-efficiency}).
 
 METG has a well-defined
-relationship with quantities of interest to application developers,
-namely weak and strong scaling. Figures~\ref{fig:weak-scaling-mpi} and
-\ref{fig:strong-scaling-mpi} show the weak and strong scaling behavior of the MPI Task Bench running a stencil pattern at a variety of problem sizes. In these
+relationship with quantities of interest such as
+weak and strong scaling. Figures~\ref{fig:weak-scaling-mpi} and
+\ref{fig:strong-scaling-mpi} show the weak and strong scaling of MPI Task Bench running a stencil pattern at a variety of problem sizes. In these
 figures, the vertical axis is shown as wall time to emphasize the
 relationship to time-to-solution, but it could equivalently be shown
 as task granularity (as the number of tasks per execution is
@@ -105,9 +104,9 @@ ideally-sloped downward lines when strong scaling. Inefficiency begins
 to appear at smaller problem sizes, towards the bottom of the graph,
 where lines become more compressed. At the
 very bottom, the lines compress together as running time becomes
-dominated by overhead. Note that the
-shapes at the bottom of the strong and weak scaling curves are identical,
-and conform to the shape of the METG curve (marked by the red, dashed line).
+dominated by overhead. Note that the countour of the bottom of each
+graph is identical and conforms to the METG curve (marked by the red,
+dashed line).
 
 \input{e0_flags}
 

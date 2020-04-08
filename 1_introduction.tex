@@ -9,10 +9,10 @@ goal in this paper is to develop a meaningful and useful framework for
 comparing the performance of parallel and distributed programming
 systems, to help users and developers evaluate the performance tradeoffs of these systems.
 
-One approach to comparing the performance of different systems is through \emph{proxy-} or
-\emph{mini-apps}. Because they distill the key computational characteristics of a larger
-application, mini-apps can provide insight
-without the expense of developing a production code. However, despite the name, our experience is that
+One approach to comparing performance is through \emph{proxy-} or
+\emph{mini-apps}. Because they distill key computational characteristics of larger
+applications, mini-apps offer insight
+without the expense of developing production codes. However, despite the name, our experience is that
 mini-apps still require significant investment to develop
 to the level of quality needed for useful benchmarking. In many cases,
 the effort to tune for performance exceeds the effort to develop a correct implementation. As a result, implementations of mini-apps
@@ -53,8 +53,8 @@ overhead as well as ones where computation or communication is
 dominant.
 
 Adding a system to Task Bench involves implementing a set of standard
-services, such as executing a task or data transfer. Note that, though
-the benchmarks are described in terms of task graphs, this is simply a
+services, such as executing a task or data transfer. Though
+benchmarks are described in terms of task graphs, this is simply a
 convenient representation of the computation, and the underlying
 system need not provide any native support for tasks. We provide
 Task Bench implementations in systems as diverse as MPI and
@@ -64,13 +64,13 @@ much easier to achieve truly apples-to-apples comparisons between
 systems.
 
 This approach has allowed us to benchmark 15 very different parallel
-and distributed programming systems (listed in
+and distributed programming systems (see
 Table~\ref{tab:systems}).  By running all systems on common benchmarks
 we were able to quantify phenomena
 that have never before been measured.
-Most strikingly, the overheads of the systems we examine vary by more than five orders
-of magnitude, with popular, widely used systems at both ends of the spectrum!  Clearly
-the slower systems have ``good enough'' performance for some class of applications, while presumably
+Most strikingly, the overheads of systems we examine vary by more than five orders
+of magnitude, with popular, widely used systems at both ends of the spectrum!  Clearly,
+slower systems have ``good enough'' performance for some applications, while presumably
 providing advantages in programmer productivity.
 
 How does one predict whether performance will be good enough for a given application?
@@ -96,15 +96,15 @@ previous approaches, such as \emph{tasks per second} (TPS), that fail
 to consider the amount of useful work performed (if tasks are
 non-empty~\cite{Canary16, Armstrong14}) or to perform useful work at all (if tasks are empty~\cite{LegionTracing18}).
 
-METG captures the essence of what is important in a
+METG captures the important essence of a
 weak or strong scaling study, the behavior at the limit of
 scalability. For weak scaling, METG(50\%) corresponds to the
 smallest problem size that can be weak-scaled with 50\%
 efficiency. For strong scaling, METG(50\%) can be used to compute the
-scale at which performance can be expected to dip below 50\%
-efficiency.  We note that METG(50\%) for a given runtime system will
-vary with the particular application and the underlying hardware---i.e., METG(50\%)
-is not a constant for a given system, but we will see that individual systems have
+scale at which efficiency can be expected to dip below 50\%.
+We note that METG(50\%) for a given runtime system will
+vary with the application and the underlying hardware---i.e., METG(50\%)
+is not a constant for a given system, but we find that systems have
 a characteristic range of METG(50\%) values and that there is additional insight
 in the reasons that METG can vary.
 

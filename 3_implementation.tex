@@ -85,12 +85,11 @@ explicitly via \emph{events}.
 
 Among distributed task-based systems, there can be a scalability
 bottleneck due to enumerating tasks sequentially. PaRSEC and StarPU
-allow the user to omit tasks that are not
+allow users to omit tasks that are not
 directly connected in the dependence graph. The program is replicated
-(for efficiency of the analysis), but each task is executed only
+(for efficiency of analysis), but each task is executed only
 once. Because the dynamic checks to see if a task should be executed
-are not free of cost, we also provide a PaRSEC implementation (under
-the label \lstinline{shard}) which has been hand-written to avoid all
+are not free of cost, we also provide a PaRSEC implementation (labeled \lstinline{shard}) hand-written to avoid all
 such checks. Regent performs an equivalent optimization at compile
 time~\cite{ControlReplication17} that does not require user
 intervention.
