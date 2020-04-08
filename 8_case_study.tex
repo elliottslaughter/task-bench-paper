@@ -12,9 +12,9 @@ acknowledged by the respective system's developers, and are either
 fixed or worked around in our experiments. For brevity, we describe
 one salient example below and summarize the others briefly.
 
-Realm and Chapel both use DMA subsystems that are optimized for large
-copies. Early Task Bench experiments revealed high METG values that
-were diagnosed by the Realm/Chapel developers as overhead due to the
+Realm and Chapel both use DMA subsystems optimized for large
+copies. Early Task Bench experiments revealed high METG values,
+diagnosed by the Realm/Chapel developers as overhead due to the
 cost of scheduling small copies. Subsequent improvements in Realm and
 Chapel improved small copy overheads (and thus METG) by over an order
 of magnitude in the case of Realm, and by $2\times$ in the case of

@@ -139,14 +139,14 @@ hours) to reach 50\% efficiency.
 \subsection{Scalability}
 \label{subsec:scalability}
 
-METG is useful in part because it summarizes the overhead of each programming system in a single number. This makes it
-possible to evaluate METG at different node counts (shown in
-Figure~\ref{fig:metg-compute}) to see how it is impacted by changes in
-communication topology and latency. A key finding is that
-the systems with the smallest METG on one node have roughly an order
-of magnitude higher METG at 256 nodes---increased communication latencies require significantly larger tasks to
+METG summarizes system overheads in a single number. This makes it possible to
+evaluate how communication topology and latency impact METG at
+different node counts, as shown in Figure~\ref{fig:metg-compute}.
+We find that
+systems with the smallest METG on one node have roughly an order
+of magnitude higher METG at 256 nodes. Increased communication latencies require significantly larger tasks to
 achieve the same level of efficiency, so apparent differences in
-runtime overhead at small node counts can matter much less or not at
+overhead at small node counts can matter much less or not at
 all at larger node counts.
 
 Most systems for HPC are highly scalable,
@@ -170,9 +170,8 @@ rely on runtime analysis that can suffer from
 scalability bottlenecks if every node must consider the tasks
 executing on all other nodes. PaRSEC DTD and StarPU mitigate this
 partially by allowing the user to omit tasks not directly
-dependent on those executed by a given node. However, this DAG
-trimming approach requires dynamic checks that scale with
-the number of nodes and thus limit scalability~\cite{PARSEC_DTD}. Compile-time analysis can
+dependent on those executed by a given node. However, this approach still requires checks that scale with
+node count and thus limit scalability~\cite{PARSEC_DTD}. Compile-time analysis can
 partially or fully mitigate this overhead. PaRSEC PTG improves over DTD 
 by performing DAG expansion at compile time~\cite{PARSEC_DTD}, but
 retains dynamic checks that limit scalability. PaRSEC shard includes additional manual optimizations over DTD, completely eliminating these dynamic checks. Regent
@@ -198,9 +197,9 @@ The ratio in METG between 0 and 3 dependencies per task ranges from
 $1.01\times$ to $250\times$ (median $2.9\times$). The difference is most pronounced in systems that
 perform runtime work inline. For example, MPI achieves an METG of 390
 ns with 0 dependencies, but this rises to 4.6 \textmu{}s with 3 dependencies,
-a $12\times$ increase. This is unsurprising as in the case
-of 0 dependencies, no \lstinline[language=C++]{MPI_Isend} calls are
-issued at all, so MPI has nothing to do aside from executing kernels. Clearly, choosing a representative dependence
+a $12\times$ increase. This is unsurprising, as with
+0 dependencies no \lstinline[language=C++]{MPI_Isend} calls are
+issued at all. Clearly, choosing a representative dependence
 pattern is important when estimating the performance of a workload or
 class of workloads.
 
@@ -278,8 +277,8 @@ granularities. For example, Chapel's default (non-work-stealing) scheduler outpe
 \input{e10_cuda_efficiency}
 
 To determine the cost of scheduling tasks on GPUs, Figure~\ref{fig:cuda-efficiency} compares MPI
-and MPI+CUDA on the Piz Daint supercomputer. The CUDA
-compute kernel achieves a peak performance of $4.759 \times 10^{12}$
+and MPI+CUDA on Piz Daint~\cite{PizDaint}. The CUDA
+compute kernel achieves $4.759 \times 10^{12}$
 FLOP/s, which is very close to the officially reported number
 $4.761 \times 10^{12}$. The CPU achieves $5.726 \times 10^{11}$
 FLOP/s. Note that the kernels perform different numbers of
@@ -288,20 +287,19 @@ performance. The x-axis in Figure~\ref{fig:cuda-efficiency} is
 normalized to keep FLOPs constant for a given problem
 size.
 
-Our MPI+CUDA implementation uses an offload model in which data is copied to and from the GPU on each step. We test
+Our MPI+CUDA implementation uses an offload model with data copied to and from the GPU on each step. We test
 two configurations: \lstinline{w1} uses 1 task per GPU, whereas
-\lstinline{w4} overdecomposes by $4\times$, using 4 MPI
+\lstinline{w4} overdecomposes, using 4 MPI
 ranks per GPU to push work to the GPU in parallel.
 \lstinline{w4} achieves higher FLOP/s but
-drops more rapidly at smaller problem sizes, due to the overhead of
-scheduling $4\times$ as many CUDA kernel launches. In either case, the
-GPU requires more work to achieve high performance, and the overhead
+drops more rapidly at small problem sizes, due to the overhead of
+scheduling $4\times$ as many CUDA kernel launches. Either way,
+GPUs require more work to achieve high performance, and the overhead
 of copying data dominates at small task
-granularities, where the CPU achieves higher
+granularities, where CPUs achieve higher
 performance. While Figure~\ref{fig:cuda-efficiency} is not couched in
 terms of METG (as peak performance on CPU and GPU are very
 different), the conclusion here is similar to
 Section~\ref{subsec:scalability}: the cost of sending data and
-tasks to the GPU imposes a higher task granularity to achieve
-the same efficiency than running on the CPU, reducing the advantage at small task granularities of
+tasks to the GPU imposes a floor on task granularity relative to the CPU, reducing the advantage at small task granularities of
 very lightweight mechanisms such as those in MPI.
