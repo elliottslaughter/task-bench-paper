@@ -9,8 +9,7 @@ systems. These discoveries were possible because of the flexibility of
 Task Bench, and our ability to rapidly run new experiments with a
 variety of application scenarios. All issues were reported to and
 acknowledged by the respective system's developers, and are either
-fixed or worked around in our experiments. For brevity, we describe
-one salient example below and summarize the others briefly.
+fixed or worked around in our experiments. We describe them below.
 
 Realm and Chapel both use DMA subsystems optimized for large
 copies. Early Task Bench experiments revealed high METG values,
@@ -22,14 +21,7 @@ Chapel. These improvements affect any application where fine-grained
 data movement is needed, which is particularly relevant in strong scaling
 regimes when running on large numbers of nodes.
 
-We found further areas for improvement in schedulers (Realm, Chapel
-and Dask), task pruning for scalability (PaRSEC), and optimizations on
-the task graph (TensorFlow). The impact of these optimizations ranged
-from small constant factors to even asymptotic improvements in
-performance and scalability (in the case of PaRSEC and Dask). All
-users will benefit from the improvements driven by our discoveries.
-
-\zap{
+{\color{blue}
 Further analysis of Realm efficiency indicated many overheads due to
 dynamic graph construction. The Realm developers implemented a new
 ``subgraph'' API in response to this feedback to amortize the cost of
@@ -45,19 +37,21 @@ efficiency did not exceed 50\%). Chapel's other schedulers add
 overhead, resulting in higher METGs. We worked around this issue with
 \lstinline{serial}.
 
-PaRSEC uses task pruning to improve scalability at large node
+PaRSEC uses task pruning to reduce analysis work performed on each
+node, and thus improve scalability at large node
 counts. Initial Task Bench results achieved less than the expected
 scalability: METG was rising too quickly with node count.  The PaRSEC
-developers diagnosed this as a bug in task pruning, and it was
+developers diagnosed this as a bug in task pruning---the optimization was failing to trigger---and it was
 subsequently fixed. We also implemented a version of the PaRSEC code,
 \lstinline{shard}, which uses manual pruning to demonstrate that
-additional gains may be possible.
+additional gains may still be possible.
 
 Early Task Bench results for Dask revealed that the cost of scheduling
 a task was $\mathcal{O}(N)$ where $N$ is the number of tasks in a task
 graph, causing overall cost for a task graph with $N$ nodes to be
 $\mathcal{O}(N^2)$. This issue was reported to and confirmed by the
-Dask developers. As a work around, our results in the paper use a
+Dask developers; the bug is suspected to be in optimizations performed
+on the task graph by Dask. As a work around, our results in the paper use a
 lower-level interface which does not suffer from this asymptotic
 slowdown.
 
@@ -70,4 +64,23 @@ as constant, and the constant-folding pass runs on one core. As a
 workaround, the developers suggested marking the task graph inputs as
 non-constant so that TensorFlow's standard task scheduler could be
 used.
-}
+
+In all cases, we found bugs that are applicable outside of Task Bench
+and that impact metrics other than METG. Notably, the scalability
+issues and asymptotic complexity have a growing impact with larger
+node counts and will eventually become visible with nearly any
+application. In other cases, we found performance degradation at the
+extremes of application configurations which may be more difficult to
+test with full-size applications, but which are nonetheless relevant
+in strong-scaling regimes, particularly as node counts grow.
+
+} % color
+
+\zap{
+We found further areas for improvement in schedulers (Realm, Chapel
+and Dask), task pruning for scalability (PaRSEC), and optimizations on
+the task graph (TensorFlow). The impact of these optimizations ranged
+from small constant factors to even asymptotic improvements in
+performance and scalability (in the case of PaRSEC and Dask). All
+users will benefit from the improvements driven by our discoveries.
+} % zap
