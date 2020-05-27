@@ -3,7 +3,7 @@ We thank the reviewers for their detailed and insightful feedback.
 Changes made in response to reviewer comments:
 
   * Added Section V.G: Load Imbalance.
-  * Expanded Section VI: Case Study.
+  * Expanded Section VI: Performance Issues Discovered.
 
 Responding to reviewer questions:
 
@@ -20,6 +20,8 @@ Responding to reviewer questions:
 ## Reviewer 3
 
   * We added commit IDs to Table 5.
+
+  * We renamed Section VI.
 
   * We added the Deakin citation to our related work.
 
