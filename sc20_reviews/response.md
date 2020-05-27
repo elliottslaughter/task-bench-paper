@@ -19,6 +19,8 @@ Responding to reviewer questions:
 
 ## Reviewer 3
 
+  * We added commit IDs to Table 5.
+
 ## Reviewer 4
 
 ## Reviewer 5
