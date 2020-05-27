@@ -68,10 +68,13 @@ In all cases, we found bugs that are applicable outside of Task Bench
 and that impact metrics other than METG. Notably, the scalability
 issues and asymptotic complexity have a growing impact with larger
 node counts and will eventually become visible with nearly any
-application. In other cases, we found performance degradation at the
-extremes of application configurations which may be more difficult to
-test with full-size applications, but which are nonetheless relevant
-in strong-scaling regimes, particularly as node counts grow.
+application. In other cases, Task Bench and METG made it possible to
+identify performance degradation at the extremes of application
+configurations which might remain hidden with full-size applications,
+particularly when evaluated with weak and strong scaling alone. The
+improvements motivated by our findings are nonetheless relevant in
+strong-scaling regimes in a variety of applications, particularly as
+node and core counts grow.
 
 } % color
 
