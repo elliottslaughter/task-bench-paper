@@ -29,4 +29,6 @@ Responding to reviewer questions:
 
   * Text has been added to Section II to clarify validation.
 
+  * We have clarified the quote about 50% in Section IV.
+
 ## Reviewer 5
