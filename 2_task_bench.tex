@@ -91,14 +91,13 @@ respectively. Only the code in Listing~\ref{lst:code-sample} is
 implemented for each system, minimizing the work required for each additional system.
 } % zap
 
-The Task Bench core library is fully
-validating. Because the task graph configuration is explicitly
-represented (though unmaterialized) in Task Bench, this representation
-can be queried to determine exactly what dependencies a task should
-expect. The output of every task in Task Bench is unique,
-and all inputs are verified. An assertion is thrown if validation
-fails. These checks ensure that every execution of Task Bench, if it
-completes successfully, is correct. An evaluation of the performance impact of
+The Task Bench core library is fully validating. {\color{blue} The output of each
+task is a tuple (time step, column) and is unique within a task
+graph. All inputs are verified by checking the expected dependencies
+against those received, and an assertion is thrown if validation
+fails. These checks ensure that every execution of Task Bench is
+correct. Note that the graph representation is concise, making these
+checks very inexpensive.} An evaluation of the performance impact of
 validation showed it to be less than 3\% at the smallest task
 granularities in any Task Bench implementation, with a negligible
 effect on overall results.

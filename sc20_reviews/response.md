@@ -27,4 +27,6 @@ Responding to reviewer questions:
 
 ## Reviewer 4
 
+  * Text has been added to Section II to clarify validation.
+
 ## Reviewer 5
