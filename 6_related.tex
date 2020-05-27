@@ -18,13 +18,24 @@ for microbenchmarks.
 
 Though smaller than full applications, mini-apps can be challenging to
 implement to a level of quality sufficient for conducting comparative
-studies between programming systems. The largest study we know of,
-for the mini-app LULESH~\cite{LULESH13}, compares 7 programming
-systems (Chapel, Charm++, CUDA, Lizst, Loci, OpenMP, and MPI), each of
-which require a separate, tuned implementation (in contrast to
-Task Bench). Other
-studies usually lack a comprehensive evaluation, even if multiple
-implementations are available:
+studies between programming systems. {\color{blue} The largest studies
+we know of consider at most 7 and 6 programming systems,
+respectively~\cite{LULESH13, Deakin19}, and the latter only considers
+on-node programming models.} In both cases, the mini-apps under study
+require a separate, tuned implementation (in contrast to Task
+Bench). Other studies usually lack a comprehensive evaluation, even if
+multiple implementations are available:
+
+%% for the mini-app LULESH~\cite{LULESH13}, compares 7 programming
+%% systems (Chapel, Charm++, CUDA, Lizst, Loci, OpenMP, and MPI), each of
+%% which
+
+% Deakin19:
+%% BabelStream: OpenMP, Kokkos, CUDA, OpenACC, OpenCL
+%% TeaLeaf: OpenMP, Kokkos, CUDA, OpenACC
+%% CloverLeaf: OpenMP, Kokkos, CUDA, OpenACC, OpenCL
+%% Neutral: OpenMP, Kokkos, CUDA, OpenACC, OpenCL
+%% MiniFMM: OpenMP, Kokkos, CUDA, OpenCL
 
 \begin{itemize}
 
