@@ -17,6 +17,7 @@ Stencil & $D(t, i) := \{ i, i - 1, i + 1 \}$ \\
 FFT & $D(t, i) := \{ i, i - 2^t, i + 2^t \}$ \\
 Sweep & $D(t, i) := \{ i, i - 1 \}$ \\
 Tree & $D(t, i) := \left\{ \!\!\!\! \arraycolsep=4pt\begin{array}{l l} \{ i - 2^{-t}W(i \operatorname{mod} 2^{-t + 1}W) \} & \text{if } t \le \operatorname{log}_2 W \\ \{ i, i + 2^{t-1}W^{-1} \} & \text{otherwise} \end{array} \right. \!\!\!\! $ \\
+{\color{blue} Random} & {\color{blue} $D(t, i) := \{ i | 0 \le i < W \wedge \operatorname{random}() < 0.5  \}$ } \\
 \end{tabular}
 
 \caption{Dependence relations for sample task graphs.\label{tab:equations}}

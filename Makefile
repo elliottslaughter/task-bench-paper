@@ -62,7 +62,8 @@ GENERATED_FIGS = figs/sample-task-graphs/trivial.pdf \
 	figs/sample-task-graphs/stencil.pdf \
 	figs/sample-task-graphs/fft.pdf \
 	figs/sample-task-graphs/dom.pdf \
-	figs/sample-task-graphs/tree.pdf
+	figs/sample-task-graphs/tree.pdf \
+	figs/sample-task-graphs/random.pdf
 
 .PHONY: all
 all: $(DOC).pdf

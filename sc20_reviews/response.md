@@ -4,6 +4,7 @@ Changes made in response to reviewer comments:
 
   * Added Section V.G: Load Imbalance.
   * Expanded Section VI: Performance Issues Discovered.
+  * Minor additional clarifications described below.
 
 Responding to reviewer questions:
 
