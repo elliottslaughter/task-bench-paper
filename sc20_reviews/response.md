@@ -36,4 +36,10 @@ Responding to reviewer questions:
 
   * We clarified the paragraph at the top of Section V.A.
 
+  * We expanded Section VI.
+
 ## Reviewer 5
+
+  * We added Section V.G.
+
+  * Figure 11 is comparable to Figure 3. As described in the text, Figure 3 is generated from Figure 2 by computing, for each data point, efficiency and task granularity. These are derived metrics, resulting in a parametric graph. Intuitively, there is a data point per problem size, but task granularity does not necessarily decrease with problem size. This view makes it intuitive how efficiency and task granularity are related.
