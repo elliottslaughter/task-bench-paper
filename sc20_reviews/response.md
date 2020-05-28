@@ -40,6 +40,10 @@ Responding to reviewer questions:
 
 ## Reviewer 5
 
+  * Whether dependencies are constructured ahead of time or on the fly is a feature of a specific implementation of Task Bench, not the core API.
+
+    FIXME: Add note about added Dask/TensorFlow impls, or whether we add more text, or whatever.
+
   * We added Section V.G.
 
   * Figure 11 is comparable to Figure 3. As described in the text, Figure 3 is generated from Figure 2 by computing, for each data point, efficiency and task granularity. These are derived metrics, resulting in a parametric graph. Intuitively, there is a data point per problem size, but task granularity does not necessarily decrease with problem size. This view makes it intuitive how efficiency and task granularity are related.
