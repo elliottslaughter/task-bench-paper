@@ -9,6 +9,22 @@ goal in this paper is to develop a meaningful and useful framework for
 comparing the performance of parallel and distributed programming
 systems, to help users and developers evaluate the performance tradeoffs of these systems.
 
+{\color{blue}
+
+Existing approaches to comparing performance focus on \emph{mini-apps}
+or \emph{microbenchmarks}. These smaller codes distill key
+computational characteristics of larger applications: mini-apps are
+often derived from a larger code, and thus directly inherit its
+behaviors, while benchmarks are typically chosen to reflect a more
+narrow set of behaviors. In either case, while a variety of insight
+can be gained, the overall effort required is proportional to the
+product of the number of systems and behaviors one would like to
+evaluate. As a result, few published studies compare more than a
+handful of systems~\cite{LULESH13, Deakin19}.
+
+}
+
+\zap{
 One approach to comparing performance is through \emph{proxy-} or
 \emph{mini-apps}. Because they distill key computational characteristics of larger
 applications, mini-apps offer insight
@@ -18,6 +34,7 @@ to the level of quality needed for useful benchmarking. In many cases,
 the effort to tune for performance exceeds the effort to develop a correct implementation. As a result, implementations of mini-apps
 often do not reach the level of maturity required to compare
 systems. Few published studies compare more than a handful of systems~\cite{LULESH13, Deakin19}.
+} % zap
 
 We present Task Bench, a parameterized benchmark for exploring the performance
 of parallel and distributed programming systems under a
