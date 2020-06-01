@@ -207,24 +207,6 @@ issued at all. Clearly, choosing a representative dependence
 pattern is important when estimating the performance of a workload or
 class of workloads.
 
-\zap{
-\input{e8_weak}
-\input{e9_strong}
-\subsection{Comparison with Weak and Strong Scaling}
-
-Figures~\ref{fig:weak-scaling} and \ref{fig:strong-scaling} show
-conventional strong and weak scaling of the stencil pattern for
-comparison with the METG results in
-Figure~\ref{fig:metg-compute-stencil}. At small node counts, where the
-average task granularity is larger than the METG for most systems, the
-performance is ideal. For several systems METG rises with node count,
-and this becomes visible in the weak and strong scaling graphs as
-non-ideal performance. Thus the shape of the weak and strong scaling
-graphs effectively interpolates between ideal performance and the METG
-curve depending on how close each system is to being limited by
-overhead.
-} % zap
-
 \input{e6_communication}
 
 \subsection{Overlapping Communication and Computation}
@@ -307,3 +289,81 @@ different), the conclusion here is similar to
 Section~\ref{subsec:scalability}: the cost of sending data and
 tasks to the GPU imposes a floor on task granularity relative to the CPU, reducing the advantage at small task granularities of
 very lightweight mechanisms such as those in MPI.
+
+\input{e9_strong}
+
+{\color{blue}
+\subsection{Predicting Strong Scaling with METG}
+
+% Summary:
+
+% Charm++:
+% Limit/Ideal intersects at: 55 nodes, 0.068 s
+% Limit/Actual intersects at: 67 nodes, 0.086 s
+% Limit/Ideal vs Limit/Actual gap in nodes: 1.22x
+% Limit/Ideal vs Limit/Actual gap in time: 1.27x
+
+% Overall (out of 11 systems that perform well enough to have an intersection):
+% Limit/Ideal vs Limit/Actual gap in nodes:
+%   mean: 1.61x
+%   median: 1.60x
+%   min: 1.13x
+%   max: 2.19x
+% Limit/Ideal vs Limit/Actual gap in time:
+%   mean: 1.28x
+%   median: 1.27x
+%   min: 1.01x
+%   max: 1.69x
+
+We can use METG to predict the scalability of a code. Figure
+\ref{fig:strong-scaling} shows a strong scaling execution of Task
+Bench stencil. Lines marked ``actual'' represent strong scaling
+measurements, while ones marked ``limit'' are computed by multiplying
+METG(50\%) by tasks per core (in this case, 1000). Intuitively,
+``limit'' is the smallest time to solution that could be achieved for
+\emph{any} problem size at that node count, while maintaining 50\%
+efficiency. Note that ``actual'' eventually falls below ``limit''
+because ``actual'' is not constrained to 50\% efficiency and
+eventually drops below this level.
+
+There are two points of intest on each ``limit'' curve: the point
+where it intersects ``actual'' and the point where it intersects an
+ideal scaling curve, computed by taking the initial time to solution
+and assuming linear scaling. These points are marked in
+Figure~\ref{fig:strong-scaling} with a black square and a black
+circle, respectively. Notably, the intersection between ideal and
+``limit'' requires only a single node run, along with measurements of
+METG(50\%) at each node count. Using this data it is possible to
+predict the strong scalability of the code: i.e., the smallest time to
+solution, and the number of nodes at which that time to solution is
+achieved, while maintaining at least 50\% efficiency. In
+Figure~\ref{fig:strong-scaling} this can be seen as the distance
+between the black square and circle, which differ by a factor of
+$1.22\times$ in node count, and $1.27\times$ in time to solution.
+
+When we compute this same measure across all of the 11 programming
+systems that scale well enough to perform the experiment, we find that
+the average separation between the ideal and actual intersection
+points is $1.61\times$ in node count (max $2.19\times$, min
+$1.13\times$) and $1.28\times$ in time to solution (max $1.69x$, min
+$1.01\times$).
+
+} % color
+
+\zap{
+\input{e8_weak}
+\input{e9_strong}
+\subsection{Comparison with Weak and Strong Scaling}
+
+Figures~\ref{fig:weak-scaling} and \ref{fig:strong-scaling} show
+conventional strong and weak scaling of the stencil pattern for
+comparison with the METG results in
+Figure~\ref{fig:metg-compute-stencil}. At small node counts, where the
+average task granularity is larger than the METG for most systems, the
+performance is ideal. For several systems METG rises with node count,
+and this becomes visible in the weak and strong scaling graphs as
+non-ideal performance. Thus the shape of the weak and strong scaling
+graphs effectively interpolates between ideal performance and the METG
+curve depending on how close each system is to being limited by
+overhead.
+} % zap
