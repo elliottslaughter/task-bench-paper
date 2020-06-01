@@ -5,21 +5,21 @@ The challenge of parallel and distributed computation has led to a
 wide variety of proposals for programming models, languages, and
 runtime systems. While these systems are well-represented in the literature, comprehensive and comparative performance evaluations
 remain difficult to find. Our
-goal in this paper is to develop a meaningful and useful framework for
+goal in this paper is to develop a useful framework for
 comparing the performance of parallel and distributed programming
 systems, to help users and developers evaluate the performance tradeoffs of these systems.
 
 {\color{blue}
 
-Existing approaches to comparing performance focus on \emph{proxy-}/\emph{mini-apps}
+Existing approaches to this problem focus on \emph{proxy-}/\emph{mini-apps}
 or \emph{microbenchmarks}. These smaller codes distill key
 computational characteristics of larger applications: mini-apps are
-often derived from a larger code, and thus directly inherit its
+often derived from a larger code, and thus inherit some subset of its
 properties, while benchmarks are typically chosen to reflect a more
 narrow set of behaviors. In either case, while a variety of insight
-can be gained, the overall effort required is proportional to the
-product of the number of systems and behaviors one would like to
-evaluate. As a result, few published studies compare more than a
+can be gained, the overall programming effort required is proportional to the
+product of the number of systems and behaviors being
+evaluated. Few published studies compare more than a
 handful of systems~\cite{LULESH13, Deakin19}.
 
 }
@@ -179,8 +179,8 @@ up to 256 Haswell nodes of the Cori supercomputer~\cite{Cori}.
 Using METG, we find that a number of factors---node
 count, accelerators, and complex dependencies, among
 others---individually or in combination contribute to an order of
-magnitude or greater increase in METG, even in the most efficient
-systems. While some systems can achieve sub-microsecond METG(50\%) in
+magnitude or greater increase in METG, even in systems with the lowest
+overheads. While some systems can achieve sub-microsecond METG(50\%) in
 best-case scenarios, we show that a more realistic
 bound for running nearly any application at scale is 100~\textmu{}s with
 current technologies. Our study includes several asynchronous systems
@@ -206,8 +206,8 @@ found five performance issues, ranging from communication efficiency
 constant folding (PaRSEC, Dask and TensorFlow). Three have been fixed
 and all have been acknowledged by the developers of the respective
 systems. (All were either fixed or worked around in our experiments.)
-In some cases these correspond to order of magnitude (or even
-asymptotic) improvements in the performance of the underlying
+In some cases these correspond to order of magnitude or even
+asymptotic improvements in the performance of the underlying
 systems---benefits which apply well beyond Task Bench to all classes
 of applications. The bugs are described in more detail in Section~\ref{sec:case-study}.
 

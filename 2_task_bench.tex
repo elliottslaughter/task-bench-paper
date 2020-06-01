@@ -91,8 +91,8 @@ respectively. Only the code in Listing~\ref{lst:code-sample} is
 implemented for each system, minimizing the work required for each additional system.
 } % zap
 
-The Task Bench core library is fully validating. {\color{blue} The output of each
-task is a tuple (time step, column) and is unique within a task
+The Task Bench core library is fully self-validating: {\color{blue} The output of each
+task is a tuple $\langle \textrm{row, col}\rangle$ and is unique within a task
 graph. All inputs are verified by checking the expected dependencies
 against those received, and an assertion is thrown if validation
 fails. These checks ensure that every execution of Task Bench is

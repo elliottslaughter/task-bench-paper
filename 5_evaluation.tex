@@ -25,13 +25,15 @@ CUDA 9.1.85.
 \label{subsec:peak-performance-and-efficiency}
 
 {\color{blue}
-In order to ensure that all systems are properly configured, we
-analyze the peak performance achieved by each. There should exist some
-task granularity which is sufficient to offset the runtime overheads
-of any system, regardless of how large those are. In practice, it's
-best to verify this because system configuration can be unintuitive
-and can lead to a loss in performance (e.g., due to not using all
-available cores).
+
+We first consider the peak performance achieved by each system. There
+should exist some task granularity which is sufficient to offset the
+runtime overheads of any system, regardless of how large those
+are. Even so, a variety of issues can lead to performance loss
+(e.g. due to not using all available cores). Verifying that peak
+performance is achieved ensures that there are no such flaws in our
+configuration.
+
 }
 
 Figure~\ref{fig:flops}, which is the full version of

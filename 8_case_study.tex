@@ -41,7 +41,7 @@ PaRSEC uses task pruning to reduce analysis work performed on each
 node, and thus improve scalability at large node
 counts. Initial Task Bench results achieved less than the expected
 scalability: METG was rising too quickly with node count.  The PaRSEC
-developers diagnosed this as a bug in task pruning---the optimization was failing to trigger---and it was
+developers diagnosed a bug in task pruning---the optimization was failing to trigger---and it was
 subsequently fixed. We also implemented a version of the PaRSEC code,
 \lstinline{shard}, which uses manual pruning to demonstrate that
 additional gains may still be possible.
