@@ -237,14 +237,14 @@ One advantage of asynchronous execution is
 the ability to mitigate load imbalance with little or no additional programmer effort, especially in the presence of
 task parallelism. To quantify this effect,
 Figure~\ref{fig:efficiency-imbalance} plots task granularity vs
-efficiency curves under load imbalance where each task's duration is multiplied by a uniform random variable between [0,~1). The task durations are generated with a deterministic
+efficiency under load imbalance where each task's duration is multiplied by a uniform random variable in [0,~1). Task durations are generated with a deterministic
 pseudo random number generator with a consistent seed to ensure
-identical task durations for all systems.
+identical durations for all systems.
 
-The MPI implementation of Task Bench, with its distinct computation and communication phases,
+The MPI Task Bench, with its distinct computation and communication phases,
 suffers the most under load imbalance. The biggest
 difference is at large task granularities, where the imbalance
-effectively puts an upper bound on MPI efficiency. At smaller task
+effectively puts an upper bound on efficiency. At smaller task
 granularities the effect shrinks and may even reverse as systems hit
 their fundamental limits due to overhead.
 
@@ -316,37 +316,36 @@ very lightweight mechanisms such as those in MPI.
 %   max: 1.69x
 
 We can use METG to predict the scalability of a code. Figure
-\ref{fig:strong-scaling} shows a strong scaling execution of Task
-Bench stencil. Lines marked ``actual'' represent strong scaling
-measurements, while ones marked ``limit'' are computed by multiplying
-METG(50\%) by tasks per core (in this case, 1000). Intuitively,
-``limit'' is the smallest time to solution that could be achieved for
-\emph{any} problem size at that node count, while maintaining 50\%
-efficiency. Note that ``actual'' eventually falls below ``limit''
-because ``actual'' is not constrained to 50\% efficiency and
-eventually drops below this level.
+\ref{fig:strong-scaling} shows strong scaling for three Task Bench
+implementations with the stencil pattern. Lines marked ``actual''
+represent strong scaling measurements, while ones marked ``limit'' are
+computed by multiplying METG(50\%) by tasks per core (in this case,
+1000). Intuitively, ``limit'' is the smallest time to solution that
+can be achieved for \emph{any} problem size at that node count, while
+maintaining 50\% efficiency. Note that ``actual'' eventually falls
+below ``limit'' because ``actual'' is not constrained to 50\%
+efficiency and eventually drops below this level.
 
-There are two points of intest on each ``limit'' curve: the point
+There are two points of interest on each ``limit'' curve: the point
 where it intersects ``actual'' and the point where it intersects an
 ideal scaling curve, computed by taking the initial time to solution
 and assuming linear scaling. These points are marked in
-Figure~\ref{fig:strong-scaling} with a black square and a black
-circle, respectively. Notably, the intersection between ideal and
-``limit'' requires only a single node run, along with measurements of
-METG(50\%) at each node count. Using this data it is possible to
-predict the strong scalability of the code: i.e., the smallest time to
-solution, and the number of nodes at which that time to solution is
-achieved, while maintaining at least 50\% efficiency. In
+Figure~\ref{fig:strong-scaling} with a black square and black circle,
+respectively. Notably, the intersection between ideal and ``limit''
+requires only a single node run, along with measurements of METG(50\%)
+at each node count. Using this data it is possible to predict the
+strong scalability of the code: i.e., the smallest time to solution,
+and the number of nodes at which that time is achieved, while
+maintaining at least 50\% efficiency. In
 Figure~\ref{fig:strong-scaling} this can be seen as the distance
-between the black square and circle, which differ by a factor of
+between the black square and circle; these are separated by a factor of
 $1.22\times$ in node count, and $1.27\times$ in time to solution.
 
-When we compute this same measure across all of the 11 programming
-systems that scale well enough to perform the experiment, we find that
-the average separation between the ideal and actual intersection
-points is $1.61\times$ in node count (max $2.19\times$, min
-$1.13\times$) and $1.28\times$ in time to solution (max $1.69x$, min
-$1.01\times$).
+When we consider all 11 programming systems that scale well enough to
+perform this experiment, we find that the average separation between
+the ideal and actual intersection points is $1.61\times$ in node count
+(max $2.19\times$, min $1.13\times$) and $1.28\times$ in time to
+solution (max $1.69\times$, min $1.01\times$).
 
 } % color
 
