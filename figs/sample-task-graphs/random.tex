@@ -1,8 +1,12 @@
 \documentclass[tikz=true]{standalone}
+\usepackage{adjustbox}
 \begin{document}
 \begin{tikzpicture}
   % Stencil
-  \begin{scope}[xscale=0.6, yscale=0.55, every node/.style={draw, shape=circle, fill=blue, inner sep=1.5pt}, every edge/.append style={color=blue}]
+  \begin{scope}[xscale=0.6, yscale=0.4, every edge/.append style={color=blue}]
+
+    \begin{scope}[every node/.style={draw, shape=circle, fill=blue, color=blue, inner sep=1.5pt}]
+
     \node (n00) at (0,0) {};
     \node (n01) at (0,1) {};
     \node (n02) at (0,2) {};
@@ -27,6 +31,10 @@
     \node (n41) at (4,1) {};
     \node (n42) at (4,2) {};
     \node (n43) at (4,3) {};
+
+    \end{scope}
+
+    \node[draw=none] () at (0,-0.5) {}; % hack to give some margin at bottom
 
     % Straight
     \draw[->] (n01) edge (n02);

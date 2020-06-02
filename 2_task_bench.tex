@@ -65,11 +65,6 @@ implementations of these services ensures that all Task Bench
 implementations can be scripted uniformly and eliminates a potential
 source of performance disparity that can be a pitfall for other benchmarks.
 
-\input{t3_api}
-\input{l0_compute_kernel}
-%% \input{l1_code_sample}
-\input{l2_mpi_sample}
-
 \zap{
 Despite its generality, Task Bench is easy to implement, making it
 tractable to develop a suite of high-quality implementations. The central aspects of Task Bench, such as generating
@@ -101,6 +96,11 @@ checks very inexpensive.} An evaluation of the performance impact of
 validation showed it to be less than 3\% at the smallest task
 granularities in any Task Bench implementation, with a negligible
 effect on overall results.
+
+\input{t3_api}
+\input{l0_compute_kernel}
+%% \input{l1_code_sample}
+\input{l2_mpi_sample}
 
 Task Bench provides two main kernels that can be called from tasks:
 compute- and memory-bound. The compute-bound
