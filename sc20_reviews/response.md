@@ -11,7 +11,7 @@ Responding to reviewer questions:
 
 ## Reviewer 1
 
-  * Task graphs can be arbitrary, including irregular graphs. We added an example to Figure 1.
+  * Task graphs can be arbitrary, including irregular graphs. We added an example to Figure 1 showing a random graph.
 
   * METG has already proven useful for exposing behaviors at the limits of system performance. We updated Section VI to provide additional details.
 
@@ -33,7 +33,7 @@ Responding to reviewer questions:
 
 ## Reviewer 4
 
-  * Task Bench provides access to a large space of behaviors (kernel computation, load imbalance, shape of the task graph, number of dependencies and their structure, amount of data communicated, etc.). We agree that there are dimensions of this space that are not currently covered by Task Bench, and that are covered by specific mini-apps; we consider this a good diretion for future work. In spite of this, the space covered by Task Bench today is already larger than the existing benchmarks, or any single mini-app. Moreover, Task Bench makes it dramatically easier to implement for a wide variety of systems, making comparative study feasible. We have added some clarifications to the introduction.
+  * Task Bench provides access to a large space of behaviors (kernel computation, load imbalance, shape of the task graph, number of dependencies and their structure, amount of data communicated, etc.). We agree that there are dimensions of this space that are not currently covered by Task Bench, and that are covered by specific mini-apps; we consider this a good direction for future work. In spite of this, the space covered by Task Bench today is already larger than the existing benchmarks, or any single mini-app. Moreover, Task Bench makes it dramatically easier to implement for a wide variety of systems, making comparative study feasible. We have added some clarifications to the introduction.
 
   * We updated the terminology in the introduction.
 
@@ -49,10 +49,12 @@ Responding to reviewer questions:
 
   * We agree that cross-validation with mini-apps is a good direction for future work, but that concrete benefits have already been demonstrated in the form of performance bugs found and fixed via Task Bench (see updated Section VI).
 
-  * Whether dependencies are constructured ahead of time or on the fly is a feature of a specific implementation of Task Bench, not the core API. You can see in Listing 2 that the MPI implementation queries the core API to generate send and receive calls. Similar, these could be used to determine the set of tasks to issue (Dask, etc.) or the connectivity of the dataflow graph (TensorFlow, etc.). We ensure that all core APIs are very efficient, making these checks low-cost so that there is no penalty to querying the APIs on the fly (if that is how the programming model is designed to be used).
+  * Whether dependencies are constructed ahead of time or on the fly is a feature of the programming model being used to implement of Task Bench, not a feature of Task Bench itself. E.g., Dask, PaRSEC, Regent and StarPU all construct the task graph on the fly. The core APIs shown in Table 3 are sufficient to do this, it is simply a matter of calling the right programming model APIs for each task. Listing 2 shows how we do this for MPI. All of our implementations are open source and will linked in the final paper.
+
+  * We ensure that all core APIs are very efficient, making these checks low-cost so that there is no penalty to querying the APIs on the fly (if that is how the programming model is designed to be used).
 
   * We added Section V-G.
 
-  * Figure 11 is comparable to Figure 3. As described in the text, Figure 3 is generated from Figure 2 by computing, for each data point, efficiency and task granularity. These are derived metrics, resulting in a parametric graph. Intuitively, there is a data point per problem size, but task granularity does not necessarily decrease with problem size (due to runtime overheads and other factors). This view makes it intuitive how efficiency and task granularity are related.
+  * Figure 11 is comparable to Figure 3. As described in the text, Figure 3 is generated from Figure 2 by computing, for each data point, efficiency and task granularity. These are derived metrics, resulting in a parametric graph. Intuitively, there is a data point per problem size, but task granularity does not necessarily decrease with problem size (due to overheads). Noise can also introduce variations in the measurements, especially at higher node counts, and particularly with MPI which uses a model of communicating sequential processes.
 
   * We use MPS in the case of MPI with 4 ranks per GPU. Our code uses an offload model where any communicated data is copied to and from the GPU for each task execution. Using 4 ranks per node allows the copies to/from the GPU and kernel launches to be performed in parallel, increasing the utilization of the GPU (at the cost of higher overheads at small task granularities). All of these factors, including the kernel launch latency, are included in our task granularity measurements.
