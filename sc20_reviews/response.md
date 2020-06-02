@@ -3,6 +3,7 @@ We thank the reviewers for their detailed and insightful feedback.
 Changes made in response to reviewer comments:
 
   * Added Section V-G: Load Imbalance.
+  * Added Section V-I: Predicting Strong Scaling with METG.
   * Expanded Section VI: Performance Issues Discovered.
   * Minor additional clarifications described below.
 
@@ -19,6 +20,8 @@ Responding to reviewer questions:
   * For a specific example of an application where small task granularities are useful, see <https://ieeexplore.ieee.org/document/8948618>. Figure 2 shows that with a tile size of 1024 the algorithm achieves about 7 TFLOPS/s per GPU. The task executed on each tile is a straightforward matrix multiply, making it easy to determine the the FLOPS (and therefore task granularity): (2\*1024\*1024\*1024/10^9)/7000gflops = 307us.
 
 ## Reviewer 2
+
+  * We added Section V-I. This section validates METG against time to solution. We show that it is possible to use METG, along with a single-node measurement of time to solution, to predict the strong scalability of a code (i.e., the point where it reaches 50% parallel efficiency, in terms of both time to solution, and node count). We find that we can predict time to solution (at 50% efficiency) to within a factor of 1.28X on average across 11 programming systems.
 
 ## Reviewer 3
 
