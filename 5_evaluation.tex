@@ -16,8 +16,8 @@ various systems are shown in Table~\ref{tab:flags}.
 
 \input{e3_metg_compute}
 
-For GPU experiments we use the Piz Daint supercomputer~\cite{PizDaint}, a Cray XC50 with
-one Intel Xeon E5-2690 v3 (12 physical cores) and one NVIDIA Tesla
+For GPU experiments we use Piz Daint~\cite{PizDaint}, a Cray XC50 with
+a Intel Xeon E5-2690 v3 (12 physical cores) and one NVIDIA Tesla
 P100 per node. We use GCC 6.2.0, Cray MPICH 7.7.2, and
 CUDA 9.1.85.
 
@@ -38,16 +38,15 @@ configuration.
 
 Figure~\ref{fig:flops}, which is the full version of
 Figure~\ref{fig:flops-mpi}, shows the FLOP/s achieved with a compute-bound
-kernel with varying problem sizes (simulated by running the kernel for varying numbers of iterations). Each data point in the graph is the mean of 5 runs, with Task Bench configured to execute 1000 time steps of the stencil pattern. In the best case, we measure peak FLOP/s of
+kernel with varying problem sizes (simulated by running the kernel for varying numbers of iterations). Each data point in the graph is a mean of 5 runs, with Task Bench configured to execute 1000 time steps of the stencil pattern. In the best case, we measure peak FLOP/s of
 $1.26 \times 10^{12}$, which compares favorably with the officially
-reported number of $1.2 \times 10^{12}$ \cite{Cori}. For the purposes
-of measuring efficiency, we use our empirically determined number as
-the baseline for 100\% efficiency.
+reported number of $1.2 \times 10^{12}$ \cite{Cori}. We use our empirically determined number as
+the baseline for 100\% efficiency below.
 
 Most systems achieve or nearly achieve peak FLOP/s. Some
 systems reserve a number of cores (usually 1 or 2) for internal
-use; these systems take a minor hit in peak FLOP/s compared
-to systems that share all cores between the application and runtime. Some of the
+use (see below); these systems take a minor hit in peak FLOP/s compared
+to systems that share all cores between application and runtime. Some
 higher-overhead systems struggle to achieve peak FLOP/s, though in most cases
 the curves suggest that performance would continue to improve if we
 were to run larger problem sizes. Unfortunately, the excessive
@@ -74,9 +73,10 @@ Figure~\ref{fig:bytes} shows performance with a memory-bound kernel. We measure 
 bandwidth of 79~GB/s, using a working set size of 0.5 GB. As discussed in Section~\ref{sec:task-bench}, the kernels are designed to keep the working set constant as the number of iterations decrease to avoid noisy, superlinear effects in the results. For comparison, the
 OpenMP-enabled STREAM benchmarks~\cite{STREAM} report up to 98~GB/s.
 
-Not all cores are required to saturate memory bandwidth, reducing the
-impact of reserving cores for internal use. Most systems hit 100\% of
-peak, unlike the compute-bound case.
+Not all cores are required to saturate memory bandwidth. {\color{blue}
+  This reduces the impact of reserving cores for system use
+  (e.g. task-based systems that perform dependence analysis).} Nearly
+all systems hit 100\% of peak, unlike the compute-bound case.
 
 The remaining experiments use compute-bound kernels.
 
@@ -96,10 +96,10 @@ To answer this question, we use METG %% to determine the
 %% smallest task granularity that can be executed at a given level of
 %% efficiency
 as a proxy for overhead. Figure~\ref{fig:metg-compute}
-shows how METG(50\%) varies with node count for a variety of
+shows how METG(50\%) varies with node count for a subset of
 dependence patterns supported by Task Bench. METG(50\%) is calculated
 separately at each node count, to distinguish runtime system behavior from
-changes in communication latencies and topology when using
+changes in communication latency and topology when using
 progressively larger portions of the machine.
 
 We consider the following configurations of Task Bench:
@@ -112,10 +112,14 @@ task depends on 5 others, spread as widely as possible. And
 Figure~\ref{fig:metg-compute-4x-nearest} shows 4 identical copies of
 the nearest dependence pattern executing concurrently.
 
-We observe that the baseline overheads of different
-systems vary by over 5 orders of magnitude. It is worth
-remembering when considering this metric that this is a \emph{minimum}
-effective task granularity. Applications with an average
+We observe that overheads vary by over 5 orders of
+magnitude. {\color{blue} The most efficient systems are explicitly parallel
+and provide very lightweight mechanisms for parallelism. Task-based systems for HPC tend to be next most efficient, and
+provide additional features such as automatic dependency discovery and
+data movement. Slower systems tend to be designed primarily for
+large-scale data analysis or workflows.} It is worth
+remembering that these are \emph{minimum}
+effective task granularities. Applications with an average
 task granularity of \emph{at least} this value can usually be expected
 to execute efficiently. Typical task granularities will
 generally be determined by the application domain being
@@ -129,15 +133,15 @@ The least complicated pattern (stencil) is most favorable
 to MPI, as it provides no
 opportunity for task parallelism. The
 dominating factor in this case is the overhead of executing a task, which is
-minimal for MPI as the Task Bench implementation simply executes tasks in alternation with
-communication phases. The asynchronous
-mechanisms of other systems are pure overhead in this scenario.
-The gap between MPI and other systems shrinks as complexity grows, and even reverses as task parallelism is
+minimal for MPI as the code simply executes tasks in alternation with
+communication. The asynchrony
+of other systems is pure overhead in this scenario.
+MPI's advantage shrinks as complexity grows, and even reverses as task parallelism is
 added in the form of multiple task graphs.
 
-Spark and Swift/T
-are omitted from comparisons with more complicated dependencies, as the overheads of these systems require
-excessive problem sizes (beyond what can be completed in 6
+We omit Spark and Swift/T
+with more complicated dependencies, as their higher overheads require
+excessive problem sizes (beyond what completes in 6
 hours) to reach 50\% efficiency.
 
 \subsection{Scalability}
