@@ -1,12 +1,6 @@
 \section{Evaluation}
 \label{sec:evaluation}
 
-\input{e1_flops}
-\input{e2_efficiency}
-\input{e7_bytes}
-
-\input{e3_metg_compute}
-
 We present a comprehensive evaluation of our Task Bench implementations on up to 256
 Haswell nodes of the Cori supercomputer~\cite{Cori}, a Cray XC40
 machine. Cori Haswell nodes have 2 sockets with Intel Xeon E5-2698 v3
@@ -15,6 +9,12 @@ Cray Aries interconnect. We use GCC 7.3.0 for all Task Bench
 implementations, and (where applicable) the system default MPI
 implementation, Cray MPICH 7.7.3. Versions and flags for the
 various systems are shown in Table~\ref{tab:flags}.
+
+\input{e1_flops}
+\input{e2_efficiency}
+\input{e7_bytes}
+
+\input{e3_metg_compute}
 
 For GPU experiments we use the Piz Daint supercomputer~\cite{PizDaint}, a Cray XC50 with
 one Intel Xeon E5-2690 v3 (12 physical cores) and one NVIDIA Tesla
