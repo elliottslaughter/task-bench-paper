@@ -5,7 +5,9 @@ Changes made in response to reviewer comments:
   * Added Section V-G: Load Imbalance.
   * Added Section V-I: Predicting Strong Scaling with METG.
   * Expanded Section VI: Performance Issues Discovered.
-  * Minor additional clarifications described below.
+  * Additional changes requested by specific reviewers are described below.
+
+All changes are marked in blue.
 
 Responding to reviewer questions:
 
@@ -22,6 +24,8 @@ Responding to reviewer questions:
 ## Reviewer 2
 
   * We added Section V-I. This section validates METG against time to solution. We show that it is possible to use METG, along with a single-node measurement of time to solution, to predict the strong scalability of a code (i.e., the point where it reaches 50% parallel efficiency, in terms of both time to solution, and node count). We find that we can predict time to solution (at 50% efficiency) to within a factor of 1.28X on average across 11 programming systems.
+
+  * We expanded Section V-B and V-C to describe how the properties of the various systems influence our results.
 
 ## Reviewer 3
 
