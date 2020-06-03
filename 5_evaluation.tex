@@ -273,13 +273,12 @@ performance. The x-axis in Figure~\ref{fig:cuda-efficiency} is
 normalized to keep FLOPs constant for a given problem
 size.
 
-Our MPI+CUDA implementation uses an offload model with data copied to and from the GPU on each step. We test
-two configurations: \lstinline{w1} uses 1 task per GPU, whereas
+Our MPI+CUDA code uses an offload model with data copied to/from the GPU every step. In our tests, \lstinline{w1} uses 1 task per GPU, whereas
 \lstinline{w4} overdecomposes, using 4 MPI
 ranks per GPU to push work to the GPU in parallel.
 \lstinline{w4} achieves higher FLOP/s but
 drops more rapidly at small problem sizes, due to the overhead of
-scheduling $4\times$ as many CUDA kernel launches. Either way,
+running $4\times$ as many CUDA kernels. Either way,
 GPUs require more work to achieve high performance, and the overhead
 of copying data dominates at small task
 granularities, where CPUs achieve higher
@@ -287,7 +286,7 @@ performance. While Figure~\ref{fig:cuda-efficiency} is not couched in
 terms of METG (as peak performance on CPU and GPU are very
 different), the conclusion here is similar to
 Section~\ref{subsec:scalability}: the cost of sending data and
-tasks to the GPU imposes a floor on task granularity relative to the CPU, reducing the advantage at small task granularities of
+tasks to GPUs imposes a floor on task granularity relative to CPUs, reducing the advantage at small task granularities of
 very lightweight mechanisms such as those in MPI.
 
 \input{e9_strong}
