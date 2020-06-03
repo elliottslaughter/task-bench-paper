@@ -1,10 +1,12 @@
 \begin{figure*}[t]
 
+{\captionsetup[subfloat]{farskip=-0.1cm}
 \subfloat[Stencil pattern.\label{fig:metg-compute-stencil}]{
 \includegraphics[width=\columnwidth]{figs/task-bench-results/compute/metg_stencil.pdf}
 }
 \subfloat[Nearest pattern, 5 deps/task.\label{fig:metg-compute-nearest}]{
 \includegraphics[width=\columnwidth]{figs/task-bench-results/compute/metg_nearest.pdf}
+}
 }
 
 \subfloat[Spread pattern, 5 deps/task.\label{fig:metg-compute-spread}]{
@@ -16,5 +18,5 @@
 
 \vspace{-0.15cm}
 \caption{METG vs node count for different dependence patterns. Lower is better.\label{fig:metg-compute}}
-%% \vspace{-0.05cm}
+\vspace{-0.25cm}
 \end{figure*}
