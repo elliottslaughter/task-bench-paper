@@ -53,7 +53,7 @@ Responding to reviewer questions:
 
   * We agree that cross-validation with mini-apps is a good direction for future work, but that concrete benefits have already been demonstrated in the form of performance bugs found and fixed via Task Bench (see updated Section VI).
 
-  * Whether dependencies are constructed ahead of time or on the fly is a feature of the programming model being used to implement of Task Bench, not a feature of Task Bench itself. E.g., Dask, PaRSEC, Regent and StarPU all construct the task graph on the fly. The core APIs shown in Table 3 are sufficient to do this, it is simply a matter of calling the right programming model APIs for each task. Listing 2 shows how we do this for MPI. All of our implementations are open source and will linked in the final paper.
+  * Whether dependencies are constructed ahead of time or on the fly is a feature of the programming model being used to implement of Task Bench, not a feature of Task Bench itself. E.g., Dask, PaRSEC, Regent and StarPU all construct the task graph on the fly. The core APIs shown in Table 3 are sufficient to do this, it is simply a matter of calling the right programming model APIs for each task. Listing 2 shows how we do this for MPI. All of our implementations are open source and will be linked in the final paper.
 
   * We ensure that all core APIs are very efficient, making these checks low-cost so that there is no penalty to querying the APIs on the fly (if that is how the programming model is designed to be used).
 
