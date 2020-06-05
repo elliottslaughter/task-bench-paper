@@ -319,23 +319,21 @@ very lightweight mechanisms such as those in MPI.
 %   min: 1.01x
 %   max: 1.69x
 
-We can use METG to predict the scalability of a code. Figure
-\ref{fig:strong-scaling} shows strong scaling for three Task Bench
-implementations with the stencil pattern. Lines marked ``actual''
-represent strong scaling measurements, while ones marked ``limit'' are
-computed by multiplying METG(50\%) by tasks per core (in this case,
-1000). Intuitively, ``limit'' is the smallest time to solution that
+We can use METG to predict scalability. Figure
+\ref{fig:strong-scaling} shows three
+implementations strong scaling the stencil pattern. Lines marked ``actual''
+represent strong scaling measurements. The METTS lines are calculated as described in Section~\ref{sec:metg}, by multiplying multiplying METG(50\%) by tasks per core (1000). Intuitively, METTS is the smallest time to solution that
 can be achieved for \emph{any} problem size at that node count, while
 maintaining 50\% efficiency. Note that ``actual'' eventually falls
-below ``limit'' because ``actual'' is not constrained to 50\%
+below METTS because ``actual'' is not constrained to 50\%
 efficiency and eventually drops below this level.
 
-There are two points of interest on each ``limit'' curve: the point
+There are two points of interest on each METTS curve: the point
 where it intersects ``actual'' and the point where it intersects an
 ideal scaling curve, computed by taking the initial time to solution
 and assuming linear scaling. These points are marked in
 Figure~\ref{fig:strong-scaling} with a black square and black circle,
-respectively. Notably, the intersection between ideal and ``limit''
+respectively. Notably, the intersection between ideal and METTS
 requires only a single node run, along with measurements of METG(50\%)
 at each node count. Using this data it is possible to predict the
 strong scalability of the code: i.e., the smallest time to solution,
@@ -348,7 +346,7 @@ $1.22\times$ in node count, and $1.27\times$ in time to solution.
 Table~\ref{tab:metg-predict-strong} expands this comparison to the 4
 patterns tested in Section~\ref{subsec:scalability} for all 11
 programming systems that scale well enough to evaluate the separation
-between the limit-ideal and limit-actual intersections. We see that
+between the METTS-ideal and METTS-actual intersections. We see that
 overall, the mean separation is at most $2.15\times$ in node count
 and at most $1.31\times$ in time to solution, making this an
 accurate way to predict strong scaling in the 4 patterns we tested in
