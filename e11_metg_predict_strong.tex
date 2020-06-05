@@ -1,0 +1,18 @@
+\begin{table}[t]
+\color{blue}
+\centering
+\small
+\begin{tabular}{r | c | c | c | c}
+        & \multicolumn{2}{|c|}{Nodes} & \multicolumn{2}{|c}{Time to Solution} \\
+Pattern & mean & std. dev. & mean & std. dev. \\
+\hline
+stencil & $1.61\times$ & 0.324 & $1.29\times$ & 0.238 \\
+nearest & $1.77\times$ & 0.253 & $1.17\times$ & 0.341 \\
+spread  & $1.39\times$ & 0.322 & $1.28\times$ & 0.207 \\
+nearest, 4 graphs & $2.15\times$ & 0.635 & $1.31\times$ & 0.777
+\end{tabular}
+
+\vspace{-0.20cm}
+\caption{\color{blue} Average factor of separation between limit-ideal and limit-actual intersection across the 4 patterns tested in Figure~\ref{fig:metg-compute}.\label{tab:metg-predict-strong}}
+\vspace{-0.5cm}
+\end{table}

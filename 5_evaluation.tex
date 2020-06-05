@@ -294,6 +294,7 @@ tasks to GPUs imposes a floor on task granularity relative to CPUs, reducing the
 very lightweight mechanisms such as those in MPI.
 
 \input{e9_strong}
+\input{e11_metg_predict_strong}
 
 {\color{blue}
 \subsection{Predicting Strong Scaling with METG}
@@ -344,11 +345,22 @@ Figure~\ref{fig:strong-scaling} this can be seen as the distance
 between the black square and circle; these are separated by a factor of
 $1.22\times$ in node count, and $1.27\times$ in time to solution.
 
+Table~\ref{tab:metg-predict-strong} expands this comparison to the 4
+patterns tested in Figure~\ref{fig:metg-compute} for all 11
+programming systems that scale well enough to evaluate the separation
+between the limit-ideal and limit-actual intersections. We see that
+overall, the mean separation is less than $2.15\times$ in node count
+and less than $1.31\times$ in time to solution, making this an
+accurate way to predict strong scaling in 4 patterns we tested in
+Section~\ref{subsec:scalability}.
+
+\zap{
 When we consider all 11 programming systems that scale well enough to
 perform this experiment, we find that the average separation between
 the ideal and actual intersection points is $1.61\times$ in node count
 (max $2.19\times$, min $1.13\times$) and $1.28\times$ in time to
 solution (max $1.69\times$, min $1.01\times$).
+}
 
 } % color
 

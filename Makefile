@@ -33,7 +33,8 @@ INCLUDED_TEX = header.tex \
 	e7_bytes.tex \
 	e8_weak.tex \
 	e9_strong.tex \
-	e10_cuda_efficiency.tex
+	e10_cuda_efficiency.tex \
+	e11_metg_predict_strong.tex
 INCLUDED_FIGS = figs/task-bench-results/compute/flops_stencil_mpi.pdf \
 	figs/task-bench-results/compute/efficiency_stencil_mpi.pdf \
 	figs/task-bench-results/compute/weak_mpi.pdf \
