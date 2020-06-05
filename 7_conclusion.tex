@@ -11,23 +11,32 @@ benchmarks that we know of. This has enabled us to explore a broad space of
 application scenarios and to do so with a large number of programming
 systems. Our experiments have enabled the following
 insights:
-(1) METG for current distributed programming systems varies by over
+
+\begin{itemize}
+
+\item METG for current distributed programming systems varies by over
   5 orders of magnitude.  Clearly understanding the needed task
   granularity is an important consideration in choosing a programming
   system for a new application.
-(2) While some systems support METG(50\%) as small as 390~ns, this applies only to trivial dependencies and small CPU-based clusters. A number of factors (nontrivial dependencies, accelerators and cluster sizes in the hundreds of nodes) raise
+
+\item While some systems support METG(50\%) as small as 390~ns, this applies only to trivial dependencies and small CPU-based clusters. A number of factors (nontrivial dependencies, accelerators and cluster sizes in the hundreds of nodes) raise
   the METGs that can be achieved by over an order of magnitude: 100~\textmu{}s is a reasonable bound for most applications running at scale with current technologies.
-(3) Systems that support asynchronous execution show benefits under
+
+\item Systems that support asynchronous execution show benefits under
   balanced computation
   and communication, and load imbalance. However, these gains can be nullified by
   high baseline overheads.
-(4) Systems for large scale data analysis require very large tasks
+
+\item Systems for large scale data analysis require very large tasks
   (tens of seconds) to scale beyond small node counts,
   reflecting the very coarse tasks and lack of need for strong scaling
   performance in current workloads.
-And (5) Task Bench has proven effective in finding performance issues
+
+\item Task Bench has proven effective in finding performance issues
   and has lead to substantial improvements in several of the systems
   we study.
+
+\end{itemize}
 
 \zap{
 We have implemented Task Bench for a broad set of programming systems
