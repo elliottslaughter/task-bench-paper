@@ -92,15 +92,12 @@ configuration. %% We use 50\% because that is generally an acceptable level
 
 METG has a well-defined
 relationship with quantities of interest such as
-time to solution. Figures~\ref{fig:weak-scaling-mpi} and
-\ref{fig:strong-scaling-mpi} show the weak and strong scaling of MPI
-Task Bench running a stencil pattern at a variety of problem
-sizes. {\color{blue} To show the relationship with METG, the red,
-  dashed line in each graph marks the \emph{minimum effective time to
-    solution} (METTS). This is computed by multiplying METG by the
-  number of tasks per core (in this case 1000). METG is computed
-  separately for each node count, so METTS varies at scale.}
-Intuitively, at
+weak and strong scaling. Figures~\ref{fig:weak-scaling-mpi} and
+\ref{fig:strong-scaling-mpi} show the weak and strong scaling of MPI Task Bench running a stencil pattern at a variety of problem sizes. In these
+figures, the vertical axis is shown as wall time to emphasize the
+relationship to time-to-solution, but it could equivalently be shown
+as task granularity (as the number of tasks per execution is
+fixed). Intuitively, at
 larger problem sizes MPI is perfectly efficient. This can be seen at
 the top of each figure, with flat lines when weak scaling and
 ideally-sloped downward lines when strong scaling. Inefficiency begins
@@ -108,7 +105,8 @@ to appear at smaller problem sizes, towards the bottom of the graph,
 where lines become more compressed. At the
 very bottom, the lines compress together as running time becomes
 dominated by overhead. Note that the contour of the bottom of each
-graph is identical and conforms to the METTS curve.
+graph is identical and conforms to the METG curve (marked by the red,
+dashed line).
 
 \input{e0_flags}
 
