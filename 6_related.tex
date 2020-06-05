@@ -16,16 +16,6 @@ for microbenchmarks.
 
 \brokenpenalty=\oldbrokenpenalty
 
-Though smaller than full applications, mini-apps can be challenging to
-implement to a level of quality sufficient for conducting comparative
-studies between programming systems. {\color{blue} The largest studies
-we know of consider at most 7 and 6 programming systems,
-respectively~\cite{LULESH13, Deakin19}, and the latter only considers
-on-node programming models.} In both cases, the mini-apps under study
-require a separate, tuned implementation (in contrast to Task
-Bench). Other studies usually lack a comprehensive evaluation, even if
-multiple implementations are available:
-
 %% for the mini-app LULESH~\cite{LULESH13}, compares 7 programming
 %% systems (Chapel, Charm++, CUDA, Lizst, Loci, OpenMP, and MPI), each of
 %% which
@@ -37,35 +27,33 @@ multiple implementations are available:
 %% Neutral: OpenMP, Kokkos, CUDA, OpenACC, OpenCL
 %% MiniFMM: OpenMP, Kokkos, CUDA, OpenCL
 
-\begin{itemize}
-
-\item
-The PENNANT reference implementation supports
+Though smaller than full applications, mini-apps can be challenging to
+implement to a level of quality sufficient for conducting comparative
+studies between programming systems. {\color{blue} The largest studies
+we know of consider at most 7 and 6 programming systems,
+respectively~\cite{LULESH13, Deakin19}, and the latter only considers
+on-node programming models.} In both cases, the mini-apps under study
+require a separate, tuned implementation (in contrast to Task
+Bench). Other studies usually lack a comprehensive evaluation, even if
+multiple implementations are available:
+(a) The PENNANT reference implementation supports
 MPI/OpenMP/MPI+OpenMP~\cite{PENNANT}. A follow-up paper presents a
 Regent implementation~\cite{Regent15}.
-
-\item
-One follow-up paper for the mini-app CoMD describes a Chapel
+(b) One follow-up paper for the mini-app CoMD describes a Chapel
 implementation~\cite{CoMDChapel16} (comparison against reference
 only). Additional follow-up papers consider aspects of the reference
 implementation only~\cite{CoMDLoadImbalance17,
   CoMDThreadedModels14}.
-
-\item
-A report on the Mantevo project~\cite{Mantevo09} describes a number of
+(c) A report on the Mantevo project~\cite{Mantevo09} describes a number of
 mini-apps, but only includes self-comparisons based on reference
 implementations.
-
-\item
-A report on MiniAero~\cite{SandiaReportManyTaskRuntimes15} describes
+And (d) A report on MiniAero~\cite{SandiaReportManyTaskRuntimes15} describes
 four implementations of the mini-app, but only includes performance
 results for three, and of those three only two can be compared in an
 apples-to-apples manner as the last implementation uses a structured
 rather than an unstructured mesh. A follow-up paper describes another
 implementation in Regent~\cite{Regent15} (comparison against reference
 only).
-
-\end{itemize}
 
 Microbenchmarks can be easier to implement, but do not address the
 asymptotic costs of implementation. PRK Stencil~\cite{PRK14} contains a
