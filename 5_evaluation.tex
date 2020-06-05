@@ -326,14 +326,14 @@ represent strong scaling measurements, while ones marked ``limit 50\%'' are
 computed by multiplying METG(50\%) by tasks per core (in this case,
 1000). Intuitively, ``limit'' is the smallest time to solution that
 can be achieved for \emph{any} problem size at that node count, while
-maintaining 50\% efficiency. Note that ``actual'' eventually falls
-below ``limit'' because ``actual'' is not constrained to 50\%
-efficiency and eventually drops below this level.
+maintaining 50\% efficiency. Data points where ``actual'' falls below
+``limit'' mark points where strong scaling parallel efficiency is less
+than 50\%.
 
 There are two points of interest on each ``limit 50\%'' curve: the point
 where it intersects ``actual'' and the point where it intersects an
 ideal scaling curve, computed by taking the initial time to solution
-and assuming linear scaling. These points are marked in
+and assuming linear scaling. These points are marked for Charm++ in
 Figure~\ref{fig:strong-scaling} with a black square and black circle,
 respectively. Notably, the intersection between ideal and ``limit 50\%''
 requires only a single node run, along with measurements of METG(50\%)
