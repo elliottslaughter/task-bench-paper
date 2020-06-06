@@ -297,7 +297,7 @@ very lightweight mechanisms such as those in MPI.
 \input{e11_metg_predict_strong}
 
 {\color{blue}
-\subsection{Predicting Strong Scaling with METG}
+\subsection{Validating METG with Time to Solution}
 
 % Summary:
 
@@ -324,7 +324,7 @@ We can use METG to predict the scalability of a code. Figure
 implementations with the stencil pattern. Lines marked ``actual''
 represent strong scaling measurements, while ones marked ``limit 50\%'' are
 computed by multiplying METG(50\%) by tasks per core (in this case,
-1000). Intuitively, ``limit'' is the smallest time to solution that
+1000) to obtain wall clock time. Intuitively, ``limit'' is the smallest time to solution that
 can be achieved for \emph{any} problem size at that node count, while
 maintaining 50\% efficiency. Data points where ``actual'' falls below
 ``limit'' mark points where strong scaling parallel efficiency is less
@@ -336,10 +336,10 @@ ideal scaling curve, computed by taking the initial time to solution
 and assuming linear scaling. These points are marked for Charm++ in
 Figure~\ref{fig:strong-scaling} with a black square and black circle,
 respectively.
-Compared with brute-force benchmarking of an application at various
-scales, the METG(50\%) measurements allow a single run of the
-application at small scale to be used to estimate the strong scalability
-of the code:
+Notably, the ideal-limit intersection (black circle) requires only a
+run of the application on one node, combined with METG(50\%)
+measurements at each node count, to estimate the strong scalability of
+the code:
 %% Notably, computing the ideal scaling line requires only
 %% the running time on a single node, so the intersection between ideal
 %% and ``limit'' can be found with only the single-node time to

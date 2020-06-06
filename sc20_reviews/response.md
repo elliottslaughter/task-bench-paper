@@ -3,7 +3,7 @@ We thank the reviewers for their detailed and insightful feedback.
 Changes made in response to reviewer comments:
 
   * Added Section V-G: Load Imbalance.
-  * Added Section V-I: Predicting Strong Scaling with METG.
+  * Added Section V-I: Validating METG with Time to Solution.
   * Expanded Section VI: Performance Issues Discovered.
   * Additional changes requested by specific reviewers are described below.
 
