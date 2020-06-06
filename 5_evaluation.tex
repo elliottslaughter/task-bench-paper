@@ -335,10 +335,18 @@ where it intersects ``actual'' and the point where it intersects an
 ideal scaling curve, computed by taking the initial time to solution
 and assuming linear scaling. These points are marked for Charm++ in
 Figure~\ref{fig:strong-scaling} with a black square and black circle,
-respectively. Notably, the intersection between ideal and ``limit 50\%''
-requires only a single node run, along with measurements of METG(50\%)
-at each node count. Using this data it is possible to predict the
-strong scalability of the code: i.e., the smallest time to solution,
+respectively.
+Compared with brute-force benchmarking of an application at various
+scales, the METG(50\%) measurements allow a single run of the
+application at small scale to be used to estimate the strong scalability
+of the code:
+%% Notably, computing the ideal scaling line requires only
+%% the running time on a single node, so the intersection between ideal
+%% and ``limit'' can be found with only the single-node time to
+%% solution, along with measurements of METG(50\%) at each node
+%% count. Using this data it is possible to predict the
+%% strong scalability of the code:
+i.e., the smallest time to solution,
 and the number of nodes at which that time is achieved, while
 maintaining at least 50\% efficiency. In
 Figure~\ref{fig:strong-scaling} this can be seen as the distance

@@ -34,7 +34,7 @@ to unexpected load balance issues because certain language features
 resulted in poor peak performance, even at large task granularities,
 which in some cases made it impossible to measure METG (because peak
 efficiency did not exceed 50\%). Chapel's other schedulers add
-overhead, resulting in higher METGs. We worked around this with
+overhead, resulting in higher METGs. Based on guidance from the Chapel team, we worked around this with
 a \lstinline{serial} block.
 
 PaRSEC uses task pruning to reduce analysis work performed on each
