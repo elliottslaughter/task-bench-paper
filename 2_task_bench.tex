@@ -86,13 +86,13 @@ respectively. Only the code in Listing~\ref{lst:code-sample} is
 implemented for each system, minimizing the work required for each additional system.
 } % zap
 
-The Task Bench core library is fully self-validating: {\color{blue} The output of each
+The Task Bench core library is fully self-validating: The output of each
 task is a tuple $\langle \textrm{row, col}\rangle$ and is unique for a given task
 graph. Inputs are verified by checking the expected dependencies
 against those received, and an assertion is thrown if validation
 fails. These checks ensure that every execution of Task Bench is
 correct. Note that the graph representation is concise, making these
-checks very inexpensive.} An evaluation of the performance impact of
+checks very inexpensive. An evaluation of the performance impact of
 validation showed it to be less than 3\% at the smallest task
 granularities in any Task Bench implementation, with a negligible
 effect on overall results.

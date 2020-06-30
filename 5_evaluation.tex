@@ -24,8 +24,6 @@ CUDA 9.1.85.
 \subsection{Compute Kernel Performance}
 \label{subsec:peak-performance-and-efficiency}
 
-{\color{blue}
-
 We first consider the peak performance achieved by each system. There
 should exist some task granularity which is sufficient to offset the
 runtime overheads of any system, regardless of how large those
@@ -33,8 +31,6 @@ are. Even so, a variety of issues can lead to performance loss
 (e.g. due to not using all available cores). Verifying that peak
 performance is achieved ensures that there are no such flaws in our
 configuration.
-
-}
 
 Figure~\ref{fig:flops}, which is the full version of
 Figure~\ref{fig:flops-mpi}, shows the FLOP/s achieved with a compute-bound
@@ -73,9 +69,9 @@ Figure~\ref{fig:bytes} shows performance with a memory-bound kernel. We measure 
 bandwidth of 79~GB/s, using a working set size of 0.5 GB. As discussed in Section~\ref{sec:task-bench}, the kernels are designed to keep the working set constant as the number of iterations decrease to avoid noisy, superlinear effects in the results. For comparison, the
 OpenMP-enabled STREAM benchmarks~\cite{STREAM} report up to 98~GB/s.
 
-Not all cores are required to saturate memory bandwidth. {\color{blue}
+Not all cores are required to saturate memory bandwidth.
   This reduces the impact of reserving cores for system use
-  (e.g. task-based systems that perform dependence analysis).} Nearly
+  (e.g. task-based systems that perform dependence analysis). Nearly
 all systems hit 100\% of peak, unlike the compute-bound case.
 
 The remaining experiments use compute-bound kernels.
@@ -113,11 +109,11 @@ Figure~\ref{fig:metg-compute-4x-nearest} shows 4 identical copies of
 the nearest dependence pattern executing concurrently.
 
 We observe that overheads vary by over 5 orders of
-magnitude. {\color{blue} The most efficient systems are explicitly parallel
+magnitude. The most efficient systems are explicitly parallel
 and provide very lightweight mechanisms for parallelism. Task-based systems for HPC tend to be next most efficient, and
 provide additional features such as automatic dependency discovery and
 data movement. Slower systems tend to be designed primarily for
-large-scale data analysis or workflows.} It is worth
+large-scale data analysis or workflows. It is worth
 remembering that these are \emph{minimum}
 effective task granularities. Applications with an average
 task granularity of \emph{at least} this value can usually be expected
@@ -232,7 +228,6 @@ as spikes in latency due to interference from other jobs can be
 mitigated, leading to more predictable performance, especially at
 smaller message sizes.
 
-{\color{blue}
 \subsection{Load Imbalance}
 
 \input{e5_imbalance}
@@ -260,7 +255,6 @@ additional on-node work stealing capability (such as Chapel with the \texttt{dis
 efficiency at large task granularities. However, the use of
 work-stealing queues can also impact throughput at small task
 granularities. For example, Chapel's default (non-work-stealing) scheduler outperforms \texttt{distrib} at very small task granularities. We do not consider Charm++ load balancers because the imbalance is \emph{non-persistent} (i.e., timestep $t$ is uncorrelated with timestep $t+1$). We leave analysis of persistent load imbalance to future work.
-}
 
 \subsection{Heterogeneous Processors}
 
@@ -296,7 +290,6 @@ very lightweight mechanisms such as those in MPI.
 \input{e9_strong}
 \input{e11_metg_predict_strong}
 
-{\color{blue}
 \subsection{Validating METG with Time to Solution}
 
 % Summary:
@@ -369,8 +362,6 @@ the ideal and actual intersection points is $1.61\times$ in node count
 (max $2.19\times$, min $1.13\times$) and $1.28\times$ in time to
 solution (max $1.69\times$, min $1.01\times$).
 }
-
-} % color
 
 \zap{
 \input{e8_weak}

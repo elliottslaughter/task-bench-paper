@@ -21,7 +21,6 @@ Chapel. These improvements affect any application where fine-grained
 data movement is needed, which is particularly relevant in strong scaling
 regimes when running on large numbers of nodes.
 
-{\color{blue}
 Further analysis of Realm efficiency indicated many overheads due to
 dynamic graph construction. The Realm developers implemented a new
 ``subgraph'' API in response to this feedback to amortize the cost of
@@ -75,8 +74,6 @@ particularly when evaluated with weak and strong scaling alone. The
 improvements motivated by our findings are nonetheless relevant in
 strong-scaling regimes in a variety of applications, particularly as
 node and core counts grow.
-
-} % color
 
 \zap{
 We found further areas for improvement in schedulers (Realm, Chapel
