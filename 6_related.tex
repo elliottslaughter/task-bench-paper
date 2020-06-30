@@ -36,24 +36,30 @@ on-node programming models. In both cases, the mini-apps under study
 require a separate, tuned implementation (in contrast to Task
 Bench). Other studies usually lack a comprehensive evaluation, even if
 multiple implementations are available:
-(a) The PENNANT reference implementation supports
+
+\begin{itemize}
+\item The PENNANT reference implementation supports
 MPI/OpenMP/MPI+OpenMP~\cite{PENNANT}. A follow-up paper presents a
 Regent implementation~\cite{Regent15}.
-(b) One follow-up paper for the mini-app CoMD describes a Chapel
+
+\item One follow-up paper for the mini-app CoMD describes a Chapel
 implementation~\cite{CoMDChapel16} (comparison against reference
 only). Additional follow-up papers consider aspects of the reference
 implementation only~\cite{CoMDLoadImbalance17,
   CoMDThreadedModels14}.
-(c) A report on the Mantevo project~\cite{Mantevo09} describes a number of
+
+\item A report on the Mantevo project~\cite{Mantevo09} describes a number of
 mini-apps, but only includes self-comparisons based on reference
 implementations.
-And (d) A report on MiniAero~\cite{SandiaReportManyTaskRuntimes15} describes
+
+\item A report on MiniAero~\cite{SandiaReportManyTaskRuntimes15} describes
 four implementations of the mini-app, but only includes performance
 results for three, of which only two can be compared in an
 apples-to-apples manner as the last implementation uses structured
 rather than unstructured meshes. A follow-up describes another
 implementation in Regent~\cite{Regent15} (comparison vs.~reference
 only).
+\end{itemize}
 
 Microbenchmarks can be easier to implement, but do not address the
 asymptotic costs of implementation. PRK Stencil~\cite{PRK14} contains a
