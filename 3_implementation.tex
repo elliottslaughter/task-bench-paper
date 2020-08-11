@@ -79,18 +79,26 @@ as above, and \emph{parameterized task graphs} (PTG)~\cite{PARSEC13},
 where the dependence graph is constructed automatically from an
 analytical representation of the task graph. Realm (unlike the others
 above) is explicitly parallel and requires tasks to be connected
-explicitly via \emph{events}.
+explicitly via \emph{events}. StarPU, in addition to its usual,
+implicitly parallel mode, also provides a mode where MPI is used for
+synchronization (and is thus explicitly parallel).
 
 Among distributed task-based systems, there can be a scalability
 bottleneck due to enumerating tasks sequentially. PaRSEC and StarPU
-allow users to omit tasks that are not
-directly connected in the dependence graph. The program is replicated
-(for efficiency of analysis), but each task is executed only
-once. Because the dynamic checks to see if a task should be executed
-are not free of cost, we also provide a PaRSEC implementation (labeled \lstinline{shard}) hand-written to avoid all
-such checks. Regent performs an equivalent optimization at compile
-time~\cite{ControlReplication17} that does not require user
-intervention.
+allow users to omit tasks that are not directly connected in the
+dependence graph. The program is replicated (for efficiency of
+analysis), but each task is executed only once. Because the dynamic
+checks to see if a task should be executed are not free of cost, we
+also provide versions of the PaRSEC and StarPU implementations
+(labeled \lstinline{shard} and \lstinline{expl}, respectively)
+hand-written to minimize such costs. PaRSEC \lstinline{shard} uses the
+DTD mode but manually minimizes dynamic checks. StarPU
+\lstinline{expl} uses the MPI integration described above. We see in
+Section~\ref{subsec:scalability} that such modifications are needed to
+achieve optimal scalability. Regent performs an equivalent
+optimization at compile time~\cite{ControlReplication17} that does not
+require user intervention and preserves the original, implicitly
+parallel programming model of the language.
 
 \input{t1_systems}
 
