@@ -169,24 +169,29 @@ in Section~\ref{subsec:number-of-dependencies}.
 
 \input{e4_radix}
 
-PaRSEC, StarPU and Regent
-rely on runtime analysis that can suffer from
-scalability bottlenecks if every node must consider the tasks
-executing on all other nodes. PaRSEC DTD and StarPU mitigate this
-partially by allowing the user to omit tasks not directly
-dependent on those executed by a given node. However, this approach still requires checks that scale with
-node count and thus limit scalability~\cite{PARSEC_DTD}. Compile-time analysis can
-partially or fully mitigate this overhead. PaRSEC PTG improves over DTD 
-by performing DAG expansion at compile time~\cite{PARSEC_DTD}, but
-retains dynamic checks that limit scalability. PaRSEC
-\lstinline{shard} includes additional manual optimizations over DTD,
-completely eliminating these dynamic checks. StarPU \lstinline{expl}
-is written in an explicitly parallel style using MPI for
-communication, and thus avoids this bottleneck. Regent uses a
-compile-time optimization that improves scalability with no user
-intervention~\cite{ControlReplication17}. We see that all of PaRSEC
-\lstinline{shard}, StarPU \lstinline{expl}, and Regent are able to
-achieve optimal scalability.
+PaRSEC, StarPU and Regent rely on runtime analysis that can suffer
+from scalability bottlenecks if every node must consider the tasks
+executing on all other nodes. Although all three systems offer ways to
+improve scalability, these methods are not equally effective. PaRSEC
+DTD and StarPU allow users to manually prune tasks to reduce overhead;
+however the checks are not reduced to zero. Similarly, PaRSEC PTG uses
+compile-time optimizations to avoid the need for manual pruning, but
+still targets the PaRSEC DTD runtime and thus incurs some
+overhead. Figure~\ref{fig:metg-compute} shows that these models do not
+provide ideal scalability, as seen by METG values that rise with
+increasing node count. Regent uses a compile-time optimization to
+generate code with a constant overhead per
+node~\cite{ControlReplication17}. Of the three systems, Regent is the
+only one that achieves ideal scalability while preserving its
+original, implicitly parallel programming model. The others can
+achieve ideal scalability but require increasing levels of manual
+intervention. PaRSEC \lstinline{shard} includes additional manual
+optimizations over DTD to completely eliminate dynamic checks. StarPU
+\lstinline{expl} is written in an explicitly parallel style using MPI
+for communication, and thus avoids any analysis bottleneck. These
+results indicate that the underlying systems are capable of scalable
+execution, but that the dynamic checks incurred by the implicitly
+parallel programming models hinder that scalability.
 
 \subsection{Number of Dependencies}
 \label{subsec:number-of-dependencies}
