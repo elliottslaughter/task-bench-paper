@@ -178,9 +178,15 @@ dependent on those executed by a given node. However, this approach still requir
 node count and thus limit scalability~\cite{PARSEC_DTD}. Compile-time analysis can
 partially or fully mitigate this overhead. PaRSEC PTG improves over DTD 
 by performing DAG expansion at compile time~\cite{PARSEC_DTD}, but
-retains dynamic checks that limit scalability. PaRSEC shard includes additional manual optimizations over DTD, completely eliminating these dynamic checks. Regent
-uses a compile-time optimization to improve
-scalability~\cite{ControlReplication17}; the increase in METG beyond 16 nodes is due to a known bug in Realm barrier migration which the Realm Task Bench implementation is able to manually work around.
+retains dynamic checks that limit scalability. PaRSEC
+\lstinline{shard} includes additional manual optimizations over DTD,
+completely eliminating these dynamic checks. StarPU \lstinline{expl}
+is written in an explicitly parallel style using MPI for
+communication, and thus avoids this bottleneck. Regent uses a
+compile-time optimization that improves scalability with no user
+intervention~\cite{ControlReplication17}. We see that all of PaRSEC
+\lstinline{shard}, StarPU \lstinline{expl}, and Regent are able to
+achieve optimal scalability.
 
 \subsection{Number of Dependencies}
 \label{subsec:number-of-dependencies}
