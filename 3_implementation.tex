@@ -85,9 +85,9 @@ synchronization (and is thus explicitly parallel).
 
 Among distributed task-based systems, there can be a scalability
 bottleneck due to enumerating tasks sequentially. PaRSEC and StarPU
-allow users to omit tasks that are not directly connected in the
-dependence graph. The program is replicated (for efficiency of
-analysis), but each task is executed only once. Because the dynamic
+allow users to manually prune the task graph, skipping tasks not
+mapped for execution onto a given node, plus a ``halo'' consisting of
+tasks connected via dependencies to the set of node-local tasks. Because the dynamic
 checks to see if a task should be executed are not free of cost, we
 also provide versions of the PaRSEC and StarPU implementations
 (labeled \lstinline{shard} and \lstinline{expl}, respectively)
