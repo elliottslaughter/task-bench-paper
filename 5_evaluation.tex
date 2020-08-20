@@ -239,6 +239,14 @@ as spikes in latency due to interference from other jobs can be
 mitigated, leading to more predictable performance, especially at
 smaller message sizes.
 
+The effectiveness of such overlap can be influenced by the scheduling
+policies of the underlying system. For example, Chapel's default
+scheduler uses a round-robin policy; we see in
+Figure~\ref{fig:efficiency-communication} that this approach fails to
+take full advantage of the available task parallelism. A work-stealing
+scheduler (Chapel \lstinline{distrib}) is able to recover this
+performance.
+
 \subsection{Load Imbalance}
 
 \input{e5_imbalance}
