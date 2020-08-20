@@ -54,6 +54,21 @@ on the task graph by Dask. As a work around, our results in the paper use a
 lower-level interface which does not suffer from this asymptotic
 slowdown.
 
+The Task Bench implementation for TensorFlow uses aggressive loop
+unrolling to minimize overhead, and this initially resulted in the
+entire graph being marked constant. TensorFlow performs optimizations
+on task graphs prior to execution, including a constant folding
+pass. These optimizations are performed on a single core. In the case
+of Task Bench, this resulted in sequential execution of the entire
+graph, resulting in experiments timing out. As a workaround,
+additional inputs can be fed to nodes in the graph to make them
+non-constant, forcing them to be executed by TensorFlow's normal
+scheduler. Though this was exacerbated by Task Bench's approach to
+unrolling loops, it affects any task graph with constants that are
+expensive to compute where the users may wish to perform
+constant-folding in parallel.
+
+\zap{
 Initial experiments with TensorFlow revealed that the Task
 Bench implementation was not able to use all cores on a node (making it impossible to measure METG since efficiency was below
 50\%). The TensorFlow developers diagnosed this as an issue in
@@ -62,6 +77,7 @@ as constant, and the constant-folding pass runs on one core. As a
 workaround, the developers suggested marking the task graph inputs as
 non-constant so that TensorFlow's standard task scheduler could be
 used.
+}
 
 In all cases, we found bugs that are applicable outside of Task Bench
 and that impact metrics other than METG. Notably, the scalability
