@@ -54,15 +54,14 @@ on the task graph by Dask. As a work around, our results in the paper use a
 lower-level interface which does not suffer from this asymptotic
 slowdown.
 
-The Task Bench implementation for TensorFlow uses aggressive loop
-unrolling to minimize overhead, and this initially resulted in the
-entire graph being marked constant. TensorFlow performs optimizations
-on task graphs prior to execution, including a constant folding
-pass. These optimizations are performed on a single core. In the case
-of Task Bench, this resulted in sequential execution of the entire
-graph, resulting in experiments timing out. As a workaround,
-additional inputs can be fed to nodes in the graph to make them
-non-constant, forcing them to be executed by TensorFlow's normal
+TensorFlow performs optimizations on task graphs prior to execution,
+including a constant folding pass. The Task Bench implementation uses
+aggressive loop unrolling to minimize overheads, resulting in the task
+graph being marked as constant. Because TensorFlow optimizations are
+performed on a single core, this resulted in sequential execution of
+the entire graph, and Task Bench experiments timed out. As a
+workaround, additional inputs can be fed to nodes in the graph to make
+them non-constant, forcing them to be executed by TensorFlow's normal
 scheduler. Though this was exacerbated by Task Bench's approach to
 unrolling loops, it affects any task graph with constants that are
 expensive to compute where the users may wish to perform
