@@ -50,7 +50,7 @@ a task was $\mathcal{O}(N)$ where $N$ is the number of tasks in a task
 graph, causing overall cost for a task graph with $N$ nodes to be
 $\mathcal{O}(N^2)$. This issue was reported to and confirmed by the
 Dask developers; the bug is suspected to be in optimizations performed
-on the task graph by Dask. As a work around, our results in the paper use a
+on the task graph by Dask. As a workaround, our results in the paper use a
 lower-level interface which does not suffer from this asymptotic
 slowdown.
 
@@ -60,8 +60,8 @@ aggressive loop unrolling to minimize overheads, resulting in the task
 graph being marked as constant. Because TensorFlow optimizations are
 performed on a single core, this resulted in sequential execution of
 the entire graph, and Task Bench experiments timed out. As a
-workaround, additional inputs can be fed to nodes in the graph to make
-them non-constant, forcing them to be executed by TensorFlow's normal
+workaround, additional inputs are fed to nodes in the graph to make
+them non-constant, forcing them to be executed by TensorFlow's parallel
 scheduler. Though this was exacerbated by Task Bench's approach to
 unrolling loops, it affects any task graph with constants that are
 expensive to compute where the users may wish to perform
