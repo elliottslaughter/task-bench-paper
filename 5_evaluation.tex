@@ -112,7 +112,7 @@ We observe that overheads vary by over 5 orders of
 magnitude. The most efficient systems are explicitly parallel
 and provide very lightweight mechanisms for parallelism. Task-based systems for HPC tend to be next most efficient, and
 provide additional features such as automatic dependency discovery and
-data movement. Slower systems tend to be designed primarily for
+data movement. Higher overhead systems tend to be designed primarily for
 large-scale data analysis or workflows. It is worth
 remembering that these are \emph{minimum}
 effective task granularities. Applications with an average
@@ -361,7 +361,7 @@ the code:
 i.e., the smallest time to solution,
 and the number of nodes at which that time is achieved, while
 maintaining at least 50\% efficiency. In
-Figure~\ref{fig:strong-scaling} this can be seen as the distance
+Figure~\ref{fig:strong-scaling}, the error in the estimate is the distance
 between the black square and circle; these are separated by a factor of
 $1.22\times$ in node count, and $1.27\times$ in time to solution.
 

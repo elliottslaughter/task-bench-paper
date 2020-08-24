@@ -79,11 +79,11 @@ as above, and \emph{parameterized task graphs} (PTG)~\cite{PARSEC13},
 where the dependence graph is constructed automatically from an
 analytical representation of the task graph. Realm (unlike the others
 above) is explicitly parallel and requires tasks to be connected
-explicitly via \emph{events}. StarPU, in addition to its usual,
+explicitly via \emph{events}. Realm is the low-level execution engine for Regent and thus serves as a limit study of what can be achieved with Regent. StarPU, in addition to its usual,
 implicitly parallel mode, also provides a mode where MPI is used for
 synchronization (and is thus explicitly parallel).
 
-Among distributed task-based systems, there can be a scalability
+Among implicitly parallel, distributed task-based systems, there can be a scalability
 bottleneck due to enumerating tasks sequentially. PaRSEC and StarPU
 allow users to manually prune the task graph, skipping tasks not
 mapped for execution onto a given node, plus a ``halo'' consisting of

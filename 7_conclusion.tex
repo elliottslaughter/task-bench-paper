@@ -13,6 +13,12 @@ systems. Our experiments have enabled the following
 insights:
 
 \begin{itemize}
+\item Evaluations of programming system performance should avoid using
+  TPS or weak scaling to characterize overheads, as these metrics do
+  not constrain the useful work achieved. Instead a metric with
+  constrained efficiency, such as METG(50\%), is needed to ensure that
+  measurements are representative and fair.
+
 \item METG for current distributed programming systems varies by over
   5 orders of magnitude.  Clearly understanding the needed task
   granularity is an important consideration in choosing a programming
