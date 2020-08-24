@@ -26,6 +26,12 @@ insights:
   and communication, and load imbalance. However, these gains can be nullified by
   high baseline overheads.
 
+\item Task-based systems that rely on runtime analysis for the
+  discovery of parallelism can suffer from sequential bottlenecks that
+  limit scaling. Existing, dynamic task pruning techniques are not
+  sufficient to fully mitigate this bottleneck, while static,
+  compile-time approaches are able to do so.
+
 \item Systems for large scale data analysis require very large tasks
   (tens of seconds) to scale beyond small node counts,
   reflecting the very coarse tasks and lack of need for strong scaling
