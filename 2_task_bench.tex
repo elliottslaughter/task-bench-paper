@@ -43,14 +43,14 @@ implementation in MPI. Methods of the \lstinline{Graph} object
 \lstinline{g} are provided by Task Bench's core API and are shared
 among all implementations. These methods are summarized in
 Table~\ref{tab:api}. The MPI implementation follows the style of
-communicating sequential processes (CSP), and executes a set of send
+communicating sequential processes (CSP)~\cite{HoareCSP1978}, and executes a set of send
 and receive calls (lines 24 and 16, respectively) followed by
 executing the task body (line 32). Despite MPI having no notion of
 task, the execution of a task graph maps into the CSP style in a
 straightforward way. The implementation is both simple and efficient,
 but due to the choice of CSP makes no attempt to exploit task
 parallelism, and leaves performance on the table when executing task
-graphs with load imbalance or communication. Note the excerpt is
+graphs with load imbalance or significant communication. Note the excerpt is
 simplified for presentation and the full implementation is more
 general and provides additional optimizations.
 
