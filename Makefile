@@ -86,12 +86,12 @@ $(GENERATED_FIGS): %.pdf: %.tex
 .PHONY: figures
 figures:
 	(if [ ! -d figs/task-bench ]; then \
-		git clone https://github.com/StanfordLegion/task-bench.git figs/task-bench; \
+		git clone -b sc20 https://github.com/StanfordLegion/task-bench.git figs/task-bench; \
 	else \
 		git -C figs/task-bench pull --ff-only; \
 	fi)
 	(if [ ! -d figs/task-bench-results ]; then \
-		git clone https://github.com/StanfordLegion/task-bench-results.git figs/task-bench-results; \
+		git clone -b sc20 https://github.com/StanfordLegion/task-bench-results.git figs/task-bench-results; \
 	else \
 		git -C figs/task-bench-results pull --ff-only; \
 	fi)
