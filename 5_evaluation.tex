@@ -67,7 +67,7 @@ applications.
 
 Figure~\ref{fig:bytes} shows performance with a memory-bound kernel. We measure a peak memory
 bandwidth of 79~GB/s, using a working set size of 0.5 GB. As discussed in Section~\ref{sec:task-bench}, the kernels are designed to keep the working set constant as the number of iterations decrease to avoid noisy, superlinear effects in the results. For comparison, the
-OpenMP-enabled STREAM benchmarks~\cite{STREAM} report up to 98~GB/s.
+OpenMP-enabled STREAM benchmarks~\cite{STREAM} report up to 98~GB/s on the same hardware.
 
 Not all cores are required to saturate memory bandwidth.
   This reduces the impact of reserving cores for system use
@@ -119,8 +119,7 @@ effective task granularities. Applications with an average
 task granularity of \emph{at least} this value can usually be expected
 to execute efficiently. Typical task granularities will
 generally be determined by the application domain being
-considered. Most notably, for large-scale data analytics workloads, the higher METG values observed for Spark and
-TensorFlow are sufficient. In contrast, for high-performance
+considered. Most notably, for large-scale data analytics workloads, the higher METG values observed for Spark are sufficient. In contrast, for high-performance
 scientific simulations, task granularities in the millisecond range
 are useful, as such applications communicate (e.g., for halo
 exchanges) much more frequently.
@@ -169,6 +168,8 @@ in Section~\ref{subsec:number-of-dependencies}.
 
 \input{e4_radix}
 
+\input{e6_communication}
+
 PaRSEC, StarPU and Regent rely on runtime analysis that can suffer
 from scalability bottlenecks if every node must consider the tasks
 executing on all other nodes. Although all three systems offer ways to
@@ -204,21 +205,17 @@ from 0 to 9.
 
 % FIXME: make sure these numbers are up to date for final paper
 
-%% From 1 to 3
-%% dependencies, the ratio varies from $1.0\times$ to $150\times$ (median
-%% $2.3\times$).
-
 The ratio in METG between 0 and 3 dependencies per task ranges from
-$1.01\times$ to $250\times$ (median $2.9\times$). The difference is most pronounced in systems that
-perform runtime work inline. For example, MPI achieves an METG of 390
-ns with 0 dependencies, but this rises to 4.6 \textmu{}s with 3 dependencies,
-a $12\times$ increase. This is unsurprising, as with
-0 dependencies no \lstinline[language=C++]{MPI_Isend} calls are
-issued at all. Clearly, choosing a representative dependence
-pattern is important when estimating the performance of a workload or
-class of workloads.
-
-\input{e6_communication}
+$0.82\times$ to $250\times$ (mean $21\times$, std. dev. $64$). The
+large standard deviation shows that the sensitivity of system overhead
+to the dependency pattern varies widely. The largest ratios are among
+systems that perform runtime work inline. For example, MPI achieves an
+METG of 390 ns with 0 dependencies, but this rises to 4.6 \textmu{}s
+with 3 dependencies, a $12\times$ increase. This is unsurprising, as
+with 0 dependencies no \lstinline[language=C++]{MPI_Isend} calls are
+issued at all. Clearly, choosing a representative dependence pattern
+is important when estimating the performance of a workload or class of
+workloads.
 
 \subsection{Overlapping Communication and Computation}
 
@@ -306,9 +303,6 @@ Section~\ref{subsec:scalability}: the cost of sending data and
 tasks to GPUs imposes a floor on task granularity relative to CPUs, reducing the advantage at small task granularities of
 very lightweight mechanisms such as those in MPI.
 
-\input{e9_strong}
-\input{e11_metg_predict_strong}
-
 \subsection{Validating METG with Time to Solution}
 
 % Summary:
@@ -318,18 +312,6 @@ very lightweight mechanisms such as those in MPI.
 % Limit/Actual intersects at: 67 nodes, 0.086 s
 % Limit/Ideal vs Limit/Actual gap in nodes: 1.22x
 % Limit/Ideal vs Limit/Actual gap in time: 1.27x
-
-% Overall (out of 11 systems that perform well enough to have an intersection):
-% Limit/Ideal vs Limit/Actual gap in nodes:
-%   mean: 1.61x
-%   median: 1.60x
-%   min: 1.13x
-%   max: 2.19x
-% Limit/Ideal vs Limit/Actual gap in time:
-%   mean: 1.28x
-%   median: 1.27x
-%   min: 1.01x
-%   max: 1.69x
 
 We can use METG to predict the scalability of a code. Figure
 \ref{fig:strong-scaling} shows strong scaling for three Task Bench
@@ -365,12 +347,15 @@ Figure~\ref{fig:strong-scaling}, the error in the estimate is the distance
 between the black square and circle; these are separated by a factor of
 $1.22\times$ in node count, and $1.27\times$ in time to solution.
 
+\input{e9_strong}
+\input{e11_metg_predict_strong}
+
 Table~\ref{tab:metg-predict-strong} expands this comparison to the 4
 patterns tested in Section~\ref{subsec:scalability} for all 11
 programming systems that scale well enough to evaluate the separation
 between the limit-ideal and limit-actual intersections. We see that
-overall, the mean separation is at most $2.15\times$ in node count
-and at most $1.42\times$ in time to solution, making this a
+overall, the mean separation is at most $1.96\times$ in node count
+and at most $1.29\times$ in time to solution, making this a
 useful way to predict strong scaling in the 4 patterns we tested in
 Section~\ref{subsec:scalability}.
 
